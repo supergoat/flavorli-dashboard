@@ -3,20 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "24.0.11",
-    "@types/node": "11.13.4",
-    "@types/react": "16.8.13",
-    "@types/react-dom": "16.8.4",
+    "@reach/router": "^1.2.1",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.13.4",
+    "@types/react": "^16.8.13",
+    "@types/react-dom": "^16.8.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "2.1.8",
-    "typescript": "3.4.3"
+    "styled-components": "^4.2.0",
+    "typescript": "^3.4.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --coverage",
+    "test:watch": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "node node_modules/eslint/bin/eslint.js --config node_modules/eslint-config-react-app/index.js src --ext .js,.jsx,.ts,.tsx",
+    "format": "yarn prettier --write",
+    "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|graphql|mdx)\"",
+    "validate": "yarn lint && yarn format && yarn prettier --list-different"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && yarn validate"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -26,5 +38,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/reach__router": "^1.2.4",
+    "@types/styled-components": "^4.1.14"
+  }
 }

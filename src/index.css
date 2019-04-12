@@ -12,3 +12,76 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+* {
+  /* to include the content, padding and border in the width and height properties
+      (excludes margin) */
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  margin: 0;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 1.4em;
+}
+h2 {
+  font-size: 1.3em;
+}
+h3 {
+  font-size: 1.2em;
+}
+h4 {
+  font-size: 1.1em;
+}
+h5 {
+  font-size: 1em;
+}
+
+span,
+a {
+  font-size: 0.83em;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --alabaster: #f9f9f9;
+  --alabasterLight: #fbfbfb;
+  --apple: #32cd32;
+  --azure: #2e60b0;
+  --black: #000000;
+  --bone: #e9dbce;
+  --corn: #edb307;
+  --forestGreen: #1a6d1a;
+  --gallery: #eeeeee;
+  --manatee: #989ca0;
+  --mariner: #2277d8;
+  --orinoco: #dff8c8;
+  --osloGrey: #636c72;
+  --oxfordBlue: #00173d;
+  --riverBed: #424b5c;
+  --rollingStone: #788087;
+  --silver: #cdcdcd;
+  --stRopaz: #2e589b;
+  --white: #ffffff;
+  --stiletto: #ff1133;
+  --darkRed: #dc2727;
+}

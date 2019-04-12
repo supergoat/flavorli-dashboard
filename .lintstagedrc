@@ -1,0 +1,10 @@
+{
+  "linters": {
+    "*.tsx": [
+      "node node_modules/eslint/bin/eslint.js --config node_modules/eslint-config-react-app/index.js"
+    ],
+    "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|graphql|mdx)": [
+      "prettier --write"
+    ]
+  }
+}
