@@ -1,13 +1,15 @@
 import React from 'react';
+import gql from 'graphql-tag';
 import ReactDOM from 'react-dom';
 import {ApolloClient} from 'apollo-client';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {HttpLink} from 'apollo-link-http';
 import {onError} from 'apollo-link-error';
 import {ApolloLink} from 'apollo-link';
-import {ApolloProvider} from 'react-apollo';
+import {ApolloProvider, Query} from 'react-apollo';
 // import resolvers from './resolvers';
 // import typeDefs from './typeDefs';
+import Login from './views/Login';
 
 import './index.css';
 import App from './App';
@@ -41,9 +43,23 @@ const client = new ApolloClient({
   // resolvers,
 });
 
+cache.writeData({
+  data: {
+    isLoggedIn: !!localStorage.getItem('flavorli-admin-token'),
+  },
+});
+
+const IS_LOGGED_IN = gql`
+  query IsAdminLoggedIn {
+    isLoggedIn @client
+  }
+`;
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <Query query={IS_LOGGED_IN}>
+      {({data}: any) => (data.isLoggedIn ? <App /> : <Login />)}
+    </Query>
   </ApolloProvider>,
   document.getElementById('root'),
 );
