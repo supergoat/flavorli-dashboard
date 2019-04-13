@@ -1,12 +1,16 @@
 import React from 'react';
 import {Router} from '@reach/router';
 import Home from './views/Home';
+import SideBar from './components/SideBar';
 
 const App = () => {
   return (
-    <Router>
-      <Home path="/" />
-    </Router>
+    <>
+      <SideBar />
+      <Router>
+        <Home path="/" />
+      </Router>
+    </>
   );
 };
 
