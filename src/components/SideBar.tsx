@@ -39,13 +39,12 @@ export default SideBar;
 /* Styled Components
 ============================================================================= */
 const SideBarWrapper = styled.div`
-  z-index: 1;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   width: 370px;
-  height: 100%;
+  height: 100vh;
   background: var(--oxfordBlue);
   color: var(--white);
 `;
