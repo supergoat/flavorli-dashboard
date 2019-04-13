@@ -15,49 +15,6 @@ const items = [
         items: [
           {
             name: 'Tomato Sauce',
-            price: 1.0,
-          },
-        ],
-      },
-    ],
-    price: 11.0,
-    quantity: 1,
-  },
-  {
-    id: '2',
-    name: 'Burger',
-    categories: [
-      {
-        name: 'Choose Sauce',
-        items: [
-          {
-            name: 'Tomato Sauce',
-            price: 0.0,
-          },
-        ],
-      },
-      {
-        name: 'Toppings',
-        items: [
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-        ],
-      },
-    ],
-    price: 11.0,
-    quantity: 1,
-  },
-  {
-    id: '3',
-    name: 'Burger',
-    categories: [
-      {
-        name: 'Choose Sauce',
-        items: [
-          {
-            name: 'Tomato Sauce',
             price: 0.0,
           },
         ],
@@ -84,39 +41,38 @@ const items = [
 const Order = () => {
   return (
     <OrderWrapper>
-      <Actions>
-        <Button secondary width="35%">
-          Decline
-        </Button>
-        <Button width="60%">Accept Order</Button>
-      </Actions>
-
       <OrderInfo>
-        <TimeBadge>On Time</TimeBadge>
-
+        <OrderDueTime>
+          <p>
+            Due in <span>15 min</span>
+          </p>
+        </OrderDueTime>
         <OrderId>#0001</OrderId>
       </OrderInfo>
-      <OrderDueTime>
-        <p>
-          Due in <span>15 min</span>
-        </p>
-      </OrderDueTime>
+      <TimeBadge>On Time</TimeBadge>
+
       <CustomerInfo>
         <Avatar />
 
         <div>
-          <CustomerName>Larry Page</CustomerName>
-          <Dietary
-            dietary={['vegan', 'halal', 'dairy-free', 'gluten-free', 'nuts']}
-          />
+          <CustomerName>Panayiotis Nicolaou</CustomerName>
+          <Dietary dietary={['vegan', 'gluten-free', 'nuts']} />
         </div>
       </CustomerInfo>
+
+      <OrderItems items={items} />
 
       <Total>
         <div>Total: </div>
         <div>£10.00</div>
       </Total>
-      <OrderItems items={items} />
+
+      <Actions>
+        <Button secondary width="35%">
+          Decline
+        </Button>
+        <Button width="55%">Accept Order</Button>
+      </Actions>
     </OrderWrapper>
   );
 };
@@ -128,14 +84,15 @@ const OrderWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  padding: 30px 40px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  padding: 30px 50px;
+  max-width: 600px;
 `;
 
 const Actions = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-top: 50px;
 `;
 
 const OrderInfo = styled.div`
@@ -155,14 +112,16 @@ const TimeBadge = styled.div`
   background: green;
   border-radius: 4px;
   color: white;
+  margin-bottom: 20px;
 `;
 
 const OrderDueTime = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   color: var(--osloGrey);
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 
   span {
     font-weight: bold;
@@ -174,7 +133,10 @@ const OrderDueTime = styled.div`
 const CustomerInfo = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 0px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--gallery);
+  border-top: 1px solid var(--gallery);
+  margin-bottom: 20px;
 `;
 
 const CustomerName = styled.h1`

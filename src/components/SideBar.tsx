@@ -6,8 +6,6 @@ const SideBar = () => {
   return (
     <>
       <SideBarWrapper>
-        <Title onClick={() => navigate('/')}>flavorli</Title>
-
         <Tabs>
           <Tab selected>New</Tab>
           <Tab>In Progress</Tab>
@@ -39,32 +37,21 @@ export default SideBar;
 /* Styled Components
 ============================================================================= */
 const SideBarWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   width: 370px;
   height: 100vh;
-  background: var(--oxfordBlue);
-  color: var(--white);
-`;
-
-const Title = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Pacifico;
-  font-size: 22px;
-  height: 60px;
-  cursor: default;
-  border-bottom: 1px solid var(--white);
+  padding: 65px 0;
+  padding-left: 40px;
 `;
 
 const Tabs = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 10px;
+  margin-bottom: 30px;
 `;
 
 interface TabProps {
@@ -72,31 +59,31 @@ interface TabProps {
 }
 const Tab = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 3px;
-  width: 110px;
-  padding: 10px 0;
-  border: 1px solid var(--white);
+  justify-content: center;
+  flex: 1;
+  padding: 20px 10px;
+  color: var(--osloGrey);
 
   ${(props: TabProps) =>
     props.selected &&
     css`
+      border-bottom: 3px solid var(--oxfordBlue);
       background: var(--white);
       color: var(--oxfordBlue);
+      font-weight: bold;
     `}
 `;
 
-const Orders = styled.div`
-  padding: 10px;
-`;
+const Orders = styled.div``;
 const OrderItme = styled.div`
   display: flex;
   justify-content: space-around;
   background: var(--white);
   border-radius: 3px;
   color: var(--oxfordBlue);
-  padding: 30px 20px;
+  padding: 30px;
   margin-bottom: 15px;
   font-weight: 300;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;

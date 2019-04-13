@@ -16,8 +16,9 @@ const OrderView = (_: Props) => {
 export default OrderView;
 
 const OrderWrapper = styled.div`
-  overflow: auto;
-  padding: 60px 40px;
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  padding-right: 50px;
   width: 100%;
-  height: 100vh;
 `;
