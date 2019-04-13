@@ -86,12 +86,10 @@ const Error = styled.div`
   margin-top: 5px;
   text-transform: uppercase;
   transition: all 400ms;
-
+  height: 15px;
   ${(props: ErrorProps) =>
     css`
-      height: ${props.show ? '15px' : '0'};
       opacity: ${props.show ? 1 : 0};
-      margin-bottom: ${props.show ? '5px' : '10px'};
-      transform: ${props.show ? 'translateY(0)' : 'translateY(-30%)'};
+      transform: ${props.show ? 'translateY(0)' : 'translateY(-5px)'};
     `}
 `;
