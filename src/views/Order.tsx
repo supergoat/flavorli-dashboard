@@ -19,6 +19,5 @@ const OrderWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 30px;
-  padding-right: 50px;
   width: 100%;
 `;

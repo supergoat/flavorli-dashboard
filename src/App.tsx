@@ -10,7 +10,7 @@ interface Props extends RouteComponentProps {}
 const App = (_: Props) => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <AppWrapper>
         <SideBar />
@@ -26,6 +26,6 @@ const App = (_: Props) => {
 export default App;
 
 const AppWrapper = styled.div`
-  padding-top: 55px;
+  /* padding-top: 55px; */
   margin-left: 370px;
 `;

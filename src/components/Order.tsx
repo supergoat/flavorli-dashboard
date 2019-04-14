@@ -36,6 +36,66 @@ const items = [
     price: 11.0,
     quantity: 1,
   },
+  {
+    id: '2',
+    name: 'Burger',
+    categories: [
+      {
+        name: 'Choose Sauce',
+        items: [
+          {
+            name: 'Tomato Sauce',
+            price: 0.0,
+          },
+        ],
+      },
+      {
+        name: 'Toppings',
+        items: [
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+        ],
+      },
+    ],
+    price: 11.0,
+    quantity: 1,
+  },
+  {
+    id: '3',
+    name: 'Burger',
+    categories: [
+      {
+        name: 'Choose Sauce',
+        items: [
+          {
+            name: 'Tomato Sauce',
+            price: 0.0,
+          },
+        ],
+      },
+      {
+        name: 'Toppings',
+        items: [
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+        ],
+      },
+    ],
+    price: 11.0,
+    quantity: 1,
+  },
 ];
 
 const Order = () => {
@@ -93,6 +153,7 @@ const OrderWrapper = styled.div`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   padding: 20px 35px;
   max-width: 600px;
+  background: var(--white);
 `;
 
 const Actions = styled.div`
