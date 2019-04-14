@@ -9,7 +9,7 @@ const items = [
   {
     id: '1',
     name: 'Burger',
-    categories: [
+    modifiers: [
       {
         name: 'Choose Sauce',
         items: [

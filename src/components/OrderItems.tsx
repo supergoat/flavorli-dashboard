@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 type OrderItemType = {
   id: string;
   name: string;
-  categories: {
+  modifiers: {
     name: string;
     items: {
       name: string;
@@ -29,27 +29,27 @@ const OrderItems = ({items}: Props) => {
             <Price>{orderItem.price.toFixed(2)}</Price>
           </OrderItemInfo>
 
-          <Categories>
-            {orderItem.categories.map((category: any) => {
+          <Modifiers>
+            {orderItem.modifiers.map((modifier: any) => {
               return (
-                <Category>
-                  <CategoryName key={category.name}>
-                    {category.name}
-                  </CategoryName>
-                  {category.items.map((categoryItem: any) => {
+                <Modifier>
+                  <ModifierName key={modifier.name}>
+                    {modifier.name}
+                  </ModifierName>
+                  {modifier.items.map((modifierItem: any) => {
                     return (
-                      <CategoryItem key={categoryItem.name}>
-                        <CategoryItemName>{categoryItem.name}</CategoryItemName>
-                        <CategoryItemPrice>
-                          {categoryItem.price.toFixed(2)}
-                        </CategoryItemPrice>
-                      </CategoryItem>
+                      <ModifierItem key={modifierItem.name}>
+                        <ModifierItemName>{modifierItem.name}</ModifierItemName>
+                        <ModifierItemPrice>
+                          {modifierItem.price.toFixed(2)}
+                        </ModifierItemPrice>
+                      </ModifierItem>
                     );
                   })}
-                </Category>
+                </Modifier>
               );
             })}
-          </Categories>
+          </Modifiers>
         </OrderItem>
       ))}
     </>
@@ -90,35 +90,35 @@ const Price = styled.div`
   }
 `;
 
-const Categories = styled.div``;
+const Modifiers = styled.div``;
 
-const Category = styled.div`
+const Modifier = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   margin-bottom: 15px;
 `;
 
-const CategoryName = styled.h2`
+const ModifierName = styled.h2`
   width: 90%;
   font-size: 12px;
   text-transform: uppercase;
   margin-bottom: 5px;
 `;
 
-const CategoryItemName = styled.p`
+const ModifierItemName = styled.p`
   font-size: 16px;
   color: var(--osloGrey);
   margin-bottom: 5px;
 `;
 
-const CategoryItem = styled.div`
+const ModifierItem = styled.div`
   display: flex;
   justify-content: space-between;
   width: 90%;
 `;
 
-const CategoryItemPrice = styled.div`
+const ModifierItemPrice = styled.div`
   font-size: 14px;
   width: 20%;
   text-align: right;
