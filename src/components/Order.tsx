@@ -36,6 +36,36 @@ const items = [
     price: 11.0,
     quantity: 1,
   },
+  {
+    id: '2',
+    name: 'Burger',
+    modifiers: [
+      {
+        name: 'Choose Sauce',
+        items: [
+          {
+            name: 'Tomato Sauce',
+            price: 0.0,
+          },
+        ],
+      },
+      {
+        name: 'Toppings',
+        items: [
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+        ],
+      },
+    ],
+    price: 11.0,
+    quantity: 1,
+  },
 ];
 
 const Order = () => {

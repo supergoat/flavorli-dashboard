@@ -6,13 +6,16 @@ const SideBar = () => {
   return (
     <SidebarContainer>
       <SideBarWrapper>
-        <Title>flavorli</Title>
+        <Title>
+          flavorli
+          <span>BETA</span>
+        </Title>
+
         <Tabs>
           <Tab selected>New</Tab>
           <Tab>In Progress</Tab>
           <Tab>Ready</Tab>
         </Tabs>
-
         <Orders>
           <OrderItem>
             <CustomerInfo>
@@ -49,7 +52,6 @@ const SideBarWrapper = styled.div`
   left: 0;
   bottom: 0;
   width: 370px;
-  padding: 30px 0;
   border-right: 1px solid var(--gallery);
   background: var(--white);
 `;
@@ -121,6 +123,7 @@ const OrderId = styled.p``;
 const OrderTime = styled.h3`
   font-size: 16px;
   color: ${Colours.osloGrey};
+
   span {
     font-weight: bold;
     font-size: 20px;
@@ -129,9 +132,17 @@ const OrderTime = styled.h3`
 `;
 
 const Title = styled.div`
-  display: flex;
+  text-align: center;
   font-family: Pacifico;
-  font-size: 22px;
+  font-size: 24px;
   justify-content: center;
   cursor: default;
+  padding: 30px 0 10px;
+
+  span {
+    font-weight: bold;
+    color: ${Colours.oxfordBlue};
+    font-size: 14px;
+    margin-left: 5px;
+  }
 `;
