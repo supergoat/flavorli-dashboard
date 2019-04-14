@@ -51,27 +51,31 @@ const Order = () => {
       </OrderInfo>
       <TimeBadge>On Time</TimeBadge>
 
-      <CustomerInfo>
-        <Avatar />
-
-        <div>
+      <Customer>
+        <CustomerInfo>
+          <Avatar />
           <CustomerName>Panayiotis Nicolaou</CustomerName>
           <Dietary dietary={['vegan', 'gluten-free', 'nuts']} />
-        </div>
-      </CustomerInfo>
+        </CustomerInfo>
+
+        <OrderActions>
+          <ContactCustomer>Contact Customer</ContactCustomer>
+          <EditOrder secondary>Edit Order</EditOrder>
+        </OrderActions>
+      </Customer>
+
+      <OrderSummary>Order Summary</OrderSummary>
 
       <OrderItems items={items} />
-
       <Total>
         <div>Total: </div>
         <div>£10.00</div>
       </Total>
-
       <Actions>
         <Button secondary width="35%">
-          Decline
+          Cancel Order
         </Button>
-        <Button width="55%">Accept Order</Button>
+        <Button width="55%">Ready For Pickup</Button>
       </Actions>
     </OrderWrapper>
   );
@@ -85,7 +89,7 @@ const OrderWrapper = styled.div`
   width: 100%;
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  padding: 30px 50px;
+  padding: 20px 35px;
   max-width: 600px;
 `;
 
@@ -130,12 +134,13 @@ const OrderDueTime = styled.div`
   }
 `;
 
-const CustomerInfo = styled.div`
+const Customer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+`;
+const CustomerInfo = styled.div`
   padding: 20px 0;
-  border-bottom: 1px solid var(--gallery);
-  border-top: 1px solid var(--gallery);
   margin-bottom: 20px;
 `;
 
@@ -153,10 +158,26 @@ const Avatar = styled.img`
   margin-right: 20px;
 `;
 
+const OrderActions = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ContactCustomer = styled(Button)`
+  margin-bottom: 15px;
+`;
+
+const EditOrder = styled(Button)``;
+
 const Total = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 25px;
   font-weight: 500;
   padding: 20px 0;
+  border-top: 1px solid var(--gallery);
+`;
+
+const OrderSummary = styled.h3`
+  margin-bottom: 15px;
 `;
