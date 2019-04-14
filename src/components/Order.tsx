@@ -36,66 +36,6 @@ const items = [
     price: 11.0,
     quantity: 1,
   },
-  {
-    id: '2',
-    name: 'Burger',
-    categories: [
-      {
-        name: 'Choose Sauce',
-        items: [
-          {
-            name: 'Tomato Sauce',
-            price: 0.0,
-          },
-        ],
-      },
-      {
-        name: 'Toppings',
-        items: [
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-        ],
-      },
-    ],
-    price: 11.0,
-    quantity: 1,
-  },
-  {
-    id: '3',
-    name: 'Burger',
-    categories: [
-      {
-        name: 'Choose Sauce',
-        items: [
-          {
-            name: 'Tomato Sauce',
-            price: 0.0,
-          },
-        ],
-      },
-      {
-        name: 'Toppings',
-        items: [
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-        ],
-      },
-    ],
-    price: 11.0,
-    quantity: 1,
-  },
 ];
 
 const Order = () => {
@@ -107,7 +47,9 @@ const Order = () => {
             Due in <span>15 min</span>
           </p>
         </OrderDueTime>
-        <OrderId>#0001</OrderId>
+        <OrderId>
+          <span>#</span>001
+        </OrderId>
       </OrderInfo>
       <TimeBadge>On Time</TimeBadge>
 
@@ -152,7 +94,9 @@ const OrderWrapper = styled.div`
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   padding: 20px 35px;
-  max-width: 600px;
+  width: 580px;
+  min-width: 580px;
+
   background: var(--white);
 `;
 
@@ -169,7 +113,14 @@ const OrderInfo = styled.div`
 `;
 
 const OrderId = styled.h1`
-  font-size: 18px;
+  font-size: 26px;
+  color: var(--oxfordBlue);
+  span {
+    font-size: 18px;
+    color: var(--osloGrey);
+    font-weight: bold;
+    margin-right: 3px;
+  }
 `;
 
 const TimeBadge = styled.div`

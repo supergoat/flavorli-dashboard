@@ -4,7 +4,7 @@ import Colours from '../Colours';
 
 const SideBar = () => {
   return (
-    <>
+    <SidebarContainer>
       <SideBarWrapper>
         <Title>flavorli</Title>
         <Tabs>
@@ -29,7 +29,7 @@ const SideBar = () => {
           </OrderItem>
         </Orders>
       </SideBarWrapper>
-    </>
+    </SidebarContainer>
   );
 };
 
@@ -39,13 +39,16 @@ export default SideBar;
 
 /* Styled Components
 ============================================================================= */
+const SidebarContainer = styled.div`
+  width: 370px;
+`;
+
 const SideBarWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   width: 370px;
-  height: 100vh;
   padding: 30px 0;
   border-right: 1px solid var(--gallery);
   background: var(--white);
