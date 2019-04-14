@@ -11,9 +11,7 @@ const App = (_: Props) => {
       <SideBar />
 
       <RouterWrapper>
-        <Router>
-          <Order path="/order" />
-        </Router>
+        <Order path="/order" />
       </RouterWrapper>
     </AppWrapper>
   );
@@ -25,6 +23,6 @@ const AppWrapper = styled.div`
   display: flex;
 `;
 
-const RouterWrapper = styled.div`
+const RouterWrapper = styled(Router)`
   flex: 1;
 `;

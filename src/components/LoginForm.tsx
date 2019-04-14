@@ -2,7 +2,7 @@ import React, {useState, useEffect, FormEvent} from 'react';
 import {MutationFn} from 'react-apollo';
 import {ApolloError} from 'apollo-client';
 import styled from 'styled-components/macro';
-import FormInput from '../ui/FormInput';
+import FormInput from './FormInput';
 import Button from '../ui/Button';
 
 interface Props {

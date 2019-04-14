@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components/macro';
-import Label from './Label';
-import Input from './Input';
+import Label from '../ui/Label';
+import Input from '../ui/Input';
 import Colours from '../Colours';
 
 import WarningIcon from '../assets/icons/warning.svg';
