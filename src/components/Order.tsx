@@ -54,8 +54,10 @@ const Order = () => {
       <Customer>
         <CustomerInfo>
           <Avatar />
-          <CustomerName>Panayiotis Nicolaou</CustomerName>
-          <Dietary dietary={['vegan', 'gluten-free', 'nuts']} />
+          <div>
+            <CustomerName>Panayiotis Nicolaou</CustomerName>
+            <Dietary dietary={['vegan']} />
+          </div>
         </CustomerInfo>
 
         <OrderActions>
@@ -138,10 +140,12 @@ const Customer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
 `;
 const CustomerInfo = styled.div`
+  display: flex;
+  align-items: center;
   padding: 20px 0;
-  margin-bottom: 20px;
 `;
 
 const CustomerName = styled.h1`
@@ -151,16 +155,21 @@ const CustomerName = styled.h1`
 
 const Avatar = styled.img`
   flex-shrink: 0;
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
   background: grey;
-  margin-right: 20px;
+  margin-right: 10px;
 `;
 
 const OrderActions = styled.div`
   display: flex;
   flex-direction: column;
+
+  ${Button} {
+    align-self: flex-start;
+    width: 155px;
+  }
 `;
 
 const ContactCustomer = styled(Button)`
