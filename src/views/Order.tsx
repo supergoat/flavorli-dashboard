@@ -18,6 +18,6 @@ export default OrderView;
 const OrderWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding-bottom: 10px;
+  padding-bottom: 50px;
   width: 100%;
 `;

@@ -1,12 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [hasShadow, setHasShadow] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setHasShadow(window.scrollY !== 0);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
 
   return (
-    <NavbarWrapper>
+    <NavbarWrapper hasShadow={hasShadow}>
       <OpenTimes>
         <Dot /> Open - Accepting Orders
       </OpenTimes>
@@ -35,6 +42,9 @@ export default Navbar;
 
 /* Styled Components
 ============================================================================= */
+interface NavbarWrapperProps {
+  hasShadow?: boolean;
+}
 const NavbarWrapper = styled.header`
   position: fixed;
   top: 0;
@@ -48,6 +58,20 @@ const NavbarWrapper = styled.header`
   padding: 0 20px;
   background: var(--alabaster);
   opacity: 0.98;
+
+  &:after {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 600px;
+    height: 60px;
+    margin: 0 auto;
+    box-shadow: ${(props: NavbarWrapperProps) =>
+      props.hasShadow ? '0 6px 4px -4px rgba(0, 0, 0, 0.2)' : 'none'};
+  }
 `;
 
 const Dot = styled.div`
