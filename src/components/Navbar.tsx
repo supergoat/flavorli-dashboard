@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
 
@@ -27,7 +28,10 @@ const Navbar = () => {
 
       <Dropdown showDropdown={showDropdown}>
         <DropDownItem>Account</DropDownItem>
-        <DropDownItem>Menu</DropDownItem>
+        <DropDownItem onClick={() => navigate('/menu-builder')}>
+          Menu Builder
+        </DropDownItem>
+        <DropDownItem onClick={() => navigate('/order')}>Orders</DropDownItem>
         <DropDownItem>Order History</DropDownItem>
         <DropDownItem>Settings</DropDownItem>
         <DropDownItem>Log Out</DropDownItem>
