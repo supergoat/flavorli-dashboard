@@ -120,13 +120,10 @@ export default Order;
 const OrderWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   padding: 20px 35px;
   width: 580px;
-  min-width: 580px;
-
   background: var(--white);
 `;
 
