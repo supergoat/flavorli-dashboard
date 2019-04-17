@@ -1,46 +1,80 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {RouteComponentProps} from '@reach/router';
-import styled, {css} from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
 import Menu from '../components/Menu';
 import Button from '../ui/Button';
 import Colours from '../Colours';
 
+const menuList = [
+  {
+    id: '1',
+    name: 'Breakfast',
+    days: 'Monday to Friday',
+    hours: ['12pm', '10pm'],
+    categories: ['Burgers', 'Wingz', 'Bowls and Bites', 'Filthy Fries'],
+  },
+  {
+    id: '2',
+    name: 'Lunch',
+    days: 'Monday to Friday',
+    hours: ['12pm', '10pm'],
+    categories: ['Burgers', 'Wingz', 'Bowls and Bites', 'Filthy Fries'],
+  },
+  {
+    id: '3',
+    name: 'Dinner',
+    days: 'Monday to Friday',
+    hours: ['12pm', '10pm'],
+    categories: ['Burgers', 'Wingz', 'Bowls and Bites', 'Filthy Fries'],
+  },
+];
 interface Props extends RouteComponentProps {}
 
 const MenuBuilder = (_: Props) => {
+  const [menuId, setMenuId] = useState<String | undefined>(undefined);
+
   return (
     <MenuBuilderWrapper>
       <Navbar />
       <SideBar>
         <AddMenu>
-          <Button width="100%">Add Menu +</Button>
+          <Button width="100%">Add Menu</Button>
         </AddMenu>
 
         <MenuList>
-          <MenuItem>
-            <MenuName>All Day</MenuName>
-            <MenuServiceHours>Monday to Friday</MenuServiceHours>
-            <MenuServiceHours>9am to 10pm</MenuServiceHours>
-          </MenuItem>
+          {menuList.map(menu => {
+            return (
+              <>
+                <MenuItem
+                  onClick={() =>
+                    menuId === menu.id
+                      ? setMenuId(undefined)
+                      : setMenuId(menu.id)
+                  }
+                >
+                  <MenuName>{menu.name}</MenuName>
+                  <MenuServiceHours>Monday to Friday</MenuServiceHours>
+                  <MenuServiceHours>
+                    {menu.hours[0]} to {menu.hours[1]}
+                  </MenuServiceHours>
+                </MenuItem>
 
-          <Categories>
-            <CategoryItem>Burgers</CategoryItem>
-            <CategoryItem>Wingz</CategoryItem>
-            <CategoryItem>Bowls and Bites</CategoryItem>
-            <CategoryItem>Filthy Fries</CategoryItem>
-          </Categories>
-          <MenuItem>
-            <MenuName>Lunch</MenuName>
-            <MenuServiceHours>Monday to Friday</MenuServiceHours>
-            <MenuServiceHours>9am to 10pm</MenuServiceHours>
-          </MenuItem>
-          <MenuItem>
-            <MenuName>Dinner</MenuName>
-            <MenuServiceHours>Monday to Friday</MenuServiceHours>
-            <MenuServiceHours>9am to 10pm</MenuServiceHours>
-          </MenuItem>
+                {menuId === menu.id && (
+                  <Categories>
+                    <Button secondary width="100%">
+                      ADD CATEGORY
+                    </Button>
+
+                    {menu.categories.map(category => {
+                      return <CategoryItem>{category}</CategoryItem>;
+                    })}
+                  </Categories>
+                )}
+              </>
+            );
+          })}
         </MenuList>
       </SideBar>
 
@@ -64,35 +98,26 @@ const AddMenu = styled.div`
 `;
 
 const MenuList = styled.div`
-  padding: 0 20px;
+  height: 100%;
+  overflow-y: auto;
+  padding: 8px 20px;
 `;
 
-const CategoryItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  background: var(--white);
-  border-radius: 3px;
-  color: var(--oxfordBlue);
-  font-weight: 300;
-  padding: 15px 25px;
-`;
-
-interface MenuItemProps {
-  selected?: boolean;
-}
 const MenuItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 15px 25px;
-  color: var(--osloGrey);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  padding: 20px 15px;
+  color: ${Colours.osloGrey};
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid ${Colours.grey};
   border-radius: 3px;
+  margin: 5px 0;
 `;
 
 const MenuName = styled.p`
-  margin-right: 5px;
   color: ${Colours.oxfordBlue};
   font-weight: bold;
 `;
@@ -101,6 +126,23 @@ const MenuServiceHours = styled.div`
   font-size: 15px;
 `;
 
+const CategoryItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background: ${Colours.white};
+  padding: 20px 5px;
+  border-bottom: 1px solid ${Colours.gallery};
+
+  &:last-of-type {
+    border: none;
+  }
+`;
+
 const Categories = styled.div`
-  padding: 20px 0;
+  padding: 0 10px;
+
+  ${Button} {
+    font-size: 13px;
+    margin: 15px 0 5px;
+  }
 `;

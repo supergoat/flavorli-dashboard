@@ -106,7 +106,8 @@ const OrderItem = styled.div`
   padding: 0;
   margin-bottom: 15px;
   font-weight: 300;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); */
+  border: 1px solid ${Colours.grey};
   padding: 20px 15px;
 `;
 
