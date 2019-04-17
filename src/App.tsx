@@ -8,7 +8,7 @@ const App = (_: Props) => {
   return (
     <Router>
       <Order path="/order" />
-      <MenuBuilder path="/menu-builder" />
+      <MenuBuilder path="/menu-builder/*" />
     </Router>
   );
 };

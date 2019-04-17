@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import {RouteComponentProps} from '@reach/router';
+import {RouteComponentProps, Router, navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
 import Menu from '../components/Menu';
+import Category from '../components/Category';
+
 import Button from '../ui/Button';
 import Colours from '../Colours';
 
@@ -30,8 +32,8 @@ const menuList = [
     categories: ['Burgers', 'Wingz', 'Bowls and Bites', 'Filthy Fries'],
   },
 ];
-interface Props extends RouteComponentProps {}
 
+interface Props extends RouteComponentProps {}
 const MenuBuilder = (_: Props) => {
   const [menuId, setMenuId] = useState<String | undefined>(undefined);
 
@@ -48,11 +50,15 @@ const MenuBuilder = (_: Props) => {
             return (
               <>
                 <MenuItem
-                  onClick={() =>
-                    menuId === menu.id
-                      ? setMenuId(undefined)
-                      : setMenuId(menu.id)
-                  }
+                  onClick={() => {
+                    if (menuId === menu.id) {
+                      setMenuId(undefined);
+                      navigate(`/menu-builder`);
+                    } else {
+                      setMenuId(menu.id);
+                      navigate(`/menu-builder/${menu.name}`);
+                    }
+                  }}
                 >
                   <MenuName>{menu.name}</MenuName>
                   <MenuServiceHours>Monday to Friday</MenuServiceHours>
@@ -68,7 +74,15 @@ const MenuBuilder = (_: Props) => {
                     </Button>
 
                     {menu.categories.map(category => {
-                      return <CategoryItem>{category}</CategoryItem>;
+                      return (
+                        <CategoryItem
+                          onClick={() => {
+                            navigate(`/menu-builder/${menu.name}/${category}`);
+                          }}
+                        >
+                          {category}
+                        </CategoryItem>
+                      );
                     })}
                   </Categories>
                 )}
@@ -78,7 +92,10 @@ const MenuBuilder = (_: Props) => {
         </MenuList>
       </SideBar>
 
-      <Menu />
+      <RouterWrapper>
+        <Menu path="/:menu" />
+        <Category path="/:menu/:category" />
+      </RouterWrapper>
     </MenuBuilderWrapper>
   );
 };
@@ -91,6 +108,13 @@ const MenuBuilderWrapper = styled.div`
   padding-bottom: 50px;
   width: 100%;
   margin-top: 61px;
+`;
+
+const RouterWrapper = styled(Router)`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 0 35px;
 `;
 
 const AddMenu = styled.div`
@@ -132,6 +156,7 @@ const CategoryItem = styled.div`
   background: ${Colours.white};
   padding: 20px 5px;
   border-bottom: 1px solid ${Colours.gallery};
+  cursor: pointer;
 
   &:last-of-type {
     border: none;
