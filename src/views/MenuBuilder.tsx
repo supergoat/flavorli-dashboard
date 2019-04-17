@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
 import Menu from '../components/Menu';
 import Category from '../components/Category';
+import AddCategory from '../components/AddCategory';
 
 import Button from '../ui/Button';
 import Colours from '../Colours';
@@ -15,7 +16,7 @@ const menuList = [
     name: 'Breakfast',
     days: 'Monday to Friday',
     hours: ['12pm', '10pm'],
-    categories: ['Burgers', 'Wingz', 'Bowls and Bites', 'Filthy Fries'],
+    categories: [],
   },
   {
     id: '2',
@@ -36,6 +37,7 @@ const menuList = [
 interface Props extends RouteComponentProps {}
 const MenuBuilder = (_: Props) => {
   const [menuId, setMenuId] = useState<String | undefined>(undefined);
+  const [addingCategory, setAddingCategory] = useState(false);
 
   return (
     <MenuBuilderWrapper>
@@ -67,12 +69,17 @@ const MenuBuilder = (_: Props) => {
                   </MenuServiceHours>
                 </MenuItem>
 
-                {menuId === menu.id && (
-                  <Categories>
-                    <Button secondary width="100%">
+                {menuId === menu.id &&
+                  (addingCategory ? (
+                    <AddCategory onCancel={() => setAddingCategory(false)} />
+                  ) : (
+                    <AddCategoryButton onClick={() => setAddingCategory(true)}>
                       ADD CATEGORY
-                    </Button>
+                    </AddCategoryButton>
+                  ))}
 
+                {menuId === menu.id && !!menu.categories.length && (
+                  <Categories>
                     {menu.categories.map(category => {
                       return (
                         <CategoryItem
@@ -112,9 +119,8 @@ const MenuBuilderWrapper = styled.div`
 
 const RouterWrapper = styled(Router)`
   display: flex;
+  justify-content: center;
   flex: 1;
-  flex-direction: column;
-  padding: 0 35px;
 `;
 
 const AddMenu = styled.div`
@@ -155,19 +161,18 @@ const CategoryItem = styled.div`
   justify-content: space-between;
   background: ${Colours.white};
   padding: 20px 5px;
-  border-bottom: 1px solid ${Colours.gallery};
   cursor: pointer;
-
-  &:last-of-type {
-    border: none;
-  }
 `;
 
 const Categories = styled.div`
-  padding: 0 10px;
+  margin: 0 10px;
+`;
 
-  ${Button} {
-    font-size: 13px;
-    margin: 15px 0 5px;
-  }
+const AddCategoryButton = styled.div`
+  font-size: 14px;
+  padding: 15px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  background: ${Colours.alabaster};
+  border-radius: 4px;
 `;

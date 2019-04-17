@@ -22,7 +22,12 @@ const Menu = ({menu, category}: Props) => {
 
 export default Menu;
 
-const MenuWrapper = styled.div``;
+const MenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px 35px;
+  width: 580px;
+`;
 
 const MenuName = styled.h1`
   font-size: 20px;
