@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import Button from '../ui/Button';
-import AddMenu from './AddMenu';
+import AddMenu from '../components/AddMenu';
 
 const AddMenuButton = ({
   onAdd,

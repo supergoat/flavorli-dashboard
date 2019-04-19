@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
-import LogOutButton from './LogOutButton';
+import LogOutButton from '../containers/LogOutButton';
 import Colours from '../Colours';
 
 const Navbar = () => {
