@@ -54,6 +54,7 @@ const FormInputWrapper = styled.div`
       props.hasError &&
       css`
         background: url(${WarningIcon}) no-repeat;
+        background-color: ${Colours.white};
         background-size: 20px 20px;
         background-position: 98%;
       `}

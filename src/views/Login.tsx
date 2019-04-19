@@ -11,7 +11,8 @@ const Login = (_: Props) => {
       {client => (
         <Mutation
           mutation={LOG_IN}
-          onCompleted={({token}: {token: string}) => {
+          onCompleted={({loginAdmin}: any) => {
+            const {token} = loginAdmin;
             localStorage.setItem('flavorli-admin-token', token);
             client.writeData({data: {isLoggedIn: true}});
             navigate('/');

@@ -31,7 +31,7 @@ const link = ApolloLink.from([
     uri: 'http://localhost:4000',
     credentials: 'same-origin',
     headers: {
-      authorization: 'Bearer ' + localStorage.getItem('flavorli-token'),
+      authorization: 'Bearer ' + localStorage.getItem('flavorli-admin-token'),
     },
   }),
 ]);

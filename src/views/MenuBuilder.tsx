@@ -6,8 +6,8 @@ import SideBar from '../components/SideBar';
 import Menu from '../components/Menu';
 import Category from '../components/Category';
 import AddCategory from '../components/AddCategory';
+import AddMenuButton from '../components/AddMenuButton';
 
-import Button from '../ui/Button';
 import Colours from '../Colours';
 
 const menuList = [
@@ -44,7 +44,11 @@ const MenuBuilder = (_: Props) => {
       <Navbar />
       <SideBar>
         <AddMenu>
-          <Button width="100%">Add Menu</Button>
+          <AddMenuButton
+            onAdd={addMenu => {
+              console.log(addMenu);
+            }}
+          />
         </AddMenu>
 
         <MenuList>
