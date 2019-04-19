@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
+import LogOutButton from './LogOutButton';
 import Colours from '../Colours';
 
 const Navbar = () => {
@@ -34,7 +35,10 @@ const Navbar = () => {
         <DropDownItem onClick={() => navigate('/order')}>Orders</DropDownItem>
         <DropDownItem>Order History</DropDownItem>
         <DropDownItem>Settings</DropDownItem>
-        <DropDownItem>Log Out</DropDownItem>
+
+        <DropDownItem>
+          <LogOutButton />
+        </DropDownItem>
       </Dropdown>
     </NavbarWrapper>
   );
