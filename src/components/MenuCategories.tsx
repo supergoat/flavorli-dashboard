@@ -5,7 +5,10 @@ import Colours from '../Colours';
 
 interface Props {
   menuName: string;
-  menuCategories: string[];
+  menuCategories: {
+    id: string;
+    name: string;
+  }[];
 }
 
 const MenuCategories = ({menuName, menuCategories}: Props) => {
@@ -14,13 +17,16 @@ const MenuCategories = ({menuName, menuCategories}: Props) => {
       {!!menuCategories.length && (
         <MenuCategoriesWrapper>
           {menuCategories.map((category: any) => {
+            console.log(category);
+
             return (
               <CategoryItem
+                key={category.id}
                 onClick={() => {
-                  navigate(`/menu-builder/${menuName}/${category}`);
+                  navigate(`/menu-builder/${menuName}/${category.name}`);
                 }}
               >
-                {category}
+                {category.name}
               </CategoryItem>
             );
           })}

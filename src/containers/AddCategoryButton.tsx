@@ -1,5 +1,4 @@
 import AddCategory from '../components/AddCategory';
-
 import React, {useState} from 'react';
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';

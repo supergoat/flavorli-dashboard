@@ -1,11 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import AddCategoryButton from '../containers/AddCategoryButton';
 import MenuCategories from '../components/MenuCategories';
 import MenuListItem from '../components/MenuListItem';
 
-const MenuList = ({menuList}: any) => {
+interface Props {
+  menuList: {
+    id: string;
+    name: string;
+    categories: {
+      id: string;
+      name: string;
+    }[];
+  }[];
+}
+const MenuList = ({menuList}: Props) => {
   const [menuId, setMenuId] = useState<String | undefined>(undefined);
 
   return (
@@ -24,10 +34,10 @@ const MenuList = ({menuList}: any) => {
         };
 
         return (
-          <>
+          <Fragment key={menu.id}>
             <MenuListItem
               menuName={menu.name}
-              serviceHours={menu.hours}
+              serviceHours={['12pm', '10pm']}
               onClick={onMenuListItemClick}
             />
 
@@ -44,7 +54,7 @@ const MenuList = ({menuList}: any) => {
                 />
               </>
             )}
-          </>
+          </Fragment>
         );
       })}
     </MenuListWrapper>

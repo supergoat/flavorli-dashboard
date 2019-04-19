@@ -5,33 +5,9 @@ import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
 import Menu from '../components/Menu';
 import Category from '../components/Category';
-import MenuList from '../components/MenuList';
+import MenuList from '../containers/MenuList';
 
 import AddMenuButton from '../containers/AddMenuButton';
-
-const menuList = [
-  {
-    id: '1',
-    name: 'Breakfast',
-    days: 'Monday to Friday',
-    hours: ['12pm', '10pm'],
-    categories: [],
-  },
-  {
-    id: '2',
-    name: 'Lunch',
-    days: 'Monday to Friday',
-    hours: ['12pm', '10pm'],
-    categories: ['Burgers', 'Wingz', 'Bowls and Bites', 'Filthy Fries'],
-  },
-  {
-    id: '3',
-    name: 'Dinner',
-    days: 'Monday to Friday',
-    hours: ['12pm', '10pm'],
-    categories: ['Burgers', 'Wingz', 'Bowls and Bites', 'Filthy Fries'],
-  },
-];
 
 interface Props extends RouteComponentProps {}
 const MenuBuilder = (_: Props) => {
@@ -45,7 +21,7 @@ const MenuBuilder = (_: Props) => {
           }}
         />
 
-        <MenuList menuList={menuList} />
+        <MenuList />
       </SideBar>
 
       <RouterWrapper>
