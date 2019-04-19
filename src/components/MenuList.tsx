@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
-import AddCategory from './AddCategory';
+import AddCategoryButton from '../containers/AddCategoryButton';
 import Colours from '../Colours';
 
 const MenuList = ({menuList}: any) => {
   const [menuId, setMenuId] = useState<String | undefined>(undefined);
-  const [addingCategory, setAddingCategory] = useState(false);
 
   return (
     <MenuListWrapper>
@@ -31,14 +30,13 @@ const MenuList = ({menuList}: any) => {
               </MenuServiceHours>
             </MenuItem>
 
-            {menuId === menu.id &&
-              (addingCategory ? (
-                <AddCategory onCancel={() => setAddingCategory(false)} />
-              ) : (
-                <AddCategoryButton onClick={() => setAddingCategory(true)}>
-                  ADD CATEGORY
-                </AddCategoryButton>
-              ))}
+            {menuId === menu.id && (
+              <AddCategoryButton
+                onAdd={addMenuCategory => {
+                  console.log(addMenuCategory);
+                }}
+              />
+            )}
 
             {menuId === menu.id && !!menu.categories.length && (
               <Categories>
@@ -103,13 +101,4 @@ const CategoryItem = styled.div`
 
 const Categories = styled.div`
   margin: 0 10px;
-`;
-
-const AddCategoryButton = styled.div`
-  font-size: 14px;
-  padding: 15px 15px;
-  font-weight: bold;
-  cursor: pointer;
-  background: ${Colours.alabaster};
-  border-radius: 4px;
 `;
