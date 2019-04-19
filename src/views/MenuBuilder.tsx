@@ -39,13 +39,11 @@ const MenuBuilder = (_: Props) => {
     <MenuBuilderWrapper>
       <Navbar />
       <SideBar>
-        <AddMenu>
-          <AddMenuButton
-            onAdd={addMenu => {
-              console.log(addMenu);
-            }}
-          />
-        </AddMenu>
+        <AddMenuButton
+          onAdd={addMenu => {
+            console.log(addMenu);
+          }}
+        />
 
         <MenuList menuList={menuList} />
       </SideBar>
@@ -72,8 +70,4 @@ const RouterWrapper = styled(Router)`
   display: flex;
   justify-content: center;
   flex: 1;
-`;
-
-const AddMenu = styled.div`
-  padding: 20px;
 `;

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import styled from 'styled-components/macro';
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import Button from '../ui/Button';
@@ -51,10 +52,11 @@ const AddMenuButton = ({
     >
       {(addMenu: any, {loading}: any) => {
         return (
-          <>
+          <AddMenuButtonWrapper>
             <Button width="100%" onClick={() => setAddingMenu(true)}>
               Add Menu
             </Button>
+
             {addingMenu && (
               <AddMenu
                 onCancel={() => {
@@ -66,7 +68,7 @@ const AddMenuButton = ({
                 onClearError={handleClearError}
               />
             )}
-          </>
+          </AddMenuButtonWrapper>
         );
       }}
     </Mutation>
@@ -82,4 +84,8 @@ const ADD_MENU = gql`
       name
     }
   }
+`;
+
+const AddMenuButtonWrapper = styled.div`
+  padding: 20px;
 `;
