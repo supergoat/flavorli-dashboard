@@ -56,20 +56,26 @@ const AddCategoryButton = ({
       }}
     >
       {(addMenuCategory: any, {loading}: any) => {
-        return addingCategory ? (
-          <AddCategory
-            onCancel={() => {
-              setAddingCategory(false);
-              handleClearError('name');
-            }}
-            onAdd={categoryName => handleAddMenu(categoryName, addMenuCategory)}
-            errors={errors}
-            onClearError={handleClearError}
-          />
-        ) : (
-          <AddButton onClick={() => setAddingCategory(true)}>
-            ADD CATEGORY
-          </AddButton>
+        return (
+          <>
+            <AddButton onClick={() => setAddingCategory(true)}>
+              ADD CATEGORY
+            </AddButton>
+
+            {addingCategory && (
+              <AddCategory
+                onCancel={() => {
+                  setAddingCategory(false);
+                  handleClearError('name');
+                }}
+                onAdd={categoryName =>
+                  handleAddMenu(categoryName, addMenuCategory)
+                }
+                errors={errors}
+                onClearError={handleClearError}
+              />
+            )}
+          </>
         );
       }}
     </Mutation>
@@ -89,7 +95,7 @@ const ADD_CATEGORY = gql`
 
 const AddButton = styled.div`
   font-size: 14px;
-  padding: 15px 15px;
+  padding: 15px;
   font-weight: bold;
   cursor: pointer;
   background: ${Colours.alabaster};

@@ -47,7 +47,7 @@ export default AddCategory;
 const AddCategoryWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 5px 15px 15px;
   background: ${Colours.alabaster};
   border-radius: 4px;
 `;
