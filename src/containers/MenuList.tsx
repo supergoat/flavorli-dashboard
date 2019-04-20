@@ -9,7 +9,6 @@ const MenuListContainer = () => {
       {({loading, error, data}: any) => {
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
-
         return <MenuList menuList={data.getRestaurant.menus} />;
       }}
     </Query>

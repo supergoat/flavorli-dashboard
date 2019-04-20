@@ -15,11 +15,7 @@ const MenuBuilder = (_: Props) => {
     <MenuBuilderWrapper>
       <Navbar />
       <SideBar>
-        <AddMenuButton
-          onAdd={addMenu => {
-            console.log(addMenu);
-          }}
-        />
+        <AddMenuButton />
 
         <MenuList />
       </SideBar>

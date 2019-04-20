@@ -5,11 +5,7 @@ import {Mutation} from 'react-apollo';
 import Button from '../ui/Button';
 import AddMenu from '../components/AddMenu';
 
-const AddMenuButton = ({
-  onAdd,
-}: {
-  onAdd: (menu: {name: string; id: string}) => void;
-}) => {
+const AddMenuButton = () => {
   const [addingMenu, setAddingMenu] = useState(false);
   const [errors, setErrors] = useState<Map<string, string>>(new Map());
 
@@ -39,13 +35,25 @@ const AddMenuButton = ({
     setErrors(copyErrors);
   };
 
+  const handleMenuAdded = (cache: any, {data: {addMenu}}: any) => {
+    const {getRestaurant} = cache.readQuery({query: GET_RESTAURANT_MENUS});
+    const data = {
+      getRestaurant: {
+        menus: [addMenu, ...getRestaurant.menus],
+        __typename: 'Restaurant',
+      },
+    };
+    cache.writeQuery({
+      query: GET_RESTAURANT_MENUS,
+      data,
+    });
+    setAddingMenu(false);
+  };
+
   return (
     <Mutation
       mutation={ADD_MENU}
-      onCompleted={({addMenu}: {addMenu: {name: string; id: string}}) => {
-        setAddingMenu(false);
-        onAdd(addMenu);
-      }}
+      update={handleMenuAdded}
       onError={() => {
         setError('name', 'Something went wrong! Could not create menu!');
       }}
@@ -82,6 +90,25 @@ const ADD_MENU = gql`
     addMenu(name: $name, restaurantId: $restaurantId) {
       id
       name
+      categories {
+        id
+        name
+      }
+    }
+  }
+`;
+
+const GET_RESTAURANT_MENUS = gql`
+  query getRestaurant {
+    getRestaurant {
+      menus {
+        id
+        name
+        categories {
+          id
+          name
+        }
+      }
     }
   }
 `;
