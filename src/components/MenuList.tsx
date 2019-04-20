@@ -15,7 +15,7 @@ interface Props {
     }[];
   }[];
 }
-const MenuList = ({menuList}: Props) => {
+const MenuList = ({menuList = []}: Props) => {
   const [menuId, setMenuId] = useState<String | undefined>(undefined);
 
   return (

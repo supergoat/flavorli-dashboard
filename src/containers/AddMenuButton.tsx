@@ -8,7 +8,7 @@ import {RESTAURANT_MENUS_DATA} from './MenuList';
 
 // TODO: Use correct restaurant id
 
-const AddMenuButton = () => {
+const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
   const [addingMenu, setAddingMenu] = useState(false);
   const [errors, setErrors] = useState<Map<string, string>>(new Map());
 
@@ -21,7 +21,7 @@ const AddMenuButton = () => {
     addMenu({
       variables: {
         name: menuName,
-        restaurantId: 'cjumsnzj9001d0707xfdi5lbe',
+        restaurantId,
       },
     });
   };
@@ -40,13 +40,13 @@ const AddMenuButton = () => {
 
   const handleMenuAdded = (cache: any, {data: {addMenu}}: any) => {
     const {menus} = cache.readFragment({
-      id: 'Restaurant:cjumsnzj9001d0707xfdi5lbe',
+      id: `Restaurant:${restaurantId}`,
       fragment: RESTAURANT_MENUS_DATA,
       fragmentName: 'RestaurantMenus',
     });
 
     cache.writeFragment({
-      id: 'Restaurant:cjumsnzj9001d0707xfdi5lbe',
+      id: `Restaurant:${restaurantId}`,
       fragment: RESTAURANT_MENUS_DATA,
       data: {
         menus: [addMenu, ...menus],

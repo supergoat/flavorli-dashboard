@@ -1,34 +1,84 @@
 import React from 'react';
+import gql from 'graphql-tag';
+import {Query} from 'react-apollo';
 import {RouteComponentProps, Router} from '@reach/router';
-import styled from 'styled-components/macro';
+import styled, {keyframes} from 'styled-components/macro';
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
 import Menu from '../components/Menu';
 import Category from '../components/Category';
-import MenuList from '../containers/MenuList';
+import MenuList from '../components/MenuList';
+import Colours from '../Colours';
 
 import AddMenuButton from '../containers/AddMenuButton';
 
 interface Props extends RouteComponentProps {}
 const MenuBuilder = (_: Props) => {
   return (
-    <MenuBuilderWrapper>
-      <Navbar />
-      <SideBar>
-        <AddMenuButton />
+    <Query query={GET_RESTAURANT_MENUS}>
+      {({loading, error, data: {getRestaurant}}: any) => {
+        if (error) return `Error! ${error.message}`;
 
-        <MenuList />
-      </SideBar>
+        return (
+          <MenuBuilderWrapper>
+            <Navbar />
+            <SideBar>
+              <AddMenuButton restaurantId={getRestaurant && getRestaurant.id} />
 
-      <RouterWrapper>
-        <Menu path="/:menu" />
-        <Category path="/:menu/:category" />
-      </RouterWrapper>
-    </MenuBuilderWrapper>
+              {loading ? (
+                <MenuListLoading>
+                  <MenuListLoadingItem />
+
+                  <MenuListLoadingItem />
+                  <MenuListLoadingItem />
+                </MenuListLoading>
+              ) : (
+                <MenuList menuList={getRestaurant.menus} />
+              )}
+            </SideBar>
+
+            <RouterWrapper>
+              <Menu path="/:menu" />
+              <Category path="/:menu/:category" />
+            </RouterWrapper>
+          </MenuBuilderWrapper>
+        );
+      }}
+    </Query>
   );
 };
 
 export default MenuBuilder;
+
+export const MENU_CATEGORIES_DATA = gql`
+  fragment MenuCategories on Menu {
+    categories {
+      id
+      name
+    }
+  }
+`;
+
+export const RESTAURANT_MENUS_DATA = gql`
+  fragment RestaurantMenus on Restaurant {
+    menus {
+      id
+      name
+      ...MenuCategories
+    }
+  }
+  ${MENU_CATEGORIES_DATA}
+`;
+
+const GET_RESTAURANT_MENUS = gql`
+  query getRestaurant {
+    getRestaurant {
+      id
+      ...RestaurantMenus
+    }
+  }
+  ${RESTAURANT_MENUS_DATA}
+`;
 
 const MenuBuilderWrapper = styled.div`
   display: flex;
@@ -42,4 +92,32 @@ const RouterWrapper = styled(Router)`
   display: flex;
   justify-content: center;
   flex: 1;
+`;
+
+const placeHolderShimmer = keyframes`
+    0%{
+        background-position: 100% 0
+    }
+    100%{
+        background-position: -100% 0
+    }
+`;
+
+const MenuListLoading = styled.div`
+  padding: 8px 20px;
+`;
+const MenuListLoadingItem = styled.div`
+  width: 100%;
+  height: 50px;
+  border-radius: 3px;
+  margin: 5px 0;
+  background: linear-gradient(
+    to right,
+    ${Colours.gallery} 3%,
+    ${Colours.alabaster} 20%,
+    ${Colours.gallery} 30%
+  );
+  background-size: 200% 50px;
+  animation: ${placeHolderShimmer} 1.5s linear forwards infinite;
+  position: relative;
 `;
