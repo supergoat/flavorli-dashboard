@@ -17,8 +17,6 @@ const MenuCategories = ({menuName, menuCategories}: Props) => {
       {!!menuCategories.length && (
         <MenuCategoriesWrapper>
           {menuCategories.map((category: any) => {
-            console.log(category);
-
             return (
               <CategoryItem
                 key={category.id}

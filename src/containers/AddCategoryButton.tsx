@@ -4,12 +4,9 @@ import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
+import {MENU_CATEGORIES_DATA} from './MenuList';
 
-const AddCategoryButton = ({
-  onAdd,
-}: {
-  onAdd: (menu: {name: string; id: string}) => void;
-}) => {
+const AddCategoryButton = ({menuId}: {menuId: string}) => {
   const [addingCategory, setAddingCategory] = useState(false);
   const [errors, setErrors] = useState<Map<string, string>>(new Map());
 
@@ -22,7 +19,7 @@ const AddCategoryButton = ({
     addMenuCategory({
       variables: {
         name: categoryName,
-        menuId: 'cjuo9ux15003007624wikvr1x',
+        menuId,
       },
     });
   };
@@ -39,17 +36,28 @@ const AddCategoryButton = ({
     setErrors(copyErrors);
   };
 
+  const handleCategoryAdded = (cache: any, {data: {addMenuCategory}}: any) => {
+    const {categories} = cache.readFragment({
+      id: `Menu:${menuId}`,
+      fragment: MENU_CATEGORIES_DATA,
+    });
+
+    cache.writeFragment({
+      id: `Menu:${menuId}`,
+      fragment: MENU_CATEGORIES_DATA,
+      data: {
+        categories: [addMenuCategory, ...categories],
+        __typename: 'Menu',
+      },
+    });
+
+    setAddingCategory(false);
+  };
+
   return (
     <Mutation
       mutation={ADD_CATEGORY}
-      onCompleted={({
-        addMenuCategory,
-      }: {
-        addMenuCategory: {name: string; id: string};
-      }) => {
-        setAddingCategory(false);
-        onAdd(addMenuCategory);
-      }}
+      update={handleCategoryAdded}
       onError={() => {
         setError('name', 'Something went wrong! Could not create menu!');
       }}

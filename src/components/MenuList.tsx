@@ -43,11 +43,7 @@ const MenuList = ({menuList}: Props) => {
 
             {isCurrentMenu && (
               <>
-                <AddCategoryButton
-                  onAdd={addMenuCategory => {
-                    console.log(addMenuCategory);
-                  }}
-                />
+                <AddCategoryButton menuId={menu.id} />
                 <MenuCategories
                   menuCategories={menu.categories}
                   menuName={menu.name}

@@ -4,6 +4,9 @@ import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import Button from '../ui/Button';
 import AddMenu from '../components/AddMenu';
+import {RESTAURANT_MENUS_DATA} from './MenuList';
+
+// TODO: Use correct restaurant id
 
 const AddMenuButton = () => {
   const [addingMenu, setAddingMenu] = useState(false);
@@ -36,17 +39,22 @@ const AddMenuButton = () => {
   };
 
   const handleMenuAdded = (cache: any, {data: {addMenu}}: any) => {
-    const {getRestaurant} = cache.readQuery({query: GET_RESTAURANT_MENUS});
-    const data = {
-      getRestaurant: {
-        menus: [addMenu, ...getRestaurant.menus],
+    const {menus} = cache.readFragment({
+      id: 'Restaurant:cjumsnzj9001d0707xfdi5lbe',
+      fragment: RESTAURANT_MENUS_DATA,
+      fragmentName: 'RestaurantMenus',
+    });
+
+    cache.writeFragment({
+      id: 'Restaurant:cjumsnzj9001d0707xfdi5lbe',
+      fragment: RESTAURANT_MENUS_DATA,
+      data: {
+        menus: [addMenu, ...menus],
         __typename: 'Restaurant',
       },
-    };
-    cache.writeQuery({
-      query: GET_RESTAURANT_MENUS,
-      data,
+      fragmentName: 'RestaurantMenus',
     });
+
     setAddingMenu(false);
   };
 
@@ -93,21 +101,6 @@ const ADD_MENU = gql`
       categories {
         id
         name
-      }
-    }
-  }
-`;
-
-const GET_RESTAURANT_MENUS = gql`
-  query getRestaurant {
-    getRestaurant {
-      menus {
-        id
-        name
-        categories {
-          id
-          name
-        }
       }
     }
   }
