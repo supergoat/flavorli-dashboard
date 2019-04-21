@@ -5,8 +5,8 @@ import {RouteComponentProps, Router} from '@reach/router';
 import styled, {keyframes} from 'styled-components/macro';
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
-import Menu from '../components/Menu';
-import Category from '../components/Category';
+import Menu from './Menu';
+import Category from './Category';
 import MenuList from '../components/MenuList';
 import Colours from '../Colours';
 

@@ -64,7 +64,7 @@ const NavbarWrapper = styled.header`
   z-index: 1;
   width: calc(100% - 370px);
   padding: 0 20px;
-  background: var(--alabaster);
+  background: var(--white);
   opacity: 0.98;
 
   &:after {
