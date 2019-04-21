@@ -8,45 +8,14 @@ const Dietary = ({dietary = []}: Props) => {
   return (
     <DietaryWrapper>
       {dietary.map(dietaryItem => {
+        console.log(dietaryItem, dietaryItems[dietaryItem]);
+        const item = dietaryItems[dietaryItem];
         return (
           <Fragment key={dietaryItem}>
-            {dietaryItem === 'vegan' && (
-              <DietaryItem>
-                <Icon src={require(`../assets/icons/plant.svg`)} />
-                <p>Vegan</p>
-              </DietaryItem>
-            )}
-            {dietaryItem === 'vegeterian' && (
-              <DietaryItem>
-                <Icon src={require(`../assets/icons/leaf.svg`)} />
-                <p>Vegeterian</p>
-              </DietaryItem>
-            )}
-            {dietaryItem === 'gluten-free' && (
-              <DietaryItem>
-                <Icon src={require(`../assets/icons/gluten-free.svg`)} />
-                <p>Gluten Free</p>
-              </DietaryItem>
-            )}
-            {dietaryItem === 'dairy-free' && (
-              <DietaryItem>
-                <Icon src={require(`../assets/icons/dairy.svg`)} />
-                <p>Dairy Free</p>
-              </DietaryItem>
-            )}
-            {dietaryItem === 'halal' && (
-              <DietaryItem>
-                <Icon src={require(`../assets/icons/halal.svg`)} />
-                <p>Halal</p>
-              </DietaryItem>
-            )}
-
-            {dietaryItem === 'nuts' && (
-              <DietaryItem>
-                <Icon src={require(`../assets/icons/hazelnut.svg`)} />
-                <p>Nuts</p>
-              </DietaryItem>
-            )}
+            <DietaryItem>
+              <Icon src={require(`../assets/icons/${item.icon}`)} />
+              <p>{item.name}</p>
+            </DietaryItem>
           </Fragment>
         );
       })}
@@ -57,6 +26,56 @@ const Dietary = ({dietary = []}: Props) => {
 /* Export
 ============================================================================= */
 export default Dietary;
+
+/* Dietary Items
+============================================================================= */
+const dietaryItems: any = {
+  vegan: {
+    name: 'Vegan',
+    icon: 'plant.svg',
+  },
+  vegeterian: {
+    name: 'Vegeterian',
+    icon: 'leaf.svg',
+  },
+  gluten_free: {
+    name: 'Gluten Free',
+    icon: 'gluten-free.svg',
+  },
+  halal: {
+    id: 'halal',
+    name: 'Halal',
+    icon: 'halal.svg',
+  },
+  tree_nuts: {
+    name: 'Tree Nuts',
+    icon: 'hazelnut.svg',
+  },
+  egg: {
+    name: 'Egg',
+    icon: 'egg.svg',
+  },
+  peanuts: {
+    name: 'Peanuts',
+    icon: 'peanut.svg',
+  },
+  fish: {
+    name: 'Fish',
+    icon: 'fish.svg',
+  },
+  soy: {
+    name: 'Soy',
+    icon: 'soy.svg',
+  },
+  crustacean_shellfish: {
+    name: 'Crustacean Shellfish',
+    icon: 'crustacean_shellfish.svg',
+  },
+  dairy: {
+    name: 'Dairy Free',
+    icon: 'dairy.svg',
+  },
+};
 
 /* Styled Components
 ============================================================================= */

@@ -49,7 +49,7 @@ const Menu = ({menuId, categoryId}: Props) => {
                     <Name>The Big Jack</Name>
                     <Price>£9.00</Price>
                   </Header>
-                  <Dietary dietary={['vegan', 'gluten-free']} />
+                  <Dietary dietary={['vegan', 'gluten_free']} />
                   <Description>
                     Our top secret burger sauce, american cheeze, gherkins, red
                     onion, iceburg lettuce, tomato (GFO)
@@ -64,7 +64,7 @@ const Menu = ({menuId, categoryId}: Props) => {
                     <Name> The Father Jack</Name>
                     <Price>£9.00</Price>
                   </Header>
-                  <Dietary dietary={['vegan', 'gluten-free']} />
+                  <Dietary dietary={['vegan', 'gluten_free']} />
                   <Description>
                     Smokey bacun jam, bourbon BBQ 8sauce, smoked cheeze,
                     iceburg, onion rings
@@ -139,7 +139,7 @@ const CategoryName = styled.h1`
 
 const CategoryDescription = styled.p`
   padding: 10px 0;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
   line-height: 1.5em;
   font-size: 18px;
 `;

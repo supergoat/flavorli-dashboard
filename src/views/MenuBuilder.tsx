@@ -11,6 +11,7 @@ import MenuList from '../components/MenuList';
 import Colours from '../Colours';
 
 import AddMenuButton from '../containers/AddMenuButton';
+import MenuItem from './MenuItem';
 
 interface Props extends RouteComponentProps {}
 const MenuBuilder = (_: Props) => {
@@ -40,6 +41,7 @@ const MenuBuilder = (_: Props) => {
             <RouterWrapper>
               <Menu path="/:menuId" />
               <Category path="/:menuId/:categoryId" />
+              <MenuItem path="/:menuId/:categoryId/:menuItemId" />
             </RouterWrapper>
           </MenuBuilderWrapper>
         );
