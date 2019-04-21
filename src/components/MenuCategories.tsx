@@ -4,14 +4,14 @@ import styled from 'styled-components/macro';
 import Colours from '../Colours';
 
 interface Props {
-  menuName: string;
+  menuId: string;
   menuCategories: {
     id: string;
     name: string;
   }[];
 }
 
-const MenuCategories = ({menuName, menuCategories}: Props) => {
+const MenuCategories = ({menuId, menuCategories}: Props) => {
   return (
     <>
       {!!menuCategories.length && (
@@ -21,7 +21,7 @@ const MenuCategories = ({menuName, menuCategories}: Props) => {
               <CategoryItem
                 key={category.id}
                 onClick={() => {
-                  navigate(`/menu-builder/${menuName}/${category.name}`);
+                  navigate(`/menu-builder/${menuId}/${category.id}`);
                 }}
               >
                 {category.name}

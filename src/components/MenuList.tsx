@@ -46,7 +46,7 @@ const MenuList = ({menuList = []}: Props) => {
                 <AddCategoryButton menuId={menu.id} />
                 <MenuCategories
                   menuCategories={menu.categories}
-                  menuName={menu.name}
+                  menuId={menu.id}
                 />
               </>
             )}

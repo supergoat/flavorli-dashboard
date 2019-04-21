@@ -1,87 +1,125 @@
 import React from 'react';
+import gql from 'graphql-tag';
+import {Query} from 'react-apollo';
 import {RouteComponentProps, navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
+import DeleteCategoryButton from '../containers/DeleteCategoryButton';
 
 import Colours from '../Colours';
 
 interface Props extends RouteComponentProps {
-  menu?: string;
-  category?: string;
+  menuId?: string;
+  categoryId?: string;
 }
 
-const Menu = ({menu, category}: Props) => {
+const Menu = ({menuId, categoryId}: Props) => {
   return (
-    <MenuWrapper>
-      <MenuName onClick={() => navigate(`/menu-builder/${menu}`)}>
-        {menu}
-      </MenuName>
-      <CategoryName>{category}</CategoryName>
-      <CategoryDescription>
-        Fully stacked vegan crispy fried jackfruit burgers, served with our
-        signature patty in a toasted brioche bun
-      </CategoryDescription>
+    <Query query={GET_MENU_CATEGORY} variables={{categoryId, menuId}}>
+      {({loading, error, data: {getRestaurant}}: any) => {
+        if (loading) return 'Loading...';
 
-      <Options>
-        <Option>
-          <div>
-            <h4>Hide Category</h4>
-            <p>Customers will not be able to view this category</p>
-          </div>
+        if (error) return `Error! ${error.message}`;
 
-          <Button secondary>Hide Category</Button>
-        </Option>
+        return (
+          <MenuWrapper>
+            <MenuName
+              onClick={() =>
+                navigate(`/menu-builder/${getRestaurant.menus[0].id}`)
+              }
+            >
+              {getRestaurant.menus[0].name}
+            </MenuName>
+            <CategoryName>
+              {getRestaurant.menus[0].categories[0].name}
+            </CategoryName>
+            <CategoryDescription>
+              Fully stacked vegan crispy fried jackfruit burgers, served with
+              our signature patty in a toasted brioche bun
+            </CategoryDescription>
 
-        <Option>
-          <div>
-            <h4>Delete Category</h4>
-            <p>Deleting this category, is an ireverisble action.</p>
-          </div>
+            <Options>
+              <Option>
+                <div>
+                  <h4>Hide Category</h4>
+                  <p>Customers will not be able to view this category</p>
+                </div>
 
-          <DeleteCategory secondary>Delete Category</DeleteCategory>
-        </Option>
-      </Options>
+                <Button secondary>Hide Category</Button>
+              </Option>
 
-      <AddMenuButton>Add Menu Item</AddMenuButton>
+              <Option>
+                <div>
+                  <h4>Delete Category</h4>
+                  <p>Deleting this category, is an ireverisble action.</p>
+                </div>
 
-      <MenuItems>
-        <MenuItem>
-          <Image />
-          <div>
-            <Header>
-              <Name>The Big Jack</Name>
-              <Price>£9.00</Price>
-            </Header>
-            <Dietary dietary={['vegan', 'gluten-free']} />
-            <Description>
-              Our top secret burger sauce, american cheeze, gherkins, red onion,
-              iceburg lettuce, tomato (GFO)
-            </Description>
-          </div>
-        </MenuItem>
+                <DeleteCategoryButton
+                  categoryId={getRestaurant.menus[0].categories[0].id}
+                  menuId={getRestaurant.menus[0].id}
+                />
+              </Option>
+            </Options>
 
-        <MenuItem>
-          <Image />
-          <div>
-            <Header>
-              <Name> The Father Jack</Name>
-              <Price>£9.00</Price>
-            </Header>
-            <Dietary dietary={['vegan', 'gluten-free']} />
-            <Description>
-              Smokey bacun jam, bourbon BBQ 8sauce, smoked cheeze, iceburg,
-              onion rings
-            </Description>
-          </div>
-        </MenuItem>
-        <ViewAll>View All</ViewAll>
-      </MenuItems>
-    </MenuWrapper>
+            <AddMenuButton>Add Menu Item</AddMenuButton>
+
+            <MenuItems>
+              <MenuItem>
+                <Image />
+                <div>
+                  <Header>
+                    <Name>The Big Jack</Name>
+                    <Price>£9.00</Price>
+                  </Header>
+                  <Dietary dietary={['vegan', 'gluten-free']} />
+                  <Description>
+                    Our top secret burger sauce, american cheeze, gherkins, red
+                    onion, iceburg lettuce, tomato (GFO)
+                  </Description>
+                </div>
+              </MenuItem>
+
+              <MenuItem>
+                <Image />
+                <div>
+                  <Header>
+                    <Name> The Father Jack</Name>
+                    <Price>£9.00</Price>
+                  </Header>
+                  <Dietary dietary={['vegan', 'gluten-free']} />
+                  <Description>
+                    Smokey bacun jam, bourbon BBQ 8sauce, smoked cheeze,
+                    iceburg, onion rings
+                  </Description>
+                </div>
+              </MenuItem>
+              <ViewAll>View All</ViewAll>
+            </MenuItems>
+          </MenuWrapper>
+        );
+      }}
+    </Query>
   );
 };
 
 export default Menu;
+
+const GET_MENU_CATEGORY = gql`
+  query getRestaurant($menuId: ID!, $categoryId: ID!) {
+    getRestaurant {
+      id
+      menus(where: {id: $menuId}) {
+        id
+        name
+        categories(where: {id: $categoryId}) {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
 
 const MenuWrapper = styled.div`
   display: flex;
@@ -180,9 +218,4 @@ const Option = styled.div`
     font-size: 14px;
     margin-left: 10px;
   }
-`;
-
-const DeleteCategory = styled(Button)`
-  background: ${Colours.red};
-  color: ${Colours.white};
 `;
