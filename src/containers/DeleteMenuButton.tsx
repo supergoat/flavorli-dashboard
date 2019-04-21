@@ -48,7 +48,7 @@ const DeleteMenuButton = ({
         return (
           <DeleteMenuButtonWrapper>
             <DeleteButton onClick={() => handleDeleteMenu(deleteMenu)}>
-              {loading ? 'Deleting...' : 'Delete Menu'}
+              {loading ? 'DELETING...' : 'DELETE MENU'}
             </DeleteButton>
             <Error show={!!error}>Could not delete menu!</Error>
           </DeleteMenuButtonWrapper>

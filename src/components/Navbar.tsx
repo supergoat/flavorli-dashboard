@@ -32,7 +32,7 @@ const Navbar = () => {
         <DropDownItem onClick={() => navigate('/menu-builder')}>
           Menu Builder
         </DropDownItem>
-        <DropDownItem onClick={() => navigate('/order')}>Orders</DropDownItem>
+        <DropDownItem onClick={() => navigate('/')}>Orders</DropDownItem>
         <DropDownItem>Order History</DropDownItem>
         <DropDownItem>Settings</DropDownItem>
 

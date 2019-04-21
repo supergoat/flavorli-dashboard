@@ -39,29 +39,6 @@ const Menu = ({menuId, categoryId}: Props) => {
               our signature patty in a toasted brioche bun
             </CategoryDescription>
 
-            <Options>
-              <Option>
-                <div>
-                  <h4>Hide Category</h4>
-                  <p>Customers will not be able to view this category</p>
-                </div>
-
-                <Button secondary>Hide Category</Button>
-              </Option>
-
-              <Option>
-                <div>
-                  <h4>Delete Category</h4>
-                  <p>Deleting this category, is an ireverisble action.</p>
-                </div>
-
-                <DeleteCategoryButton
-                  categoryId={getRestaurant.menus[0].categories[0].id}
-                  menuId={getRestaurant.menus[0].id}
-                />
-              </Option>
-            </Options>
-
             <AddMenuButton>Add Menu Item</AddMenuButton>
 
             <MenuItems>
@@ -96,6 +73,29 @@ const Menu = ({menuId, categoryId}: Props) => {
               </MenuItem>
               <ViewAll>View All</ViewAll>
             </MenuItems>
+
+            <Options>
+              <Option>
+                <div>
+                  <h4>Hide Category</h4>
+                  <p>Customers will not be able to view this category</p>
+                </div>
+
+                <Button secondary>HIDE CATEGORY</Button>
+              </Option>
+
+              <Option>
+                <div>
+                  <h4>Delete Category</h4>
+                  <p>Deleting this category, is an ireverisble action.</p>
+                </div>
+
+                <DeleteCategoryButton
+                  categoryId={getRestaurant.menus[0].categories[0].id}
+                  menuId={getRestaurant.menus[0].id}
+                />
+              </Option>
+            </Options>
           </MenuWrapper>
         );
       }}
@@ -129,21 +129,25 @@ const MenuWrapper = styled.div`
 
 const MenuName = styled.h4`
   color: ${Colours.osloGrey};
+  padding: 0 3px;
 `;
 
 const CategoryName = styled.h1`
   font-size: 40px;
-  margin-bottom: 5px;
+  padding: 10px 0;
 `;
 
 const CategoryDescription = styled.p`
-  margin: 5px 0 40px;
+  padding: 10px 0;
+  margin-bottom: 35px;
+  line-height: 1.5em;
   font-size: 18px;
 `;
 
 const AddMenuButton = styled(Button)`
   align-self: flex-start;
   font-size: 15px;
+  width: 150px;
 `;
 
 const MenuItems = styled.div``;
@@ -152,7 +156,7 @@ const MenuItem = styled.div`
   display: flex;
   width: 100%;
   padding: 15px;
-  border: 1px solid ${Colours.grey};
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   margin: 20px 0;
   background: ${Colours.white};
@@ -163,7 +167,7 @@ const ViewAll = styled.div`
   justify-content: center;
   width: 100%;
   padding: 10px;
-  border: 1px solid ${Colours.grey};
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   background: ${Colours.white};
 `;
@@ -195,7 +199,7 @@ const Description = styled.p`
 `;
 
 const Options = styled.div`
-  margin-bottom: 30px;
+  margin-top: 50px;
 
   h4 {
     margin-bottom: 5px;
@@ -213,9 +217,9 @@ const Option = styled.div`
   margin-bottom: 30px;
 
   ${Button} {
-    width: 130px;
+    width: 140px;
     flex-shrink: 0;
-    font-size: 14px;
+    font-size: 12px;
     margin-left: 10px;
   }
 `;

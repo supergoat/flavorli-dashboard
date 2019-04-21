@@ -7,7 +7,7 @@ const SideBar = ({children}: {children?: any}) => {
   return (
     <SidebarContainer>
       <SideBarWrapper>
-        <Title onClick={() => navigate('/order')}>
+        <Title onClick={() => navigate('/')}>
           flavorli
           <span>BETA</span>
         </Title>

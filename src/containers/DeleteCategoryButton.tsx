@@ -50,7 +50,7 @@ const DeleteCategoryButton = ({
             <DeleteButton
               onClick={() => handleDeleteMenuCategory(deleteMenuCategory)}
             >
-              {loading ? 'Deleting...' : 'Delete Category'}
+              {loading ? 'DELETING...' : 'DELETE CATEGORY'}
             </DeleteButton>
             <Error show={!!error}>Could not delete menu!</Error>
           </DeleteCategoryButtonWrapper>

@@ -30,7 +30,7 @@ const MenuListItemWrapper = styled.div`
   color: ${Colours.osloGrey};
   cursor: pointer;
   user-select: none;
-  border: 1px solid ${Colours.grey};
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   margin: 5px 0;
 `;

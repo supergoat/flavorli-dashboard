@@ -33,7 +33,7 @@ const Menu = ({menuId}: Props) => {
                   <p>Customers will not be able to view this menu</p>
                 </div>
 
-                <Button secondary>Hide Menu</Button>
+                <Button secondary>HIDE MENU</Button>
               </Option>
 
               <Option>
@@ -108,8 +108,9 @@ const Option = styled.div`
   margin-bottom: 30px;
 
   ${Button} {
-    width: 130px;
+    width: 140px;
     flex-shrink: 0;
-    font-size: 14px;
+    font-size: 12px;
+    margin-left: 10px;
   }
 `;

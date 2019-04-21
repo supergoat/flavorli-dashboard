@@ -1,141 +1,231 @@
 import React from 'react';
-import {RouteComponentProps} from '@reach/router';
-import styled, {css} from 'styled-components/macro';
-import Order from '../components/Order';
-import SideBar from '../components/SideBar';
-import Navbar from '../components/Navbar';
-import Colours from '../Colours';
+import styled from 'styled-components/macro';
 
-interface Props extends RouteComponentProps {}
+import OrderItems from '../components/OrderItems';
+import Button from '../ui/Button';
+import Dietary from '../components/Dietary';
 
-const OrderView = (_: Props) => {
+const items = [
+  {
+    id: '1',
+    name: 'Burger',
+    modifiers: [
+      {
+        name: 'Choose Sauce',
+        items: [
+          {
+            name: 'Tomato Sauce',
+            price: 0.0,
+          },
+        ],
+      },
+      {
+        name: 'Toppings',
+        items: [
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+        ],
+      },
+    ],
+    price: 11.0,
+    quantity: 1,
+  },
+  {
+    id: '2',
+    name: 'Burger',
+    modifiers: [
+      {
+        name: 'Choose Sauce',
+        items: [
+          {
+            name: 'Tomato Sauce',
+            price: 0.0,
+          },
+        ],
+      },
+      {
+        name: 'Toppings',
+        items: [
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+          {
+            name: 'Cheese',
+            price: 0.0,
+          },
+        ],
+      },
+    ],
+    price: 11.0,
+    quantity: 1,
+  },
+];
+
+const Order = () => {
   return (
     <OrderWrapper>
-      <Navbar />
-      <SideBar>
-        <Tabs>
-          <Tab selected>New</Tab>
-          <Tab>In Progress</Tab>
-          <Tab>Ready</Tab>
-        </Tabs>
-        <Orders>
-          <OrderItem>
-            <CustomerInfo>
-              <Avatar />
-              <div>
-                <CustomerName>Larry Page</CustomerName>
-                <OrderTime>
-                  Due at <span>7.00pm</span>
-                </OrderTime>
-              </div>
-            </CustomerInfo>
+      <OrderInfo>
+        <OrderDueTime>
+          <p>
+            Due in <span>15 min</span>
+          </p>
+        </OrderDueTime>
+        <OrderId>
+          <span>#</span>001
+        </OrderId>
+      </OrderInfo>
+      <TimeBadge>On Time</TimeBadge>
 
-            <OrderId>#0001</OrderId>
-          </OrderItem>
+      <Customer>
+        <CustomerInfo>
+          <Avatar />
+          <div>
+            <CustomerName>Panayiotis Nicolaou</CustomerName>
+            <Dietary dietary={['vegan']} />
+          </div>
+        </CustomerInfo>
 
-          <OrderItem>
-            <CustomerInfo>
-              <Avatar />
-              <div>
-                <CustomerName>Larry Page</CustomerName>
-                <OrderTime>
-                  Due at <span>7.00pm</span>
-                </OrderTime>
-              </div>
-            </CustomerInfo>
+        <OrderActions>
+          <ContactCustomer>Contact Customer</ContactCustomer>
+          <EditOrder secondary>Edit Order</EditOrder>
+        </OrderActions>
+      </Customer>
 
-            <OrderId>#0001</OrderId>
-          </OrderItem>
-        </Orders>
-      </SideBar>
+      <OrderSummary>Order Summary</OrderSummary>
 
-      <Order />
+      <OrderItems items={items} />
+      <Total>
+        <div>Total: </div>
+        <div>£10.00</div>
+      </Total>
+      <Actions>
+        <Button secondary width="35%">
+          Cancel Order
+        </Button>
+        <Button width="55%">Ready For Pickup</Button>
+      </Actions>
     </OrderWrapper>
   );
 };
 
-export default OrderView;
+export default Order;
 
 const OrderWrapper = styled.div`
   display: flex;
-  justify-content: center;
-  padding-bottom: 50px;
-  width: 100%;
-  margin-top: 61px;
+  flex-direction: column;
+  border-radius: 4px;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
+  padding: 20px 35px;
+  width: 580px;
+  background: var(--white);
 `;
 
-const Tabs = styled.div`
+const Actions = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  margin-bottom: 30px;
+  margin-top: 50px;
 `;
 
-interface TabProps {
-  selected?: boolean;
-}
-const Tab = styled.div`
+const OrderInfo = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex: 1;
-  padding: 20px 10px;
-  color: var(--osloGrey);
-  border-bottom: 1px solid var(--gallery);
-
-  ${(props: TabProps) =>
-    props.selected &&
-    css`
-      border-bottom: 3px solid ${Colours.oxfordBlue};
-      background: var(--white);
-      color: var(--oxfordBlue);
-      font-weight: bold;
-    `}
-`;
-
-const Orders = styled.div`
-  padding: 0 20px;
-`;
-
-const OrderItem = styled.div`
-  display: flex;
   justify-content: space-between;
-  background: var(--white);
-  border-radius: 3px;
+`;
+
+const OrderId = styled.h1`
+  font-size: 26px;
   color: var(--oxfordBlue);
-  padding: 0;
-  margin-bottom: 15px;
-  font-weight: 300;
-  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); */
-  border: 1px solid ${Colours.grey};
-  padding: 20px 15px;
+  span {
+    font-size: 18px;
+    color: var(--osloGrey);
+    font-weight: bold;
+    margin-right: 3px;
+  }
 `;
 
-const CustomerInfo = styled.div`
+const TimeBadge = styled.div`
+  align-self: flex-start;
+  font-size: 12px;
+  padding: 5px 10px;
+  background: green;
+  border-radius: 4px;
+  color: white;
+  margin-bottom: 20px;
+`;
+
+const OrderDueTime = styled.div`
   display: flex;
-`;
-
-const Avatar = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  background: grey;
-  margin-right: 15px;
-`;
-
-const CustomerName = styled.h4`
-  margin-bottom: 2px;
-`;
-
-const OrderId = styled.p``;
-
-const OrderTime = styled.h3`
-  font-size: 16px;
-  color: ${Colours.osloGrey};
+  flex-direction: column;
+  align-items: center;
+  color: var(--osloGrey);
+  font-size: 20px;
+  margin-bottom: 5px;
 
   span {
     font-weight: bold;
-    font-size: 20px;
-    color: ${Colours.oxfordBlue};
+    font-size: 30px;
+    color: var(--oxfordBlue);
   }
+`;
+
+const Customer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+const CustomerInfo = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+`;
+
+const CustomerName = styled.h1`
+  font-size: 20px;
+  margin-bottom: 5px;
+`;
+
+const Avatar = styled.img`
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background: grey;
+  margin-right: 10px;
+`;
+
+const OrderActions = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  ${Button} {
+    align-self: flex-start;
+    width: 155px;
+  }
+`;
+
+const ContactCustomer = styled(Button)`
+  margin-bottom: 15px;
+`;
+
+const EditOrder = styled(Button)``;
+
+const Total = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 20px 0;
+  border-top: 1px solid var(--gallery);
+`;
+
+const OrderSummary = styled.h3`
+  margin-bottom: 15px;
 `;
