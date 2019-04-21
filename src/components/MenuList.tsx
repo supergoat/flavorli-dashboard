@@ -29,7 +29,7 @@ const MenuList = ({menuList = []}: Props) => {
             navigate(`/menu-builder`);
           } else {
             setMenuId(menu.id);
-            navigate(`/menu-builder/${menu.name}`);
+            navigate(`/menu-builder/${menu.id}`);
           }
         };
 

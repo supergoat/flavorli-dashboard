@@ -22,7 +22,29 @@ const Menu = ({menu, category}: Props) => {
         Fully stacked vegan crispy fried jackfruit burgers, served with our
         signature patty in a toasted brioche bun
       </CategoryDescription>
+
+      <Options>
+        <Option>
+          <div>
+            <h4>Hide Category</h4>
+            <p>Customers will not be able to view this category</p>
+          </div>
+
+          <Button secondary>Hide Category</Button>
+        </Option>
+
+        <Option>
+          <div>
+            <h4>Delete Category</h4>
+            <p>Deleting this category, is an ireverisble action.</p>
+          </div>
+
+          <DeleteCategory secondary>Delete Category</DeleteCategory>
+        </Option>
+      </Options>
+
       <AddMenuButton>Add Menu Item</AddMenuButton>
+
       <MenuItems>
         <MenuItem>
           <Image />
@@ -55,26 +77,6 @@ const Menu = ({menu, category}: Props) => {
         </MenuItem>
         <ViewAll>View All</ViewAll>
       </MenuItems>
-
-      <Options>
-        <Option>
-          <div>
-            <h4>Hide Category</h4>
-            <p>Customers will not be able to view this category</p>
-          </div>
-
-          <Button secondary>Hide Category</Button>
-        </Option>
-
-        <Option>
-          <div>
-            <h4>Delete Category</h4>
-            <p>Deleting this category, is an ireverisble action.</p>
-          </div>
-
-          <DeleteCategory secondary>Delete Category</DeleteCategory>
-        </Option>
-      </Options>
     </MenuWrapper>
   );
 };
@@ -92,13 +94,12 @@ const MenuName = styled.h4`
 `;
 
 const CategoryName = styled.h1`
-  font-size: 28px;
+  font-size: 40px;
   margin-bottom: 5px;
 `;
 
 const CategoryDescription = styled.p`
   margin: 5px 0 40px;
-  color: ${Colours.osloGrey};
   font-size: 18px;
 `;
 
@@ -130,8 +131,8 @@ const ViewAll = styled.div`
 `;
 
 const Image = styled.img`
-  height: 100px;
-  width: 100px;
+  height: 130px;
+  width: 130px;
   flex-shrink: 0;
   background: ${Colours.gallery};
   margin-right: 15px;
@@ -156,7 +157,7 @@ const Description = styled.p`
 `;
 
 const Options = styled.div`
-  margin-top: 50px;
+  margin-bottom: 30px;
 
   h4 {
     margin-bottom: 5px;

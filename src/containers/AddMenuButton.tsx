@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import Button from '../ui/Button';
 import AddMenu from '../components/AddMenu';
-import {RESTAURANT_MENUS_DATA} from './MenuList';
+import {RESTAURANT_MENUS_DATA} from '../views/MenuBuilder';
 
 // TODO: Use correct restaurant id
 

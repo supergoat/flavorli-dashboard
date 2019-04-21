@@ -15,7 +15,7 @@ import AddMenuButton from '../containers/AddMenuButton';
 interface Props extends RouteComponentProps {}
 const MenuBuilder = (_: Props) => {
   return (
-    <Query query={GET_RESTAURANT_MENUS}>
+    <Query query={GET_RESTAURANT}>
       {({loading, error, data: {getRestaurant}}: any) => {
         if (error) return `Error! ${error.message}`;
 
@@ -38,7 +38,7 @@ const MenuBuilder = (_: Props) => {
             </SideBar>
 
             <RouterWrapper>
-              <Menu path="/:menu" />
+              <Menu path="/:menuId" />
               <Category path="/:menu/:category" />
             </RouterWrapper>
           </MenuBuilderWrapper>
@@ -70,7 +70,7 @@ export const RESTAURANT_MENUS_DATA = gql`
   ${MENU_CATEGORIES_DATA}
 `;
 
-const GET_RESTAURANT_MENUS = gql`
+const GET_RESTAURANT = gql`
   query getRestaurant {
     getRestaurant {
       id

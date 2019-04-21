@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
-import {MENU_CATEGORIES_DATA} from './MenuList';
+import {MENU_CATEGORIES_DATA} from '../views/MenuBuilder';
 
 const AddCategoryButton = ({menuId}: {menuId: string}) => {
   const [addingCategory, setAddingCategory] = useState(false);

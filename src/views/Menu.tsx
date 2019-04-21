@@ -1,32 +1,80 @@
 import React from 'react';
+import gql from 'graphql-tag';
+import {Query} from 'react-apollo';
 import {RouteComponentProps} from '@reach/router';
 import styled from 'styled-components/macro';
 import Button from '../ui/Button';
 import Colours from '../Colours';
+import DeleteMenuButton from '../containers/DeleteMenuButton';
 
 interface Props extends RouteComponentProps {
-  menu?: string;
+  menuId?: string;
 }
-const Menu = ({menu}: Props) => {
+const Menu = ({menuId}: Props) => {
   return (
-    <MenuWrapper>
-      <MenuName>{menu}</MenuName>
-      <MenuDescription>{menu}</MenuDescription>
+    <Query query={GET_RESTAURANT_MENU} variables={{menuId: menuId}}>
+      {({loading, error, data: {getRestaurant}}: any) => {
+        if (loading) return 'Loading...';
 
-      <ServiceDays>Monday to Friday</ServiceDays>
-      <ServiceHours>9am to 10pm</ServiceHours>
-    </MenuWrapper>
+        if (error) return `Error! ${error.message}`;
+
+        return (
+          <MenuWrapper>
+            <MenuName>{getRestaurant.menus[0].name}</MenuName>
+            <MenuDescription>Description</MenuDescription>
+
+            <ServiceDays>Monday to Friday</ServiceDays>
+            <ServiceHours>9am to 10pm</ServiceHours>
+
+            <Options>
+              <Option>
+                <div>
+                  <h4>Hide Menu</h4>
+                  <p>Customers will not be able to view this menu</p>
+                </div>
+
+                <Button secondary>Hide Menu</Button>
+              </Option>
+
+              <Option>
+                <div>
+                  <h4>Delete Menu</h4>
+                  <p>Deleting this menu, is an ireverisble action.</p>
+                </div>
+
+                <DeleteMenuButton
+                  menuId={getRestaurant.menus[0].id}
+                  restaurantId={getRestaurant.id}
+                />
+              </Option>
+            </Options>
+          </MenuWrapper>
+        );
+      }}
+    </Query>
   );
 };
 
 export default Menu;
 
+const GET_RESTAURANT_MENU = gql`
+  query getRestaurant($menuId: ID!) {
+    getRestaurant {
+      id
+      name
+      menus(where: {id: $menuId}) {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const MenuWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 580px;
-  flex: 1;
-  padding: 20px 35px;
+  width: 580px;
+  padding: 20px 0;
 `;
 
 const MenuName = styled.h1`
@@ -40,3 +88,28 @@ const MenuDescription = styled.p`
 
 const ServiceDays = styled.h3``;
 const ServiceHours = styled.h3``;
+
+const Options = styled.div`
+  margin-top: 50px;
+
+  h4 {
+    margin-bottom: 5px;
+  }
+
+  p {
+    color: ${Colours.osloGrey};
+  }
+`;
+
+const Option = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+
+  ${Button} {
+    width: 130px;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+`;

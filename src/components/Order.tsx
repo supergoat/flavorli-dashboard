@@ -121,8 +121,8 @@ const OrderWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  padding: 20px 35px;
+  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
+  padding: 20px 0;
   width: 580px;
   background: var(--white);
 `;
