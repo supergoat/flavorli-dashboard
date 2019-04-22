@@ -16,6 +16,7 @@ const Button = styled.button`
   color: ${(props: Props) =>
     props.secondary ? 'var(--oxfordBlue)' : 'var(--white)'};
   width: ${(props: Props) => props.width || 'auto'};
+  align-self: flex-start;
 `;
 
 export default Button;

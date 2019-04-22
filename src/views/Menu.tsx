@@ -82,7 +82,6 @@ const MenuName = styled.h1`
 `;
 
 const MenuDescription = styled.p`
-  /* font-size: 40px; */
   margin: 10px 0;
 `;
 

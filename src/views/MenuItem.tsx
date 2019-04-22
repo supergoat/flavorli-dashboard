@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import {RouteComponentProps} from '@reach/router';
 import Colours from '../Colours';
-import Button from '../ui/Button';
+import SelectOption from '../components/SelectOption';
 
 interface Props extends RouteComponentProps {
   menuId?: string;
@@ -33,7 +33,25 @@ const MenuItem = ({menuId, categoryId, menuItemId}: Props) => {
         })}
       </DietaryItems>
 
-      <AddOptionButton width="200px">Add Option</AddOptionButton>
+      <Options>
+        <h2>Options</h2>
+        <SelectOption onAdd={() => {}} />
+        <Option>
+          <div>
+            <OptionName>Add Wingz</OptionName>
+            <p>Choose 0 to 3 items</p>
+          </div>
+          <p>X</p>
+        </Option>
+
+        <Option>
+          <div>
+            <OptionName>Add Fries</OptionName>
+            <p>Choose 0 to 3 items</p>
+          </div>
+          <p>X</p>
+        </Option>
+      </Options>
     </MenuItemWrapper>
   );
 };
@@ -92,7 +110,7 @@ const MenuItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 15px;
+  padding: 20px;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   margin: 20px 0;
@@ -159,6 +177,27 @@ const Icon = styled.img`
   margin-right: 5px;
 `;
 
-const AddOptionButton = styled(Button)`
-  align-self: flex-start;
+const Options = styled.div`
+  h2 {
+    margin-bottom: 10px;
+  }
+`;
+
+const Option = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 15px;
+  color: ${Colours.osloGrey};
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  margin: 15px 0;
+`;
+
+const OptionName = styled.p`
+  color: ${Colours.oxfordBlue};
+  font-weight: bold;
 `;

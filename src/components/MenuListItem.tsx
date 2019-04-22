@@ -43,15 +43,3 @@ const MenuName = styled.p`
 const MenuServiceHours = styled.div`
   font-size: 15px;
 `;
-
-const CategoryItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  background: ${Colours.white};
-  padding: 20px 5px;
-  cursor: pointer;
-`;
-
-const Categories = styled.div`
-  margin: 0 10px;
-`;
