@@ -1,203 +1,43 @@
 import React from 'react';
-import styled from 'styled-components/macro';
 import {RouteComponentProps} from '@reach/router';
-import Colours from '../Colours';
-import SelectOption from '../components/SelectOption';
+import gql from 'graphql-tag';
+import {Query} from 'react-apollo';
+import MenuItem from '../components/MenuItem';
 
 interface Props extends RouteComponentProps {
-  menuId?: string;
-  categoryId?: string;
   menuItemId?: string;
 }
-
-const MenuItem = ({menuId, categoryId, menuItemId}: Props) => {
+const MenuItemView = ({menuItemId}: Props) => {
   return (
-    <MenuItemWrapper>
-      <Image />
+    <Query query={GET_MENU_ITEM} variables={{menuItemId}}>
+      {({loading, error, data}: any) => {
+        console.log(data);
+        const {getMenuItem} = data;
+        if (loading) return 'Loading...';
+        if (error) return `Error! ${error.message}`;
 
-      <Name>The Big Jack</Name>
-
-      <Description>
-        Our top secret burger sauce, american cheeze, gherkins, red onion,
-        iceburg lettuce, tomato (GFO)
-      </Description>
-      <Price>£ 9.00</Price>
-      <DietaryItems>
-        {Object.values(dietaryItems).map((dietaryItem: any) => {
-          return (
-            <DietaryItem>
-              <Icon src={require(`../assets/icons/${dietaryItem.icon}`)} />
-              <p>{dietaryItem.name}</p>
-            </DietaryItem>
-          );
-        })}
-      </DietaryItems>
-
-      <Options>
-        <h2>Options</h2>
-        <SelectOption onAdd={() => {}} />
-        <Option>
-          <div>
-            <OptionName>Add Wingz</OptionName>
-            <p>Choose 0 to 3 items</p>
-          </div>
-          <p>X</p>
-        </Option>
-
-        <Option>
-          <div>
-            <OptionName>Add Fries</OptionName>
-            <p>Choose 0 to 3 items</p>
-          </div>
-          <p>X</p>
-        </Option>
-      </Options>
-    </MenuItemWrapper>
+        return <MenuItem menuItem={getMenuItem} />;
+      }}
+    </Query>
   );
 };
 
-export default MenuItem;
+export default MenuItemView;
 
-const dietaryItems: any = {
-  vegan: {
-    name: 'Vegan',
-    icon: 'plant.svg',
-  },
-  vegeterian: {
-    name: 'Vegeterian',
-    icon: 'leaf.svg',
-  },
-  halal: {
-    id: 'halal',
-    name: 'Halal',
-    icon: 'halal.svg',
-  },
-  gluten_free: {
-    name: 'Gluten Free',
-    icon: 'gluten-free.svg',
-  },
-  tree_nuts: {
-    name: 'Tree Nuts',
-    icon: 'hazelnut.svg',
-  },
-  egg: {
-    name: 'Egg',
-    icon: 'egg.svg',
-  },
-  peanuts: {
-    name: 'Peanuts',
-    icon: 'peanut.svg',
-  },
-  fish: {
-    name: 'Fish',
-    icon: 'fish.svg',
-  },
-  soy: {
-    name: 'Soy',
-    icon: 'soy.svg',
-  },
-  crustacean_shellfish: {
-    name: 'Crustacean Shellfish',
-    icon: 'crustacean_shellfish.svg',
-  },
-  dairy: {
-    name: 'Dairy Free',
-    icon: 'dairy.svg',
-  },
-};
-
-const MenuItemWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 20px;
-  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-  margin: 20px 0;
-  width: 580px;
-  background: ${Colours.white};
-`;
-
-const Image = styled.img`
-  height: 250px;
-  width: 100%;
-  flex-shrink: 0;
-  background: ${Colours.gallery};
-  margin-right: 15px;
-  object-fit: cover;
-`;
-
-const Name = styled.h1`
-  font-size: 40px;
-  margin-top: 10px;
-  padding: 10px 0;
-`;
-
-const Price = styled.h3`
-  font-size: 25px;
-  padding: 5px 0;
-  margin-bottom: 20px;
-`;
-
-const Description = styled.p`
-  padding: 10px 0;
-  line-height: 1.5em;
-  font-size: 18px;
-`;
-
-const DietaryItems = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const DietaryItem = styled.div`
-  display: flex;
-  align-items: center;
-  width: 32%;
-  margin-right: 2%;
-  margin-bottom: 20px;
-  border: 1px solid ${Colours.grey};
-
-  padding: 10px;
-  height: 50px;
-  border-radius: 3px;
-  font-size: 16px;
-  p {
-    margin-left: 5px;
+const GET_MENU_ITEM = gql`
+  query getMenuItem($menuItemId: ID!) {
+    getMenuItem(menuItemId: $menuItemId) {
+      id
+      name
+      description
+      price
+      dietary
+      options {
+        id
+        min
+        max
+        name
+      }
+    }
   }
-
-  &:nth-of-type(3n) {
-    margin-right: 0;
-  }
-`;
-
-const Icon = styled.img`
-  width: 25px;
-  height: 25px;
-  margin-right: 5px;
-`;
-
-const Options = styled.div`
-  h2 {
-    margin-bottom: 10px;
-  }
-`;
-
-const Option = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 10px 15px;
-  color: ${Colours.osloGrey};
-  cursor: pointer;
-  user-select: none;
-  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-  margin: 15px 0;
-`;
-
-const OptionName = styled.p`
-  color: ${Colours.oxfordBlue};
-  font-weight: bold;
 `;
