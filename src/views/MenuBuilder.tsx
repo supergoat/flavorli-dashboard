@@ -39,9 +39,9 @@ const MenuBuilder = (_: Props) => {
             </SideBar>
 
             <RouterWrapper>
-              <Menu path="/:menuId" />
-              <Category path="/:menuId/:categoryId" />
-              <MenuItem path="/:menuId/:categoryId/:menuItemId" />
+              <Menu path="/menu/:menuId" />
+              <Category path="/menu/:menuId/category/:categoryId" />
+              <MenuItem path="/menu/:menuId/category/:categoryId/menuItem/:menuItemId" />
             </RouterWrapper>
           </MenuBuilderWrapper>
         );

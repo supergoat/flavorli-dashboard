@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import {RouteComponentProps} from '@reach/router';
 import Colours from '../Colours';
+import Button from '../ui/Button';
 
 interface Props extends RouteComponentProps {
   menuId?: string;
@@ -13,25 +14,26 @@ const MenuItem = ({menuId, categoryId, menuItemId}: Props) => {
   return (
     <MenuItemWrapper>
       <Image />
-      <div>
-        <Name>The Big Jack</Name>
 
-        <Description>
-          Our top secret burger sauce, american cheeze, gherkins, red onion,
-          iceburg lettuce, tomato (GFO)
-        </Description>
-        <Price>£ 9.00</Price>
-        <DietaryItems>
-          {Object.values(dietaryItems).map((dietaryItem: any) => {
-            return (
-              <DietaryItem>
-                <Icon src={require(`../assets/icons/${dietaryItem.icon}`)} />
-                <p>{dietaryItem.name}</p>
-              </DietaryItem>
-            );
-          })}
-        </DietaryItems>
-      </div>
+      <Name>The Big Jack</Name>
+
+      <Description>
+        Our top secret burger sauce, american cheeze, gherkins, red onion,
+        iceburg lettuce, tomato (GFO)
+      </Description>
+      <Price>£ 9.00</Price>
+      <DietaryItems>
+        {Object.values(dietaryItems).map((dietaryItem: any) => {
+          return (
+            <DietaryItem>
+              <Icon src={require(`../assets/icons/${dietaryItem.icon}`)} />
+              <p>{dietaryItem.name}</p>
+            </DietaryItem>
+          );
+        })}
+      </DietaryItems>
+
+      <AddOptionButton width="200px">Add Option</AddOptionButton>
     </MenuItemWrapper>
   );
 };
@@ -155,4 +157,8 @@ const Icon = styled.img`
   width: 25px;
   height: 25px;
   margin-right: 5px;
+`;
+
+const AddOptionButton = styled(Button)`
+  align-self: flex-start;
 `;

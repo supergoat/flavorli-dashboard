@@ -21,7 +21,9 @@ const MenuCategories = ({menuId, menuCategories}: Props) => {
               <CategoryItem
                 key={category.id}
                 onClick={() => {
-                  navigate(`/menu-builder/${menuId}/${category.id}`);
+                  navigate(
+                    `/menu-builder/menu/${menuId}/category/${category.id}`,
+                  );
                 }}
               >
                 {category.name}

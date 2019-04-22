@@ -42,7 +42,15 @@ const Menu = ({menuId, categoryId}: Props) => {
             <AddMenuButton>Add Menu Item</AddMenuButton>
 
             <MenuItems>
-              <MenuItem>
+              <MenuItem
+                onClick={() =>
+                  navigate(
+                    `/menu-builder/menu/${getRestaurant.menus[0].id}/category/${
+                      getRestaurant.menus[0].categories[0].id
+                    }/menuItem/1`,
+                  )
+                }
+              >
                 <Image />
                 <div>
                   <Header>

@@ -39,7 +39,7 @@ const DeleteCategoryButton = ({
       },
     });
 
-    navigate(`/menu-builder/${menuId}`, {replace: true});
+    navigate(`/menu-builder/menu/${menuId}`, {replace: true});
   };
 
   return (

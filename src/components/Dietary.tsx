@@ -8,7 +8,6 @@ const Dietary = ({dietary = []}: Props) => {
   return (
     <DietaryWrapper>
       {dietary.map(dietaryItem => {
-        console.log(dietaryItem, dietaryItems[dietaryItem]);
         const item = dietaryItems[dietaryItem];
         return (
           <Fragment key={dietaryItem}>
