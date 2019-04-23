@@ -5,7 +5,13 @@ import styled from 'styled-components/macro';
 
 import Colours from '../Colours';
 
-const Options = ({filter}: {filter: string}) => {
+const Options = ({
+  filter,
+  onSelect,
+}: {
+  filter: string;
+  onSelect: (option: any) => void;
+}) => {
   return (
     <Query query={GET_OPTIONS}>
       {({loading, error, data: {getOptions}}: any) => {
@@ -19,8 +25,18 @@ const Options = ({filter}: {filter: string}) => {
 
         return (
           <OptionsWrapper>
+            {options.length === 0 && (
+              <OptionItem>No matching options</OptionItem>
+            )}
             {options.map((option: any) => {
-              return <OptionItem>{option.name}</OptionItem>;
+              return (
+                <OptionItem
+                  key={option.id}
+                  onMouseDown={() => onSelect(option)}
+                >
+                  {option.name}
+                </OptionItem>
+              );
             })}
           </OptionsWrapper>
         );

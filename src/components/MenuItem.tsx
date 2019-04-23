@@ -10,8 +10,9 @@ interface Props extends RouteComponentProps {
 }
 const MenuItem = ({menuItem}: Props) => {
   const [name, setName] = useState(menuItem.name);
-  const [description, setDescription] = useState(menuItem.description);
+  const [description, setDescription] = useState(menuItem.description || '');
   const [dietarySelected, setDietarySelected] = useState(menuItem.dietary);
+  const [selectedOptions, setSelectedOptions] = useState(menuItem.options);
 
   const [rows, setRows] = useState(1);
 
@@ -59,18 +60,30 @@ const MenuItem = ({menuItem}: Props) => {
         }
       />
 
-      <SelectOption onAdd={() => {}} />
+      <SelectOption
+        onAdd={(option: any) => {
+          setSelectedOptions([...selectedOptions, option]);
+        }}
+      />
       <Options>
-        {menuItem.options.map((option: any) => {
+        {selectedOptions.map((option: any) => {
           return (
-            <Option>
+            <Option key={option.id}>
               <div>
                 <OptionName>{option.name}</OptionName>
                 <p>
                   Choose {option.min} to {option.max} items
                 </p>
               </div>
-              <p>X</p>
+              <p
+                onClick={() =>
+                  setSelectedOptions(
+                    selectedOptions.filter((o: any) => o.id !== option.id),
+                  )
+                }
+              >
+                X
+              </p>
             </Option>
           );
         })}
@@ -85,7 +98,7 @@ const MenuItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 20px;
+  padding: 20px 35px;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   margin: 20px 0;

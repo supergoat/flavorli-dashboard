@@ -10,9 +10,7 @@ interface Props extends RouteComponentProps {
 const MenuItemView = ({menuItemId}: Props) => {
   return (
     <Query query={GET_MENU_ITEM} variables={{menuItemId}}>
-      {({loading, error, data}: any) => {
-        console.log(data);
-        const {getMenuItem} = data;
+      {({loading, error, data: {getMenuItem}}: any) => {
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 

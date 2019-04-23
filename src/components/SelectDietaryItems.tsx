@@ -15,6 +15,7 @@ const SelectDietaryItems = ({
         const dietaryItem = dietaryItems[dietaryItemKey];
         return (
           <DietaryItem
+            key={dietaryItemKey}
             selected={selectedItems.includes(dietaryItemKey)}
             onClick={() => onSelect(dietaryItemKey)}
           >
