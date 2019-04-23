@@ -33,6 +33,7 @@ const SelectDietaryItemsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 20px;
+  padding: 10px;
 `;
 
 interface DietaryItemProps {

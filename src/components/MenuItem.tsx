@@ -11,6 +11,7 @@ interface Props extends RouteComponentProps {
 }
 const MenuItem = ({menuItem, options}: Props) => {
   const [name, setName] = useState(menuItem.name);
+  const [price, setPrice] = useState(menuItem.price);
   const [description, setDescription] = useState(menuItem.description || '');
   const [dietarySelected, setDietarySelected] = useState(menuItem.dietary);
   const [selectedOptions, setSelectedOptions] = useState(menuItem.options);
@@ -43,7 +44,16 @@ const MenuItem = ({menuItem, options}: Props) => {
         placeholder="Name"
       />
 
-      <Price>£ {menuItem.price.toFixed(2)}</Price>
+      <Price>
+        <Currency>£</Currency>
+        <input
+          min="0"
+          type="number"
+          value={price}
+          step="0.01"
+          onChange={(e: any) => setPrice(e.target.value)}
+        />
+      </Price>
 
       <Info>
         <Image src={menuItem.image} alt={name} />
@@ -128,29 +138,60 @@ const Image = styled.img`
   flex-shrink: 0;
   background: ${Colours.gallery};
   object-fit: cover;
-  margin-right: 20px;
+  margin: 0 10px;
 `;
 
 const NameInput = styled.input`
   font-size: 32px;
-  border: none;
   outline: none;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+
+  &:focus {
+    border: 1px solid ${Colours.gallery};
+  }
 `;
 
-const Price = styled.h3`
-  font-size: 24px;
-  padding: 5px 0;
+const Price = styled.div`
+  position: relative;
+  display: flex;
   margin-bottom: 20px;
+
+  input {
+    align-self: flex-start;
+    font-size: 24px;
+    outline: none;
+    padding: 10px 10px 10px 30px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    width: 210px;
+    &:focus {
+      border: 1px solid ${Colours.gallery};
+    }
+  }
+`;
+
+const Currency = styled.div`
+  position: absolute;
+  left: 10px;
+  top: 11px;
+  font-size: 24px;
 `;
 
 const DescriptionTextArea = styled.textarea`
-  padding: 10px 0px;
+  padding: 10px;
   font-size: 20px;
-  border: none;
   max-height: 200px;
   outline: none;
   resize: none;
   width: 100%;
+  border: 1px solid transparent;
+  border-radius: 3px;
+
+  &:focus {
+    border: 1px solid ${Colours.gallery};
+  }
 `;
 
 const Options = styled.div`
