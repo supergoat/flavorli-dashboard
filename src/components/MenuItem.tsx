@@ -37,20 +37,25 @@ const MenuItem = ({menuItem, options}: Props) => {
 
   return (
     <MenuItemWrapper>
-      <Image src={menuItem.image} alt={name} />
-
       <NameInput
         value={name}
         onChange={e => setName(e.target.value)}
         placeholder="Name"
       />
-      <DescriptionTextArea
-        rows={rows}
-        onChange={handleDescriptionChange}
-        value={description}
-        placeholder="Description"
-      />
-      <Price>£{menuItem.price.toFixed(2)}</Price>
+
+      <Price>£ {menuItem.price.toFixed(2)}</Price>
+
+      <Info>
+        <Image src={menuItem.image} alt={name} />
+
+        <DescriptionTextArea
+          rows={rows}
+          onChange={handleDescriptionChange}
+          value={description}
+          placeholder="Description"
+        />
+      </Info>
+
       <SelectDietaryItems
         selectedItems={dietarySelected}
         onSelect={item =>
@@ -105,44 +110,47 @@ const MenuItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* padding: 20px 35px; */
-  /* box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3); */
   border-radius: 3px;
   margin: 20px 0;
   width: 580px;
   background: ${Colours.white};
 `;
 
+const Info = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+`;
+
 const Image = styled.img`
-  height: 250px;
-  width: 100%;
+  height: 200px;
+  width: 200px;
   flex-shrink: 0;
   background: ${Colours.gallery};
-  margin-right: 15px;
   object-fit: cover;
+  margin-right: 20px;
 `;
 
 const NameInput = styled.input`
-  font-size: 40px;
-  margin-top: 10px;
-  padding: 10px 0;
+  font-size: 32px;
   border: none;
   outline: none;
 `;
 
 const Price = styled.h3`
-  font-size: 25px;
+  font-size: 24px;
   padding: 5px 0;
   margin-bottom: 20px;
 `;
 
 const DescriptionTextArea = styled.textarea`
-  padding: 10px 2px;
-  line-height: 24px;
+  padding: 10px 0px;
   font-size: 20px;
   border: none;
+  max-height: 200px;
   outline: none;
   resize: none;
+  width: 100%;
 `;
 
 const Options = styled.div`

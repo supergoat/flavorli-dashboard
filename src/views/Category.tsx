@@ -42,43 +42,32 @@ const Menu = ({menuId, categoryId}: Props) => {
             <AddMenuButton>Add Menu Item</AddMenuButton>
 
             <MenuItems>
-              <MenuItem
-                onClick={() =>
-                  navigate(
-                    `/menu-builder/menu/${getRestaurant.menus[0].id}/category/${
-                      getRestaurant.menus[0].categories[0].id
-                    }/menuItem/1`,
-                  )
-                }
-              >
-                <Image />
-                <div>
-                  <Header>
-                    <Name>The Big Jack</Name>
-                    <Price>£9.00</Price>
-                  </Header>
-                  <Dietary dietary={['vegan', 'gluten_free']} />
-                  <Description>
-                    Our top secret burger sauce, american cheeze, gherkins, red
-                    onion, iceburg lettuce, tomato (GFO)
-                  </Description>
-                </div>
-              </MenuItem>
+              {getRestaurant.menus[0].categories[0].items.map((item: any) => {
+                return (
+                  <MenuItem
+                    onClick={() =>
+                      navigate(
+                        `/menu-builder/menu/${
+                          getRestaurant.menus[0].id
+                        }/category/${
+                          getRestaurant.menus[0].categories[0].id
+                        }/menuItem/${item.id}`,
+                      )
+                    }
+                  >
+                    <Image src={item.id} alt={item.name} />
+                    <Info>
+                      <Header>
+                        <Name>{item.name}</Name>
+                        <Price>£{item.price.toFixed(2)}</Price>
+                      </Header>
+                      <Dietary dietary={item.dietary} />
+                      <Description>{item.description}</Description>
+                    </Info>
+                  </MenuItem>
+                );
+              })}
 
-              <MenuItem>
-                <Image />
-                <div>
-                  <Header>
-                    <Name> The Father Jack</Name>
-                    <Price>£9.00</Price>
-                  </Header>
-                  <Dietary dietary={['vegan', 'gluten_free']} />
-                  <Description>
-                    Smokey bacun jam, bourbon BBQ 8sauce, smoked cheeze,
-                    iceburg, onion rings
-                  </Description>
-                </div>
-              </MenuItem>
               <ViewAll>View All</ViewAll>
             </MenuItems>
 
@@ -123,6 +112,13 @@ const GET_MENU_CATEGORY = gql`
         categories(where: {id: $categoryId}) {
           id
           name
+          items {
+            id
+            name
+            price
+            description
+            dietary
+          }
         }
       }
     }
@@ -168,6 +164,7 @@ const MenuItem = styled.div`
   border-radius: 3px;
   margin: 20px 0;
   background: ${Colours.white};
+  cursor: pointer;
 `;
 
 const ViewAll = styled.div`
@@ -187,6 +184,10 @@ const Image = styled.img`
   background: ${Colours.gallery};
   margin-right: 15px;
   object-fit: cover;
+`;
+
+const Info = styled.div`
+  width: 100%;
 `;
 
 const Header = styled.div`
