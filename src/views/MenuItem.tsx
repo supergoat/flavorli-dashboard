@@ -10,11 +10,11 @@ interface Props extends RouteComponentProps {
 const MenuItemView = ({menuItemId}: Props) => {
   return (
     <Query query={GET_MENU_ITEM} variables={{menuItemId}}>
-      {({loading, error, data: {getMenuItem}}: any) => {
+      {({loading, error, data: {getMenuItem, getOptions}}: any) => {
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 
-        return <MenuItem menuItem={getMenuItem} />;
+        return <MenuItem menuItem={getMenuItem} options={getOptions} />;
       }}
     </Query>
   );
@@ -34,6 +34,17 @@ const GET_MENU_ITEM = gql`
         id
         min
         max
+        name
+      }
+    }
+    getOptions(menuItemId: $menuItemId) {
+      id
+      name
+      min
+      max
+      items {
+        id
+        price
         name
       }
     }

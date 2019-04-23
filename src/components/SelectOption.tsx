@@ -2,18 +2,29 @@ import React, {useState} from 'react';
 import styled from 'styled-components/macro';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
-import Options from '../containers/Options';
+import AvailableOptions from './AvailableOptions';
+import Colours from '../Colours';
 
-const SelectOption = ({onAdd}: {onAdd: (value: any) => void}) => {
+const SelectOption = ({
+  onAdd,
+  availableOptions,
+}: {
+  onAdd: (value: any) => void;
+  availableOptions: any;
+}) => {
   const [value, setValue] = useState('');
-  const [selectedOption, setSelectedOption] = useState(undefined);
+  const [selectedOption, setSelectedOption] = useState<any>(undefined);
   const [showOptions, setShowOptions] = useState(false);
 
   return (
     <SelectOptionWrapper>
       <SearchOptions>
         <Input
-          onChange={e => setValue(e.target.value)}
+          onChange={e => {
+            if (selectedOption) return;
+            setValue(e.target.value);
+            setSelectedOption(undefined);
+          }}
           onFocus={() => setShowOptions(true)}
           onBlur={(e: any) => setShowOptions(false)}
           value={value}
@@ -29,9 +40,24 @@ const SelectOption = ({onAdd}: {onAdd: (value: any) => void}) => {
         >
           Add Option
         </Button>
+        {selectedOption && (
+          <SelectedOption>
+            {selectedOption.name}
+            <span
+              onClick={() => {
+                setValue('');
+                setSelectedOption(undefined);
+              }}
+            >
+              X
+            </span>
+          </SelectedOption>
+        )}
       </SearchOptions>
-      {showOptions && (
-        <Options
+
+      {showOptions && !selectedOption && (
+        <AvailableOptions
+          availableOptions={availableOptions}
           filter={value}
           onSelect={(option: any) => {
             setSelectedOption(option);
@@ -53,9 +79,29 @@ const SelectOptionWrapper = styled.div`
 const SearchOptions = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
+  width: 100%;
 
   ${Input} {
     width: 65%;
     font-weight: bold;
+  }
+`;
+
+const SelectedOption = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  height: 29px;
+  background: ${Colours.gallery};
+  padding: 0 10px;
+  border-radius: 3px;
+  font-weight: bold;
+  cursor: pointer;
+
+  span {
+    margin-left: 10px;
   }
 `;
