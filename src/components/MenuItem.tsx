@@ -38,14 +38,9 @@ const MenuItem = ({menuItem, options}: Props) => {
 
   return (
     <MenuItemWrapper>
-      <NameInput
-        value={name}
-        onChange={e => setName(e.target.value)}
-        placeholder="Name"
-      />
+      {/* <Image src={menuItem.image} alt={name} /> */}
 
       <Price>
-        <Currency>£</Currency>
         <input
           min="0"
           type="number"
@@ -55,16 +50,18 @@ const MenuItem = ({menuItem, options}: Props) => {
         />
       </Price>
 
-      <Info>
-        <Image src={menuItem.image} alt={name} />
+      <NameInput
+        value={name}
+        onChange={e => setName(e.target.value)}
+        placeholder="Name"
+      />
 
-        <DescriptionTextArea
-          rows={rows}
-          onChange={handleDescriptionChange}
-          value={description}
-          placeholder="Description"
-        />
-      </Info>
+      <DescriptionTextArea
+        rows={rows}
+        onChange={handleDescriptionChange}
+        value={description}
+        placeholder="Description"
+      />
 
       <SelectDietaryItems
         selectedItems={dietarySelected}
@@ -121,15 +118,11 @@ const MenuItemWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   border-radius: 3px;
-  margin: 20px 0;
+  margin: 5px 0;
   width: 580px;
   background: ${Colours.white};
-`;
-
-const Info = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
+  padding: 10px 20px;
+  box-shadow: 0 0 2px rgb(0, 0, 0, 0.3);
 `;
 
 const Image = styled.img`
@@ -138,60 +131,43 @@ const Image = styled.img`
   flex-shrink: 0;
   background: ${Colours.gallery};
   object-fit: cover;
-  margin: 0 10px;
 `;
 
 const NameInput = styled.input`
-  font-size: 32px;
+  font-size: 28px;
+  width: 70%;
   outline: none;
-  padding: 10px;
-  border: 1px solid transparent;
-  border-radius: 3px;
-
-  &:focus {
-    border: 1px solid ${Colours.gallery};
-  }
+  border: none;
+  padding: 10px 0;
 `;
 
 const Price = styled.div`
-  position: relative;
   display: flex;
-  margin-bottom: 20px;
+  align-items: center;
+  width: 25%;
+  font-size: 22px;
+  &:before {
+    content: '£';
+  }
 
   input {
-    align-self: flex-start;
-    font-size: 24px;
+    margin-left: 5px;
+    width: 100%;
+    font-size: 22px;
     outline: none;
-    padding: 10px 10px 10px 30px;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    width: 210px;
-    &:focus {
-      border: 1px solid ${Colours.gallery};
-    }
+    border: none;
   }
 `;
 
-const Currency = styled.div`
-  position: absolute;
-  left: 10px;
-  top: 11px;
-  font-size: 24px;
-`;
-
 const DescriptionTextArea = styled.textarea`
-  padding: 10px;
+  padding: 10px 0;
   font-size: 20px;
   max-height: 200px;
   outline: none;
   resize: none;
   width: 100%;
-  border: 1px solid transparent;
-  border-radius: 3px;
-
-  &:focus {
-    border: 1px solid ${Colours.gallery};
-  }
+  border: none;
+  margin-bottom: 20px;
 `;
 
 const Options = styled.div`

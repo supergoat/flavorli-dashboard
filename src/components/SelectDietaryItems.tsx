@@ -33,7 +33,6 @@ const SelectDietaryItemsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 20px;
-  padding: 10px;
 `;
 
 interface DietaryItemProps {
@@ -45,15 +44,15 @@ const DietaryItem = styled.div`
   width: 32%;
   margin-right: 2%;
   margin-bottom: 20px;
-  border: ${(props: DietaryItemProps) =>
-    props.selected
-      ? `1px solid ${Colours.oxfordBlue}`
-      : `1px solid ${Colours.grey}`};
   padding: 10px;
   height: 50px;
   border-radius: 3px;
   font-size: 16px;
   cursor: pointer;
+  border: ${(props: DietaryItemProps) =>
+    props.selected
+      ? `1px solid ${Colours.oxfordBlue}`
+      : `1px solid ${Colours.grey}`};
 
   p {
     margin-left: 5px;
