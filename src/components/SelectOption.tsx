@@ -19,7 +19,7 @@ const SelectOption = ({
   return (
     <SelectOptionWrapper>
       <SearchOptions>
-        <Input
+        <SearchOptionInput
           onChange={e => {
             if (selectedOption) return;
             setValue(e.target.value);
@@ -86,6 +86,11 @@ const SearchOptions = styled.div`
     width: 65%;
     font-weight: bold;
   }
+`;
+
+const SearchOptionInput = styled(Input)`
+  border: 1px solid ${Colours.oxfordBlue};
+  box-shadow: none;
 `;
 
 const SelectedOption = styled.div`

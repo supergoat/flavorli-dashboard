@@ -39,7 +39,17 @@ const Menu = ({menuId, categoryId}: Props) => {
               our signature patty in a toasted brioche bun
             </CategoryDescription>
 
-            <AddMenuButton>Add Menu Item</AddMenuButton>
+            <AddMenuButton
+              onClick={() =>
+                navigate(
+                  `/menu-builder/menu/${getRestaurant.menus[0].id}/category/${
+                    getRestaurant.menus[0].categories[0].id
+                  }/create-menu-item`,
+                )
+              }
+            >
+              Add Menu Item
+            </AddMenuButton>
 
             <MenuItems>
               {getRestaurant.menus[0].categories[0].items.map((item: any) => {

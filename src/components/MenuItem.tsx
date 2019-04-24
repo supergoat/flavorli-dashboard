@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import styled from 'styled-components/macro';
 import {RouteComponentProps} from '@reach/router';
 import Colours from '../Colours';
 import SelectOption from '../components/SelectOption';
+import Button from '../ui/Button';
 import SelectDietaryItems from './SelectDietaryItems';
 
 interface Props extends RouteComponentProps {
@@ -10,6 +11,8 @@ interface Props extends RouteComponentProps {
   options: any;
 }
 const MenuItem = ({menuItem, options}: Props) => {
+  const textAreaEl: any = useRef();
+
   const [name, setName] = useState(menuItem.name);
   const [price, setPrice] = useState(menuItem.price);
   const [description, setDescription] = useState(menuItem.description || '');
@@ -19,29 +22,55 @@ const MenuItem = ({menuItem, options}: Props) => {
 
   const [rows, setRows] = useState(1);
 
-  const handleDescriptionChange = (event: any) => {
+  const calculateTextAreaRows = () => {
     const textareaLineHeight = 24;
     const minRows = 1;
 
-    const previousRows = event.target.rows;
-    event.target.rows = minRows; // reset number of rows in textarea
+    const previousRows = textAreaEl.current.rows;
+    textAreaEl.current.rows = minRows; // reset number of rows in textarea
 
-    const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
+    const currentRows = ~~(
+      textAreaEl.current.scrollHeight / textareaLineHeight
+    );
 
     if (currentRows === previousRows) {
-      event.target.rows = currentRows;
+      textAreaEl.current.rows = currentRows;
     }
-
-    setDescription(event.target.value);
     setRows(currentRows);
   };
+
+  const handleDescriptionChange = (event: any) => {
+    calculateTextAreaRows();
+    setDescription(event.target.value);
+  };
+
+  useEffect(() => calculateTextAreaRows());
 
   return (
     <MenuItemWrapper>
       {/* <Image src={menuItem.image} alt={name} /> */}
 
+      <Heading htmlFor="name">Name</Heading>
+      <NameInput
+        id="name"
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+
+      <Heading htmlFor="description">Description</Heading>
+      <DescriptionTextArea
+        ref={textAreaEl}
+        id="description"
+        rows={rows}
+        onChange={handleDescriptionChange}
+        value={description}
+      />
+
+      <Heading htmlFor="price">Price</Heading>
+
       <Price>
         <input
+          id="price"
           min="0"
           type="number"
           value={price}
@@ -50,18 +79,7 @@ const MenuItem = ({menuItem, options}: Props) => {
         />
       </Price>
 
-      <NameInput
-        value={name}
-        onChange={e => setName(e.target.value)}
-        placeholder="Name"
-      />
-
-      <DescriptionTextArea
-        rows={rows}
-        onChange={handleDescriptionChange}
-        value={description}
-        placeholder="Description"
-      />
+      <Heading>Allergens</Heading>
 
       <SelectDietaryItems
         selectedItems={dietarySelected}
@@ -74,6 +92,7 @@ const MenuItem = ({menuItem, options}: Props) => {
         }
       />
 
+      <Heading>Options</Heading>
       <SelectOption
         availableOptions={availableOptions}
         onAdd={(option: any) => {
@@ -107,6 +126,13 @@ const MenuItem = ({menuItem, options}: Props) => {
           );
         })}
       </Options>
+
+      <Actions>
+        <Button secondary width="35%">
+          Cancel
+        </Button>
+        <Button width="55%">Save</Button>
+      </Actions>
     </MenuItemWrapper>
   );
 };
@@ -121,8 +147,13 @@ const MenuItemWrapper = styled.div`
   margin: 5px 0;
   width: 580px;
   background: ${Colours.white};
-  padding: 10px 20px;
+  padding: 30px 20px 20px;
   box-shadow: 0 0 2px rgb(0, 0, 0, 0.3);
+`;
+
+const Heading = styled.label`
+  margin-bottom: 10px;
+  color: ${Colours.osloGrey};
 `;
 
 const Image = styled.img`
@@ -134,11 +165,20 @@ const Image = styled.img`
 `;
 
 const NameInput = styled.input`
-  font-size: 28px;
-  width: 70%;
+  font-size: 25px;
+  width: 100%;
   outline: none;
+  margin-bottom: 20px;
   border: none;
-  padding: 10px 0;
+`;
+
+const DescriptionTextArea = styled.textarea`
+  font-size: 20px;
+  outline: none;
+  resize: none;
+  width: 100%;
+  margin-bottom: 20px;
+  border: none;
 `;
 
 const Price = styled.div`
@@ -146,6 +186,8 @@ const Price = styled.div`
   align-items: center;
   width: 25%;
   font-size: 22px;
+  margin-bottom: 20px;
+
   &:before {
     content: '£';
   }
@@ -159,19 +201,8 @@ const Price = styled.div`
   }
 `;
 
-const DescriptionTextArea = styled.textarea`
-  padding: 10px 0;
-  font-size: 20px;
-  max-height: 200px;
-  outline: none;
-  resize: none;
-  width: 100%;
-  border: none;
-  margin-bottom: 20px;
-`;
-
 const Options = styled.div`
-  margin-top: 10px;
+  margin: 10px 0;
 `;
 
 const Option = styled.div`
@@ -191,4 +222,10 @@ const Option = styled.div`
 const OptionName = styled.p`
   color: ${Colours.oxfordBlue};
   font-weight: bold;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
 `;
