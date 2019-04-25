@@ -1,5 +1,5 @@
 import React from 'react';
-import {RouteComponentProps} from '@reach/router';
+import {RouteComponentProps, navigate} from '@reach/router';
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import MenuItem from '../components/MenuItem';
@@ -11,7 +11,10 @@ interface Props extends RouteComponentProps {
 }
 const UpsertMenuItem = ({options, categoryId, menuItem}: Props) => {
   return (
-    <Mutation mutation={UPSERT_MENU_ITEM}>
+    <Mutation
+      mutation={UPSERT_MENU_ITEM}
+      onCompleted={() => navigate(`/menu-builder/category/${categoryId}`)}
+    >
       {(addMenuItem: any, {loading, error}: any) => {
         return (
           <MenuItem

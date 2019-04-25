@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import styled from 'styled-components/macro';
-import {RouteComponentProps} from '@reach/router';
+import {RouteComponentProps, navigate} from '@reach/router';
 import Colours from '../Colours';
 import SelectOption from '../components/SelectOption';
 import Button from '../ui/Button';
@@ -66,14 +66,14 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
     <MenuItemWrapper>
       {/* <Image src={menuItem.image} alt={name} /> */}
 
-      <Heading htmlFor="name">Name</Heading>
+      {/* <Heading htmlFor="name">Name</Heading> */}
       <NameInput
         id="name"
         value={name}
         onChange={e => setName(e.target.value)}
       />
 
-      <Heading htmlFor="description">Description</Heading>
+      {/* <Heading htmlFor="description">Description</Heading> */}
       <DescriptionTextArea
         ref={textAreaEl}
         id="description"
@@ -144,7 +144,11 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
       </Options>
 
       <Actions>
-        <Button secondary width="35%">
+        <Button
+          secondary
+          width="35%"
+          onClick={() => navigate(`/menu-builder/category/${categoryId}`)}
+        >
           Cancel
         </Button>
         <Button width="55%" onClick={handleSave}>
@@ -165,8 +169,8 @@ const MenuItemWrapper = styled.div`
   margin: 5px 0;
   width: 580px;
   background: ${Colours.white};
-  padding: 30px 20px 20px;
-  box-shadow: 0 0 2px rgb(0, 0, 0, 0.3);
+  padding: 10px 0;
+  /* box-shadow: 0 0 2px rgb(0, 0, 0, 0.3); */
 `;
 
 const Heading = styled.label`
@@ -183,10 +187,10 @@ const Image = styled.img`
 `;
 
 const NameInput = styled.input`
-  font-size: 25px;
+  font-size: 40px;
   width: 100%;
   outline: none;
-  margin-bottom: 20px;
+  padding: 10px 0;
   border: none;
 `;
 
@@ -195,6 +199,7 @@ const DescriptionTextArea = styled.textarea`
   outline: none;
   resize: none;
   width: 100%;
+  padding: 10px 0;
   margin-bottom: 20px;
   border: none;
 `;

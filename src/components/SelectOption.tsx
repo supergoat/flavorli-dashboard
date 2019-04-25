@@ -33,9 +33,11 @@ const SelectOption = ({
         <Button
           width="30%"
           onClick={() => {
-            onAdd(selectedOption);
-            setValue('');
-            setSelectedOption(undefined);
+            if (selectedOption) {
+              onAdd(selectedOption);
+              setValue('');
+              setSelectedOption(undefined);
+            }
           }}
         >
           Add Option

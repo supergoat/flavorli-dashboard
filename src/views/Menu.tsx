@@ -13,14 +13,14 @@ interface Props extends RouteComponentProps {
 const Menu = ({menuId}: Props) => {
   return (
     <Query query={GET_RESTAURANT_MENU} variables={{menuId: menuId}}>
-      {({loading, error, data: {getRestaurant}}: any) => {
+      {({loading, error, data: {getMenu, getRestaurant}}: any) => {
         if (loading) return 'Loading...';
 
         if (error) return `Error! ${error.message}`;
 
         return (
           <MenuWrapper>
-            <MenuName>{getRestaurant.menus[0].name}</MenuName>
+            <MenuName>{getMenu.name}</MenuName>
             <MenuDescription>Description</MenuDescription>
 
             <ServiceDays>Monday to Friday</ServiceDays>
@@ -43,7 +43,7 @@ const Menu = ({menuId}: Props) => {
                 </div>
 
                 <DeleteMenuButton
-                  menuId={getRestaurant.menus[0].id}
+                  menuId={getMenu.id}
                   restaurantId={getRestaurant.id}
                 />
               </Option>
@@ -58,14 +58,13 @@ const Menu = ({menuId}: Props) => {
 export default Menu;
 
 const GET_RESTAURANT_MENU = gql`
-  query getRestaurant($menuId: ID!) {
-    getRestaurant {
+  query getMenu($menuId: ID!) {
+    getMenu(menuId: $menuId) {
       id
       name
-      menus(where: {id: $menuId}) {
-        id
-        name
-      }
+    }
+    getRestaurant {
+      id
     }
   }
 `;

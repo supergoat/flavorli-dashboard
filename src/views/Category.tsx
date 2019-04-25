@@ -10,30 +10,27 @@ import DeleteCategoryButton from '../containers/DeleteCategoryButton';
 import Colours from '../Colours';
 
 interface Props extends RouteComponentProps {
-  menuId?: string;
   categoryId?: string;
 }
 
-const Menu = ({menuId, categoryId}: Props) => {
+const Category = ({categoryId}: Props) => {
   return (
-    <Query query={GET_MENU_CATEGORY} variables={{categoryId, menuId}}>
-      {({loading, error, data: {getRestaurant}}: any) => {
+    <Query query={GET_MENU_CATEGORY} variables={{categoryId}}>
+      {({loading, error, data: {getCategory}}: any) => {
         if (loading) return 'Loading...';
 
         if (error) return `Error! ${error.message}`;
 
         return (
-          <MenuWrapper>
+          <CategoryWrapper>
             <MenuName
               onClick={() =>
-                navigate(`/menu-builder/${getRestaurant.menus[0].id}`)
+                navigate(`/menu-builder/menu/${getCategory.menu.id}`)
               }
             >
-              {getRestaurant.menus[0].name}
+              {getCategory.menu.name}
             </MenuName>
-            <CategoryName>
-              {getRestaurant.menus[0].categories[0].name}
-            </CategoryName>
+            <CategoryName>{getCategory.name}</CategoryName>
             <CategoryDescription>
               Fully stacked vegan crispy fried jackfruit burgers, served with
               our signature patty in a toasted brioche bun
@@ -42,9 +39,7 @@ const Menu = ({menuId, categoryId}: Props) => {
             <AddMenuButton
               onClick={() =>
                 navigate(
-                  `/menu-builder/menu/${getRestaurant.menus[0].id}/category/${
-                    getRestaurant.menus[0].categories[0].id
-                  }/create-menu-item`,
+                  `/menu-builder/category/${getCategory.id}/create-menu-item`,
                 )
               }
             >
@@ -52,17 +47,12 @@ const Menu = ({menuId, categoryId}: Props) => {
             </AddMenuButton>
 
             <MenuItems>
-              {getRestaurant.menus[0].categories[0].items.map((item: any) => {
+              {getCategory.items.map((item: any) => {
                 return (
                   <MenuItem
+                    key={item.id}
                     onClick={() =>
-                      navigate(
-                        `/menu-builder/menu/${
-                          getRestaurant.menus[0].id
-                        }/category/${
-                          getRestaurant.menus[0].categories[0].id
-                        }/menuItem/${item.id}`,
-                      )
+                      navigate(`/menu-builder/menuItem/${item.id}`)
                     }
                   >
                     <Image src={item.id} alt={item.name} />
@@ -98,47 +88,45 @@ const Menu = ({menuId, categoryId}: Props) => {
                 </div>
 
                 <DeleteCategoryButton
-                  categoryId={getRestaurant.menus[0].categories[0].id}
-                  menuId={getRestaurant.menus[0].id}
+                  categoryId={getCategory.id}
+                  menuId={getCategory.menu.id}
                 />
               </Option>
             </Options>
-          </MenuWrapper>
+          </CategoryWrapper>
         );
       }}
     </Query>
   );
 };
 
-export default Menu;
+export default Category;
 
 const GET_MENU_CATEGORY = gql`
-  query getRestaurant($menuId: ID!, $categoryId: ID!) {
-    getRestaurant {
+  query getCategory($categoryId: ID!) {
+    getCategory(categoryId: $categoryId) {
       id
-      menus(where: {id: $menuId}) {
+      name
+      items {
         id
         name
-        categories(where: {id: $categoryId}) {
-          id
-          name
-          items {
-            id
-            name
-            price
-            description
-            dietary
-          }
-        }
+        price
+        description
+        dietary
+      }
+      menu {
+        name
+        id
       }
     }
   }
 `;
 
-const MenuWrapper = styled.div`
+const CategoryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 580px;
+  padding: 10px 0;
 `;
 
 const MenuName = styled.h4`

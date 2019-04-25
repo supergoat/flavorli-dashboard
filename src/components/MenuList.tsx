@@ -44,10 +44,7 @@ const MenuList = ({menuList = []}: Props) => {
             {isCurrentMenu && (
               <>
                 <AddCategoryButton menuId={menu.id} />
-                <MenuCategories
-                  menuCategories={menu.categories}
-                  menuId={menu.id}
-                />
+                <MenuCategories menuCategories={menu.categories} />
               </>
             )}
           </Fragment>

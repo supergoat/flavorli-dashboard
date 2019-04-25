@@ -41,9 +41,9 @@ const MenuBuilder = (_: Props) => {
 
             <RouterWrapper>
               <Menu path="/menu/:menuId" />
-              <Category path="/menu/:menuId/category/:categoryId" />
-              <MenuItem path="/menu/:menuId/category/:categoryId/menuItem/:menuItemId" />
-              <CreateMenuItem path="/menu/:menuId/category/:categoryId/create-menu-item" />
+              <Category path="/category/:categoryId" />
+              <MenuItem path="/menuItem/:menuItemId" />
+              <CreateMenuItem path="/category/:categoryId/create-menu-item" />
             </RouterWrapper>
           </MenuBuilderWrapper>
         );

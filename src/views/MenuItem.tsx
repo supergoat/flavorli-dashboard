@@ -1,22 +1,13 @@
 import React from 'react';
 import {RouteComponentProps} from '@reach/router';
 import gql from 'graphql-tag';
-import {Query, Mutation} from 'react-apollo';
+import {Query} from 'react-apollo';
 import UpsertMenuItem from '../containers/UpsertMenuItem';
-
-const menuItem = {
-  name: '',
-  description: '',
-  price: 0.0,
-  dietary: [],
-  options: [],
-};
 
 interface Props extends RouteComponentProps {
   menuItemId?: string;
-  categoryId?: string;
 }
-const MenuItemView = ({menuItemId, categoryId}: Props) => {
+const MenuItemView = ({menuItemId}: Props) => {
   return (
     <Query query={GET_MENU_ITEM} variables={{menuItemId}}>
       {({loading, error, data: {getMenuItem, getOptions}}: any) => {
@@ -25,7 +16,7 @@ const MenuItemView = ({menuItemId, categoryId}: Props) => {
 
         return (
           <UpsertMenuItem
-            categoryId={categoryId}
+            categoryId={getMenuItem.category.id}
             menuItem={getMenuItem}
             options={getOptions}
           />
@@ -45,6 +36,9 @@ const GET_MENU_ITEM = gql`
       description
       price
       dietary
+      category {
+        id
+      }
       options {
         id
         min
