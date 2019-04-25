@@ -1,20 +1,35 @@
 import React from 'react';
 import {RouteComponentProps} from '@reach/router';
 import gql from 'graphql-tag';
-import {Query} from 'react-apollo';
-import MenuItem from '../components/MenuItem';
+import {Query, Mutation} from 'react-apollo';
+import UpsertMenuItem from '../containers/UpsertMenuItem';
+
+const menuItem = {
+  name: '',
+  description: '',
+  price: 0.0,
+  dietary: [],
+  options: [],
+};
 
 interface Props extends RouteComponentProps {
   menuItemId?: string;
+  categoryId?: string;
 }
-const MenuItemView = ({menuItemId}: Props) => {
+const MenuItemView = ({menuItemId, categoryId}: Props) => {
   return (
     <Query query={GET_MENU_ITEM} variables={{menuItemId}}>
       {({loading, error, data: {getMenuItem, getOptions}}: any) => {
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 
-        return <MenuItem menuItem={getMenuItem} options={getOptions} />;
+        return (
+          <UpsertMenuItem
+            categoryId={categoryId}
+            menuItem={getMenuItem}
+            options={getOptions}
+          />
+        );
       }}
     </Query>
   );

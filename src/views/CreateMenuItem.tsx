@@ -2,7 +2,7 @@ import React from 'react';
 import {RouteComponentProps} from '@reach/router';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
-import MenuItem from '../components/MenuItem';
+import UpsertMenuItem from '../containers/UpsertMenuItem';
 
 const menuItem = {
   name: '',
@@ -11,15 +11,23 @@ const menuItem = {
   dietary: [],
   options: [],
 };
-interface Props extends RouteComponentProps {}
-const CreateMenuItemView = (_: Props) => {
+interface Props extends RouteComponentProps {
+  categoryId?: string;
+}
+const CreateMenuItemView = ({categoryId}: Props) => {
   return (
     <Query query={GET_OPTIONS}>
       {({loading, error, data: {getOptions}}: any) => {
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 
-        return <MenuItem menuItem={menuItem} options={getOptions} />;
+        return (
+          <UpsertMenuItem
+            categoryId={categoryId}
+            menuItem={menuItem}
+            options={getOptions}
+          />
+        );
       }}
     </Query>
   );

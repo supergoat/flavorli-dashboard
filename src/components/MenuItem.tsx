@@ -7,10 +7,12 @@ import Button from '../ui/Button';
 import SelectDietaryItems from './SelectDietaryItems';
 
 interface Props extends RouteComponentProps {
+  categoryId?: string;
   menuItem: any;
   options: any;
+  onSave: (arg: any) => void;
 }
-const MenuItem = ({menuItem, options}: Props) => {
+const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
   const textAreaEl: any = useRef();
 
   const [name, setName] = useState(menuItem.name);
@@ -45,6 +47,20 @@ const MenuItem = ({menuItem, options}: Props) => {
   };
 
   useEffect(() => calculateTextAreaRows());
+
+  const handleSave = () => {
+    onSave({
+      variables: {
+        id: menuItem.id,
+        categoryId,
+        name,
+        price: Number(price),
+        description,
+        dietary: dietarySelected,
+        options: selectedOptions.map((o: any) => o.id),
+      },
+    });
+  };
 
   return (
     <MenuItemWrapper>
@@ -131,7 +147,9 @@ const MenuItem = ({menuItem, options}: Props) => {
         <Button secondary width="35%">
           Cancel
         </Button>
-        <Button width="55%">Save</Button>
+        <Button width="55%" onClick={handleSave}>
+          Save
+        </Button>
       </Actions>
     </MenuItemWrapper>
   );
