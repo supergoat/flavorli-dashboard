@@ -102,24 +102,31 @@ const Category = ({categoryId}: Props) => {
 
 export default Category;
 
+export const CATEGORY_ITEMS = gql`
+  fragment CategoryItems on MenuCategory {
+    items {
+      id
+      name
+      price
+      description
+      dietary
+    }
+  }
+`;
+
 const GET_MENU_CATEGORY = gql`
   query getCategory($categoryId: ID!) {
     getCategory(categoryId: $categoryId) {
       id
       name
-      items {
-        id
-        name
-        price
-        description
-        dietary
-      }
+      ...CategoryItems
       menu {
         name
         id
       }
     }
   }
+  ${CATEGORY_ITEMS}
 `;
 
 const CategoryWrapper = styled.div`

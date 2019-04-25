@@ -71,6 +71,7 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         id="name"
         value={name}
         onChange={e => setName(e.target.value)}
+        placeholder="Name"
       />
 
       {/* <Heading htmlFor="description">Description</Heading> */}
@@ -80,6 +81,7 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         rows={rows}
         onChange={handleDescriptionChange}
         value={description}
+        placeholder="Description"
       />
 
       <Heading htmlFor="price">Price</Heading>
