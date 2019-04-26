@@ -6,6 +6,7 @@ import SelectOption from '../components/SelectOption';
 import Button from '../ui/Button';
 import SelectDietaryItems from './SelectDietaryItems';
 import DeleteMenuItemButton from '../containers/DeleteMenuItemButton';
+import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
 
 interface Props extends RouteComponentProps {
   categoryId?: string;
@@ -15,6 +16,7 @@ interface Props extends RouteComponentProps {
 }
 const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
   const textAreaEl: any = useRef();
+  useEffect(() => calculateTextAreaRows(textAreaEl));
 
   const [name, setName] = useState(menuItem.name);
   const [price, setPrice] = useState(menuItem.price);
@@ -23,31 +25,10 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
   const [selectedOptions, setSelectedOptions] = useState(menuItem.options);
   const [availableOptions, setAvailableOptions] = useState(options);
 
-  const [rows, setRows] = useState(1);
-
-  const calculateTextAreaRows = () => {
-    const textareaLineHeight = 24;
-    const minRows = 1;
-
-    const previousRows = textAreaEl.current.rows;
-    textAreaEl.current.rows = minRows; // reset number of rows in textarea
-
-    const currentRows = ~~(
-      textAreaEl.current.scrollHeight / textareaLineHeight
-    );
-
-    if (currentRows === previousRows) {
-      textAreaEl.current.rows = currentRows;
-    }
-    setRows(currentRows);
-  };
-
   const handleDescriptionChange = (event: any) => {
-    calculateTextAreaRows();
+    calculateTextAreaRows(textAreaEl);
     setDescription(event.target.value);
   };
-
-  useEffect(() => calculateTextAreaRows());
 
   const handleSave = () => {
     onSave({
@@ -67,7 +48,6 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
     <MenuItemWrapper>
       {/* <Image src={menuItem.image} alt={name} /> */}
 
-      {/* <Heading htmlFor="name">Name</Heading> */}
       <NameInput
         id="name"
         value={name}
@@ -75,11 +55,9 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         placeholder="Name"
       />
 
-      {/* <Heading htmlFor="description">Description</Heading> */}
       <DescriptionTextArea
         ref={textAreaEl}
         id="description"
-        rows={rows}
         onChange={handleDescriptionChange}
         value={description}
         placeholder="Description"
@@ -196,7 +174,6 @@ const MenuItemWrapper = styled.div`
   width: 580px;
   background: ${Colours.white};
   padding: 10px 0;
-  /* box-shadow: 0 0 2px rgb(0, 0, 0, 0.3); */
 `;
 
 const Heading = styled.label`
