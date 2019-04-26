@@ -5,6 +5,7 @@ import Colours from '../Colours';
 import SelectOption from '../components/SelectOption';
 import Button from '../ui/Button';
 import SelectDietaryItems from './SelectDietaryItems';
+import DeleteMenuItemButton from '../containers/DeleteMenuItemButton';
 
 interface Props extends RouteComponentProps {
   categoryId?: string;
@@ -157,6 +158,29 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
           Save
         </Button>
       </Actions>
+
+      <ItemActions>
+        <ItemAction>
+          <div>
+            <h4>Hide Item</h4>
+            <p>Customers will not be able to view this item</p>
+          </div>
+
+          <Button secondary>HIDE ITEM</Button>
+        </ItemAction>
+
+        <ItemAction>
+          <div>
+            <h4>Delete Item</h4>
+            <p>Deleting this item, is an ireverisble action.</p>
+          </div>
+
+          <DeleteMenuItemButton
+            categoryId={categoryId}
+            menuItemId={menuItem.id}
+          />
+        </ItemAction>
+      </ItemActions>
     </MenuItemWrapper>
   );
 };
@@ -253,4 +277,30 @@ const Actions = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
+`;
+
+const ItemActions = styled.div`
+  margin-top: 50px;
+
+  h4 {
+    margin-bottom: 5px;
+  }
+
+  p {
+    color: ${Colours.osloGrey};
+  }
+`;
+
+const ItemAction = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+
+  ${Button} {
+    width: 140px;
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-left: 10px;
+  }
 `;

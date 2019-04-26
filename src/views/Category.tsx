@@ -71,17 +71,17 @@ const Category = ({categoryId}: Props) => {
               <ViewAll>View All</ViewAll>
             </MenuItems>
 
-            <Options>
-              <Option>
+            <ItemActions>
+              <ItemAction>
                 <div>
                   <h4>Hide Category</h4>
                   <p>Customers will not be able to view this category</p>
                 </div>
 
                 <Button secondary>HIDE CATEGORY</Button>
-              </Option>
+              </ItemAction>
 
-              <Option>
+              <ItemAction>
                 <div>
                   <h4>Delete Category</h4>
                   <p>Deleting this category, is an ireverisble action.</p>
@@ -91,8 +91,8 @@ const Category = ({categoryId}: Props) => {
                   categoryId={getCategory.id}
                   menuId={getCategory.menu.id}
                 />
-              </Option>
-            </Options>
+              </ItemAction>
+            </ItemActions>
           </CategoryWrapper>
         );
       }}
@@ -212,7 +212,7 @@ const Description = styled.p`
   color: ${Colours.osloGrey};
 `;
 
-const Options = styled.div`
+const ItemActions = styled.div`
   margin-top: 50px;
 
   h4 {
@@ -224,7 +224,7 @@ const Options = styled.div`
   }
 `;
 
-const Option = styled.div`
+const ItemAction = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
