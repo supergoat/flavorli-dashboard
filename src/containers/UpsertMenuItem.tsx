@@ -25,7 +25,7 @@ const UpsertMenuItem = ({options, categoryId, menuItem}: Props) => {
             id: `MenuCategory:${categoryId}`,
             fragment: CATEGORY_ITEMS,
             data: {
-              items: [addMenuItem, ...items],
+              items: items ? [addMenuItem, ...items] : [addMenuItem],
               __typename: 'MenuCategory',
             },
           });

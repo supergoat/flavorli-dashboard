@@ -1,14 +1,13 @@
 import React from 'react';
-import {RouteComponentProps} from '@reach/router';
-import Option from '../components/Option';
+import UpsertOption from './UpsertOption';
 
-interface Props extends RouteComponentProps {
-  menuItemId?: string;
+interface Props {
   onCancel: any;
-  onSave: any;
+  onCreate: any;
 }
-const CreateOption = ({onSave, onCancel}: Props) => {
-  return <Option option={{}} onSave={onSave} onCancel={onCancel} />;
+
+const CreateOption = ({onCreate, onCancel}: Props) => {
+  return <UpsertOption option={{}} onSave={onCreate} onCancel={onCancel} />;
 };
 
 export default CreateOption;

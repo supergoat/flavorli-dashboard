@@ -18,7 +18,11 @@ const AvailableOptions = ({
 
   return (
     <AvailableOptionsWrapper>
-      {options.length === 0 && <OptionItem>No matching options</OptionItem>}
+      {options.length === 0 ? (
+        <Heading>No matching options</Heading>
+      ) : (
+        <Heading>{options.length} items</Heading>
+      )}
       {options.map((option: any) => {
         return (
           <OptionItem key={option.id} onMouseDown={() => onSelect(option)}>
@@ -40,6 +44,10 @@ const AvailableOptionsWrapper = styled.div`
   max-height: 210px;
   padding: 5px;
   overflow: auto;
+`;
+
+const Heading = styled.div`
+  padding: 10px 20px;
 `;
 
 const OptionItem = styled.div`

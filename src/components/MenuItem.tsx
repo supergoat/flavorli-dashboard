@@ -108,28 +108,41 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
 
       {isAddingOption && (
         <CreateOption
-          onSave={(newOption: any) => {
+          onCreate={(newOption: any) => {
             setSelectedOptions([...selectedOptions, newOption]);
+            setIsAddingOption(false);
           }}
           onCancel={() => setIsAddingOption(false)}
         />
       )}
 
-      {editingOption && (
-        <EditingOption
-          option={editingOption}
-          onCancel={() => setIsEditingOption('')}
-        />
-      )}
-
       <Options>
         {selectedOptions.map((option: any) => {
+          if (editingOption && editingOption.id === option.id)
+            return (
+              <EditingOption
+                key={option.id}
+                onSave={(updatedOption: any) => {
+                  const copySelectedOptions = [...selectedOptions];
+                  const updatedOptionIndex = copySelectedOptions.findIndex(
+                    (o: any) => o.id === updatedOption.id,
+                  );
+
+                  copySelectedOptions[updatedOptionIndex] = updatedOption;
+                  setSelectedOptions(copySelectedOptions);
+
+                  setIsEditingOption('');
+                }}
+                option={editingOption}
+                onCancel={() => setIsEditingOption('')}
+              />
+            );
           return (
             <Option key={option.id} onClick={() => setIsEditingOption(option)}>
               <div>
                 <OptionName>{option.name}</OptionName>
                 <p>
-                  Choose {option.min} to {option.max} items
+                  Choices {option.min} to {option.max} items
                 </p>
               </div>
               <p

@@ -44,6 +44,11 @@ const GET_MENU_ITEM = gql`
         min
         max
         name
+        items {
+          id
+          name
+          price
+        }
       }
     }
     getOptions(menuItemId: $menuItemId) {

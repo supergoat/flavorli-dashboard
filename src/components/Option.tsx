@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
-import {uuid} from '../_utils/uuid';
 import Button from '../ui/Button';
+import {uuid} from '../_utils/uuid';
 
 interface Props {
   option: any;
@@ -15,8 +15,23 @@ const Option = ({option, onSave, onCancel}: Props) => {
   const [min, setMin] = useState(option.min || '');
   const [max, setMax] = useState(option.max || '');
   const [optionItems, setOptionItems] = useState<
-    {id: string; name: string; price: string}[]
+    {id: string; name: string; price: number}[]
   >(option.items || []);
+
+  const handleSave = () => {
+    onSave({
+      variables: {
+        id: option.id,
+        name,
+        min: Number(min),
+        max: Number(max),
+        items: optionItems.map((item: any) => ({
+          name: item.name,
+          price: item.price,
+        })),
+      },
+    });
+  };
 
   return (
     <OptionWrapper>
@@ -58,7 +73,7 @@ const Option = ({option, onSave, onCancel}: Props) => {
             {
               id: uuid(),
               name: '',
-              price: '',
+              price: 0,
             },
           ]);
         }}
@@ -85,7 +100,7 @@ const Option = ({option, onSave, onCancel}: Props) => {
                 onChange={(e: any) => {
                   const value = e.target.value;
                   const itemsCopy = [...optionItems];
-                  itemsCopy[index].price = value;
+                  itemsCopy[index].price = parseFloat(value);
                   setOptionItems(itemsCopy);
                 }}
               />
@@ -104,20 +119,7 @@ const Option = ({option, onSave, onCancel}: Props) => {
         })}
       </Items>
 
-      <SaveButton
-        width="100px"
-        onClick={() => {
-          const id = uuid();
-
-          onSave({
-            id,
-            name,
-            min,
-            max,
-            items: optionItems,
-          });
-        }}
-      >
+      <SaveButton width="100px" onClick={handleSave}>
         Save
       </SaveButton>
     </OptionWrapper>
@@ -145,7 +147,6 @@ const Header = styled.div`
 
 const OptionNameInput = styled.input`
   font-size: 16px;
-  padding: 5px 0;
   outline: none;
   border: none;
   font-weight: bold;
@@ -167,7 +168,6 @@ const MinInput = styled.input`
   width: 50px;
   text-align: center;
   font-size: 16px;
-  padding: 10px 0;
   outline: none;
   border: none;
 `;
@@ -176,7 +176,6 @@ const MaxInput = styled.input`
   width: 50px;
   text-align: center;
   font-size: 16px;
-  padding: 10px 0;
   outline: none;
   border: none;
 `;
