@@ -7,6 +7,8 @@ import Button from '../ui/Button';
 import SelectDietaryItems from './SelectDietaryItems';
 import DeleteMenuItemButton from '../containers/DeleteMenuItemButton';
 import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
+import CreateOption from '../containers/CreateOption';
+import EditingOption from '../containers/EditingOption';
 
 interface Props extends RouteComponentProps {
   categoryId?: string;
@@ -24,6 +26,8 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
   const [dietarySelected, setDietarySelected] = useState(menuItem.dietary);
   const [selectedOptions, setSelectedOptions] = useState(menuItem.options);
   const [availableOptions, setAvailableOptions] = useState(options);
+  const [isAddingOption, setIsAddingOption] = useState(false);
+  const [editingOption, setIsEditingOption] = useState<any>(null);
 
   const handleDescriptionChange = (event: any) => {
     calculateTextAreaRows(textAreaEl);
@@ -46,8 +50,6 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
 
   return (
     <MenuItemWrapper>
-      {/* <Image src={menuItem.image} alt={name} /> */}
-
       <NameInput
         id="name"
         value={name}
@@ -99,10 +101,31 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
           );
         }}
       />
+
+      <AddOptionButton onClick={() => setIsAddingOption(true)}>
+        ADD OPTION +
+      </AddOptionButton>
+
+      {isAddingOption && (
+        <CreateOption
+          onSave={(newOption: any) => {
+            setSelectedOptions([...selectedOptions, newOption]);
+          }}
+          onCancel={() => setIsAddingOption(false)}
+        />
+      )}
+
+      {editingOption && (
+        <EditingOption
+          option={editingOption}
+          onCancel={() => setIsEditingOption('')}
+        />
+      )}
+
       <Options>
         {selectedOptions.map((option: any) => {
           return (
-            <Option key={option.id}>
+            <Option key={option.id} onClick={() => setIsEditingOption(option)}>
               <div>
                 <OptionName>{option.name}</OptionName>
                 <p>
@@ -181,14 +204,6 @@ const Heading = styled.label`
   color: ${Colours.osloGrey};
 `;
 
-const Image = styled.img`
-  height: 200px;
-  width: 200px;
-  flex-shrink: 0;
-  background: ${Colours.gallery};
-  object-fit: cover;
-`;
-
 const NameInput = styled.input`
   font-size: 40px;
   width: 100%;
@@ -227,16 +242,14 @@ const Price = styled.div`
   }
 `;
 
-const Options = styled.div`
-  margin: 10px 0;
-`;
+const Options = styled.div``;
 
 const Option = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 10px 15px;
+  padding: 15px;
   color: ${Colours.osloGrey};
   cursor: pointer;
   user-select: none;
@@ -248,6 +261,16 @@ const Option = styled.div`
 const OptionName = styled.p`
   color: ${Colours.oxfordBlue};
   font-weight: bold;
+`;
+
+const AddOptionButton = styled.div`
+  align-self: flex-start;
+  font-size: 14px;
+  padding: 10px 0;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  margin: 10px 0;
 `;
 
 const Actions = styled.div`
