@@ -5,16 +5,15 @@ import {Mutation} from 'react-apollo';
 import Button from '../ui/Button';
 import AddMenu from '../components/AddMenu';
 import {RESTAURANT_MENUS_DATA} from '../views/MenuBuilder';
-
-// TODO: Use correct restaurant id
+import useErrors from '../_utils/useErrors';
 
 const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
   const [addingMenu, setAddingMenu] = useState(false);
-  const [errors, setErrors] = useState<Map<string, string>>(new Map());
+  const [errors, setErrors, clearErrors] = useErrors();
 
   const handleAddMenu = (menuName: string, addMenu: any) => {
     if (menuName.trim() === '') {
-      setError('name', 'required');
+      setErrors([['name', 'required']]);
       return;
     }
 
@@ -24,18 +23,6 @@ const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
         restaurantId,
       },
     });
-  };
-
-  const setError = (key: string, value: string) => {
-    let errors: Map<string, string> = new Map();
-    errors.set(key, value);
-    setErrors(errors);
-  };
-
-  const handleClearError = (error: string) => {
-    const copyErrors = new Map(errors);
-    copyErrors.delete(error);
-    setErrors(copyErrors);
   };
 
   const handleMenuAdded = (cache: any, {data: {addMenu}}: any) => {
@@ -63,7 +50,7 @@ const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
       mutation={ADD_MENU}
       update={handleMenuAdded}
       onError={() => {
-        setError('name', 'Something went wrong! Could not create menu!');
+        setErrors([['name', 'Something went wrong! Could not create menu!']]);
       }}
     >
       {(addMenu: any, {loading}: any) => {
@@ -77,11 +64,11 @@ const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
               <AddMenu
                 onCancel={() => {
                   setAddingMenu(false);
-                  handleClearError('name');
+                  clearErrors(['name']);
                 }}
                 onAdd={menuName => handleAddMenu(menuName, addMenu)}
                 errors={errors}
-                onClearError={handleClearError}
+                onClearErrors={clearErrors}
               />
             )}
           </AddMenuButtonWrapper>

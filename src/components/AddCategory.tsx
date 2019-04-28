@@ -8,12 +8,12 @@ const AddCategory = ({
   onCancel,
   onAdd,
   errors,
-  onClearError,
+  onClearErrors,
 }: {
   onCancel: () => void;
   onAdd: (value: string) => void;
   errors: Map<string, string>;
-  onClearError: (error: string) => void;
+  onClearErrors: (errors: string[]) => void;
 }) => {
   const [value, setValue] = useState('');
 
@@ -23,7 +23,7 @@ const AddCategory = ({
         label="Category Name"
         onChange={e => {
           setValue(e.target.value);
-          onClearError('name');
+          onClearErrors(['name']);
         }}
         value={value}
         isRequiredError={errors.get('name') === 'required'}

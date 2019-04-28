@@ -8,12 +8,12 @@ const AddMenu = ({
   onCancel,
   onAdd,
   errors,
-  onClearError,
+  onClearErrors,
 }: {
   onCancel: () => void;
   onAdd: (value: string) => void;
   errors: Map<string, string>;
-  onClearError: (error: string) => void;
+  onClearErrors: (errors: string[]) => void;
 }) => {
   const [value, setValue] = useState('');
   return (
@@ -22,7 +22,7 @@ const AddMenu = ({
         label="Menu Name"
         onChange={e => {
           setValue(e.target.value);
-          onClearError('name');
+          onClearErrors(['name']);
         }}
         isRequiredError={errors.get('name') === 'required'}
         value={value}

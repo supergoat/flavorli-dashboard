@@ -5,14 +5,15 @@ import {Mutation} from 'react-apollo';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
 import {MENU_CATEGORIES_DATA} from '../views/MenuBuilder';
+import useErrors from '../_utils/useErrors';
 
 const AddCategoryButton = ({menuId}: {menuId: string}) => {
   const [addingCategory, setAddingCategory] = useState(false);
-  const [errors, setErrors] = useState<Map<string, string>>(new Map());
+  const [errors, setErrors, clearErrors] = useErrors();
 
   const handleAddMenu = (categoryName: string, addMenuCategory: any) => {
     if (categoryName.trim() === '') {
-      setError('name', 'required');
+      setErrors([['name', 'required']]);
       return;
     }
 
@@ -22,18 +23,6 @@ const AddCategoryButton = ({menuId}: {menuId: string}) => {
         menuId,
       },
     });
-  };
-
-  const setError = (key: string, value: string) => {
-    let errors: Map<string, string> = new Map();
-    errors.set(key, value);
-    setErrors(errors);
-  };
-
-  const handleClearError = (error: string) => {
-    const copyErrors = new Map(errors);
-    copyErrors.delete(error);
-    setErrors(copyErrors);
   };
 
   const handleCategoryAdded = (cache: any, {data: {addMenuCategory}}: any) => {
@@ -59,7 +48,7 @@ const AddCategoryButton = ({menuId}: {menuId: string}) => {
       mutation={ADD_CATEGORY}
       update={handleCategoryAdded}
       onError={() => {
-        setError('name', 'Something went wrong! Could not create menu!');
+        setErrors([['name', 'Something went wrong! Could not create menu!']]);
       }}
     >
       {(addMenuCategory: any, {loading}: any) => {
@@ -73,13 +62,13 @@ const AddCategoryButton = ({menuId}: {menuId: string}) => {
               <AddCategory
                 onCancel={() => {
                   setAddingCategory(false);
-                  handleClearError('name');
+                  clearErrors(['name']);
                 }}
                 onAdd={categoryName =>
                   handleAddMenu(categoryName, addMenuCategory)
                 }
                 errors={errors}
-                onClearError={handleClearError}
+                onClearErrors={clearErrors}
               />
             )}
           </>

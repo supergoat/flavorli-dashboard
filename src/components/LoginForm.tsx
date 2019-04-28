@@ -4,6 +4,7 @@ import {ApolloError} from 'apollo-client';
 import styled from 'styled-components/macro';
 import FormInput from './FormInput';
 import Button from '../ui/Button';
+import useErrors from '../_utils/useErrors';
 
 interface Props {
   login: MutationFn<any, {email: string; password: string}>;
@@ -13,28 +14,29 @@ interface Props {
 const LoginForm = ({login, loading, error}: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<Map<string, string>>(new Map());
+  const [errors, setErrors, clearErrors] = useErrors();
 
   useEffect(() => {
     if (error) {
-      const copyErrors = new Map(errors);
-      copyErrors.set(
-        'invalid-login',
-        'The username or password you have entered is incorrect',
-      );
-      setErrors(copyErrors);
+      setErrors([
+        [
+          'invalid-login',
+          'The username or password you have entered is incorrect',
+        ],
+      ]);
     }
   }, [error]);
 
   const isFormValid = () => {
-    let errors: Map<string, string> = new Map();
+    let localErrors: [string, string][] = [];
 
-    if (email.trim() === '') errors.set('email', 'Email is required');
+    if (email.trim() === '') localErrors.push(['email', 'Email is required']);
 
-    if (password.trim() === '') errors.set('password', 'Password is required');
+    if (password.trim() === '')
+      localErrors.push(['password', 'Password is required']);
 
-    const isValid = errors.size === 0;
-    setErrors(errors);
+    setErrors(localErrors);
+    const isValid = localErrors.length === 0;
 
     return isValid;
   };
@@ -51,12 +53,6 @@ const LoginForm = ({login, loading, error}: Props) => {
     });
   };
 
-  const clearError = (error: string) => {
-    const copyErrors = new Map(errors);
-    copyErrors.delete(error);
-    setErrors(copyErrors);
-  };
-
   return (
     <LoginFormWrapper>
       <Form onSubmit={handleSubmit}>
@@ -66,7 +62,7 @@ const LoginForm = ({login, loading, error}: Props) => {
           <FormInput
             label="Email"
             onChange={e => {
-              clearError('email');
+              clearErrors(['email']);
               setEmail(e.currentTarget.value);
             }}
             type="email"
@@ -77,8 +73,7 @@ const LoginForm = ({login, loading, error}: Props) => {
           <FormInput
             label="Password"
             onChange={e => {
-              clearError('password');
-              clearError('invalid-login');
+              clearErrors(['password', 'invalid-login']);
               setPassword(e.currentTarget.value);
             }}
             type="password"
