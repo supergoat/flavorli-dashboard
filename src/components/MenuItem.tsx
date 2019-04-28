@@ -7,8 +7,7 @@ import Button from '../ui/Button';
 import SelectDietaryItems from './SelectDietaryItems';
 import DeleteMenuItemButton from '../containers/DeleteMenuItemButton';
 import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
-import CreateOption from '../containers/CreateOption';
-import EditingOption from '../containers/EditingOption';
+import UpsertOption from '../containers/UpsertOption';
 
 interface Props extends RouteComponentProps {
   categoryId?: string;
@@ -109,8 +108,9 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
       </AddOptionButton>
 
       {isAddingOption && (
-        <CreateOption
-          onCreate={(newOption: any) => {
+        <UpsertOption
+          option={{}}
+          onSave={(newOption: any) => {
             setSelectedOptions([...selectedOptions, newOption]);
             setIsAddingOption(false);
           }}
@@ -123,7 +123,7 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
           return (
             <OptionListItem key={option.id}>
               {editingOption && editingOption.id === option.id ? (
-                <EditingOption
+                <UpsertOption
                   onSave={(updatedOption: any) => {
                     const copySelectedOptions = [...selectedOptions];
                     const updatedOptionIndex = copySelectedOptions.findIndex(

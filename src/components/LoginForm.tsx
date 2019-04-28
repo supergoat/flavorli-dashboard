@@ -1,85 +1,47 @@
-import React, {useState, useEffect, FormEvent} from 'react';
-import {MutationFn} from 'react-apollo';
-import {ApolloError} from 'apollo-client';
+import React, {useState} from 'react';
 import styled from 'styled-components/macro';
 import FormInput from './FormInput';
 import Button from '../ui/Button';
-import useErrors from '../_utils/useErrors';
 
 interface Props {
-  login: MutationFn<any, {email: string; password: string}>;
+  onLogin: (email: string, password: string) => void;
   loading: boolean;
-  error?: ApolloError | undefined;
+  errors: Map<string, string>;
+  clearErrors: (errors: string[]) => void;
 }
-const LoginForm = ({login, loading, error}: Props) => {
+const LoginForm = ({onLogin, loading, errors, clearErrors}: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors, clearErrors] = useErrors();
-
-  useEffect(() => {
-    if (error) {
-      setErrors([
-        [
-          'invalid-login',
-          'The username or password you have entered is incorrect',
-        ],
-      ]);
-    }
-  }, [error]);
-
-  const isFormValid = () => {
-    let localErrors: [string, string][] = [];
-
-    if (email.trim() === '') localErrors.push(['email', 'Email is required']);
-
-    if (password.trim() === '')
-      localErrors.push(['password', 'Password is required']);
-
-    setErrors(localErrors);
-    const isValid = localErrors.length === 0;
-
-    return isValid;
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!isFormValid()) return;
-
-    login({
-      variables: {
-        email,
-        password,
-      },
-    });
-  };
 
   return (
     <LoginFormWrapper>
-      <Form onSubmit={handleSubmit}>
+      <Form
+        onSubmit={e => {
+          e.preventDefault();
+          onLogin(email, password);
+        }}
+      >
         <Logo>flavorli</Logo>
 
         <InputFields>
           <FormInput
+            name="email"
             label="Email"
-            onChange={e => {
-              clearErrors(['email']);
-              setEmail(e.currentTarget.value);
-            }}
+            onChange={e => setEmail(e.currentTarget.value)}
             type="email"
             value={email}
-            isRequiredError={errors.has('email')}
+            clearErrors={clearErrors}
+            errors={errors}
           />
 
           <FormInput
             label="Password"
-            onChange={e => {
-              clearErrors(['password', 'invalid-login']);
-              setPassword(e.currentTarget.value);
-            }}
+            name="password"
+            onChange={e => setPassword(e.currentTarget.value)}
             type="password"
             value={password}
-            isRequiredError={errors.has('password')}
-            error={errors.get('invalid-login')}
+            clearErrors={clearErrors}
+            errors={errors}
           />
         </InputFields>
 

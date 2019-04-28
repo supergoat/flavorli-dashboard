@@ -20,13 +20,14 @@ const AddMenu = ({
     <AddMenuWrapper>
       <FormInput
         label="Menu Name"
+        name="name"
         onChange={e => {
           setValue(e.target.value);
           onClearErrors(['name']);
         }}
-        isRequiredError={errors.get('name') === 'required'}
         value={value}
-        error={errors.get('name') !== 'required' ? errors.get('name') : ''}
+        errors={errors}
+        clearErrors={onClearErrors}
       />
       <Actions>
         <Button width="35%" secondary onClick={onCancel}>

@@ -21,13 +21,11 @@ const AddCategory = ({
     <AddCategoryWrapper>
       <FormInput
         label="Category Name"
-        onChange={e => {
-          setValue(e.target.value);
-          onClearErrors(['name']);
-        }}
+        name="name"
+        onChange={e => setValue(e.target.value)}
         value={value}
-        isRequiredError={errors.get('name') === 'required'}
-        error={errors.get('name') !== 'required' ? errors.get('name') : ''}
+        errors={errors}
+        clearErrors={onClearErrors}
       />
 
       <Actions>

@@ -25,7 +25,9 @@ const MenuBuilder = (_: Props) => {
           <MenuBuilderWrapper>
             <Navbar />
             <SideBar>
-              <AddMenuButton restaurantId={getRestaurant && getRestaurant.id} />
+              <AddMenuButton
+                restaurantId={!loading && getRestaurant && getRestaurant.id}
+              />
 
               {loading ? (
                 <MenuListLoading>

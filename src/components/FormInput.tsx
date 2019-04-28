@@ -8,34 +8,42 @@ import WarningIcon from '../assets/icons/warning.svg';
 
 interface Props {
   label: string;
-  error?: string;
-  isRequiredError?: boolean;
+  name: string;
+  errors: Map<string, string>;
+  clearErrors: (errors: string[]) => void;
   onChange: (e: any) => void;
   value: string;
   type?: string;
 }
 const FormInput = ({
   label,
-  isRequiredError,
-  error = '',
+  name,
+  errors,
+  clearErrors,
   onChange,
   value,
   type,
 }: Props) => {
+  const hasError = errors.has(name);
   return (
-    <FormInputWrapper hasError={!!error || isRequiredError}>
+    <FormInputWrapper hasError={hasError}>
       <Label htmlFor={label}>
         {label}
-        <RequiredError show={isRequiredError} />
+        <RequiredError show={errors.get(name) === 'required'} />
       </Label>
       <Input
         type={type}
         id={label}
-        hasError={!!error}
+        hasError={hasError}
         value={value}
-        onChange={onChange}
+        onChange={(e: any) => {
+          clearErrors([name]);
+          onChange(e);
+        }}
       />
-      <Error show={!!error}>{error}</Error>
+      <Error show={hasError}>
+        {errors.get(name) !== 'required' && errors.get(name)}
+      </Error>
     </FormInputWrapper>
   );
 };
