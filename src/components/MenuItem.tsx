@@ -40,7 +40,7 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         id: menuItem.id,
         categoryId,
         name,
-        price: Number(price),
+        price: price,
         description,
         dietary: dietarySelected,
         options: selectedOptions.map((o: any) => o.id),
@@ -70,10 +70,7 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
       <Price>
         <input
           id="price"
-          min="0"
-          type="number"
           value={price}
-          step="0.01"
           onChange={(e: any) => setPrice(e.target.value)}
         />
       </Price>
@@ -102,7 +99,12 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         }}
       />
 
-      <AddOptionButton onClick={() => setIsAddingOption(true)}>
+      <AddOptionButton
+        onClick={() => {
+          setIsAddingOption(true);
+          setIsEditingOption(null);
+        }}
+      >
         ADD OPTION +
       </AddOptionButton>
 
@@ -118,44 +120,50 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
 
       <Options>
         {selectedOptions.map((option: any) => {
-          if (editingOption && editingOption.id === option.id)
-            return (
-              <EditingOption
-                key={option.id}
-                onSave={(updatedOption: any) => {
-                  const copySelectedOptions = [...selectedOptions];
-                  const updatedOptionIndex = copySelectedOptions.findIndex(
-                    (o: any) => o.id === updatedOption.id,
-                  );
-
-                  copySelectedOptions[updatedOptionIndex] = updatedOption;
-                  setSelectedOptions(copySelectedOptions);
-
-                  setIsEditingOption('');
-                }}
-                option={editingOption}
-                onCancel={() => setIsEditingOption('')}
-              />
-            );
           return (
-            <Option key={option.id} onClick={() => setIsEditingOption(option)}>
-              <div>
-                <OptionName>{option.name}</OptionName>
-                <p>
-                  Choices {option.min} to {option.max} items
-                </p>
-              </div>
-              <p
-                onClick={() => {
-                  setAvailableOptions([...availableOptions, option]);
-                  setSelectedOptions(
-                    selectedOptions.filter((o: any) => o.id !== option.id),
-                  );
-                }}
-              >
-                X
-              </p>
-            </Option>
+            <OptionListItem key={option.id}>
+              {editingOption && editingOption.id === option.id ? (
+                <EditingOption
+                  onSave={(updatedOption: any) => {
+                    const copySelectedOptions = [...selectedOptions];
+                    const updatedOptionIndex = copySelectedOptions.findIndex(
+                      (o: any) => o.id === updatedOption.id,
+                    );
+
+                    copySelectedOptions[updatedOptionIndex] = updatedOption;
+                    setSelectedOptions(copySelectedOptions);
+
+                    setIsEditingOption('');
+                  }}
+                  option={editingOption}
+                  onCancel={() => setIsEditingOption('')}
+                />
+              ) : (
+                <Option
+                  onClick={() => {
+                    setIsAddingOption(false);
+                    setIsEditingOption(option);
+                  }}
+                >
+                  <div>
+                    <OptionName>{option.name}</OptionName>
+                    <p>
+                      Choices {option.min} to {option.max} items
+                    </p>
+                  </div>
+                  <p
+                    onClick={() => {
+                      setAvailableOptions([...availableOptions, option]);
+                      setSelectedOptions(
+                        selectedOptions.filter((o: any) => o.id !== option.id),
+                      );
+                    }}
+                  >
+                    X
+                  </p>
+                </Option>
+              )}
+            </OptionListItem>
           );
         })}
       </Options>
@@ -257,6 +265,10 @@ const Price = styled.div`
 
 const Options = styled.div``;
 
+const OptionListItem = styled.div`
+  margin: 15px 0;
+`;
+
 const Option = styled.div`
   display: flex;
   align-items: center;
@@ -268,7 +280,6 @@ const Option = styled.div`
   user-select: none;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
-  margin: 15px 0;
 `;
 
 const OptionName = styled.p`

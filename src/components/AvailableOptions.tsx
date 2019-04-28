@@ -21,7 +21,7 @@ const AvailableOptions = ({
       {options.length === 0 ? (
         <Heading>No matching options</Heading>
       ) : (
-        <Heading>{options.length} items</Heading>
+        <Heading>{options.length} matching options</Heading>
       )}
       {options.map((option: any) => {
         return (

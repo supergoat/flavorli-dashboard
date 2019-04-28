@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
 import Button from '../ui/Button';
+import Label from '../ui/Label';
 import {uuid} from '../_utils/uuid';
 
 interface Props {
@@ -15,7 +16,7 @@ const Option = ({option, onSave, onCancel}: Props) => {
   const [min, setMin] = useState(option.min || '');
   const [max, setMax] = useState(option.max || '');
   const [optionItems, setOptionItems] = useState<
-    {id: string; name: string; price: number}[]
+    {id: string; name: string; price: string}[]
   >(option.items || []);
 
   const handleSave = () => {
@@ -23,8 +24,8 @@ const Option = ({option, onSave, onCancel}: Props) => {
       variables: {
         id: option.id,
         name,
-        min: Number(min),
-        max: Number(max),
+        min,
+        max,
         items: optionItems.map((item: any) => ({
           name: item.name,
           price: item.price,
@@ -35,20 +36,22 @@ const Option = ({option, onSave, onCancel}: Props) => {
 
   return (
     <OptionWrapper>
-      {/* <Label>Option Name</Label> */}
-
       <Header>
-        <OptionNameInput
-          id="name"
-          value={name}
-          onChange={(e: any) => setName(e.target.value)}
-          placeholder="Option Name"
-        />
+        <Label>Option Name</Label>
+
         <CloseButton onClick={onCancel}>X</CloseButton>
       </Header>
 
+      <OptionNameInput
+        id="name"
+        value={name}
+        onChange={(e: any) => setName(e.target.value)}
+        placeholder="Option Name"
+      />
+
+      <Label>How many items can the customer choose?</Label>
+
       <Choices>
-        Choices
         <MinInput
           id="min"
           value={min}
@@ -64,7 +67,7 @@ const Option = ({option, onSave, onCancel}: Props) => {
         />
       </Choices>
 
-      <Heading>Items</Heading>
+      <Label>Items</Label>
 
       <AddItemButton
         onClick={() => {
@@ -73,7 +76,7 @@ const Option = ({option, onSave, onCancel}: Props) => {
             {
               id: uuid(),
               name: '',
-              price: 0,
+              price: '0',
             },
           ]);
         }}
@@ -94,16 +97,18 @@ const Option = ({option, onSave, onCancel}: Props) => {
                   setOptionItems(itemsCopy);
                 }}
               />
-              <ItemPrice
-                placeholder="Price"
-                value={optionItems[index].price}
-                onChange={(e: any) => {
-                  const value = e.target.value;
-                  const itemsCopy = [...optionItems];
-                  itemsCopy[index].price = parseFloat(value);
-                  setOptionItems(itemsCopy);
-                }}
-              />
+              <ItemPrice>
+                <input
+                  placeholder="Price"
+                  value={optionItems[index].price}
+                  onChange={(e: any) => {
+                    const value = e.target.value;
+                    const itemsCopy = [...optionItems];
+                    itemsCopy[index].price = value;
+                    setOptionItems(itemsCopy);
+                  }}
+                />
+              </ItemPrice>
 
               <p
                 onClick={() => {
@@ -136,7 +141,7 @@ const OptionWrapper = styled.div`
   width: 580px;
   background: ${Colours.white};
   border-radius: 4px;
-  padding: 15px;
+  padding: 20px 15px 15px;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
 `;
 
@@ -149,7 +154,7 @@ const OptionNameInput = styled.input`
   font-size: 16px;
   outline: none;
   border: none;
-  font-weight: bold;
+  margin-bottom: 20px;
 `;
 
 const CloseButton = styled.div`
@@ -162,6 +167,7 @@ const Choices = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 150px;
+  margin-bottom: 20px;
 `;
 
 const MinInput = styled.input`
@@ -180,10 +186,6 @@ const MaxInput = styled.input`
   border: none;
 `;
 
-const Heading = styled.h4`
-  margin-top: 10px;
-`;
-
 const Items = styled.div``;
 
 const Item = styled.div`
@@ -192,7 +194,6 @@ const Item = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 12px;
-  color: ${Colours.osloGrey};
   cursor: pointer;
   user-select: none;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
@@ -211,17 +212,27 @@ const ItemName = styled.input`
   padding: 5px 0;
 `;
 
-const ItemPrice = styled.input`
-  font-size: 16px;
-  outline: none;
-  border: none;
+const ItemPrice = styled.div`
+  display: flex;
+  align-items: center;
   width: 30%;
-  padding: 5px 0;
+
+  &:before {
+    content: '£';
+  }
+
+  input {
+    font-size: 16px;
+    outline: none;
+    border: none;
+    margin-left: 5px;
+    padding: 5px 0;
+  }
 `;
 
 const AddItemButton = styled.div`
   align-self: flex-start;
-  font-size: 14px;
+  font-size: 12px;
   padding: 5px 0;
   font-weight: bold;
   cursor: pointer;

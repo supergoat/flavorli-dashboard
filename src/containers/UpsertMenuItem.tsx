@@ -55,7 +55,7 @@ const UPSERT_MENU_ITEM = gql`
     $categoryId: ID!
     $id: ID
     $name: String
-    $price: Float
+    $price: String
     $description: String
     $dietary: [String!]
     $options: [ID!]

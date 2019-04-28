@@ -65,7 +65,7 @@ const Category = ({category}: Props) => {
               <Info>
                 <Header>
                   <Name>{item.name}</Name>
-                  <Price>£{item.price.toFixed(2)}</Price>
+                  <Price>£{item.price}</Price>
                 </Header>
                 <Dietary dietary={item.dietary} />
                 <Description>{item.description}</Description>
@@ -73,8 +73,6 @@ const Category = ({category}: Props) => {
             </MenuItem>
           );
         })}
-
-        <ViewAll>View All</ViewAll>
       </MenuItems>
 
       <ItemActions>
@@ -152,16 +150,6 @@ const MenuItem = styled.div`
   margin: 20px 0;
   background: ${Colours.white};
   cursor: pointer;
-`;
-
-const ViewAll = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 10px;
-  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-  background: ${Colours.white};
 `;
 
 const Image = styled.img`

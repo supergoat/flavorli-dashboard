@@ -36,8 +36,8 @@ const CREATE_MENU_ITEM_OPTION = gql`
   mutation createMenuItemOption(
     $id: ID
     $name: String!
-    $min: Int!
-    $max: Int!
+    $min: String!
+    $max: String!
     $items: [OptionItemWhereInput!]!
   ) {
     createMenuItemOption(
