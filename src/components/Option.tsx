@@ -4,6 +4,7 @@ import Colours from '../Colours';
 import Label from '../ui/Label';
 import ConfirmButtons from '../components/ConfirmButtons';
 import Error from '../ui/Error';
+import isValidPrice from '../_utils/isValidPrice';
 import {uuid} from '../_utils/uuid';
 
 interface Props {
@@ -169,6 +170,7 @@ const Option = ({
                     onChange={(e: any) => {
                       clearErrors([`option-item-price-${index}`]);
                       const value = e.target.value;
+                      if (!isValidPrice(value)) return;
                       const copyOptionItems = cloneArray(optionItems);
                       copyOptionItems[index].price = value;
                       setOptionItems(copyOptionItems);
