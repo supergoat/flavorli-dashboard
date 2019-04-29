@@ -7,6 +7,7 @@ import Button from '../ui/Button';
 import SelectDietaryItems from './SelectDietaryItems';
 import DeleteMenuItemButton from '../containers/DeleteMenuItemButton';
 import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
+import isValidPrice from '../_utils/isValidPrice';
 import UpsertOption from '../containers/UpsertOption';
 
 interface Props extends RouteComponentProps {
@@ -70,7 +71,10 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         <input
           id="price"
           value={price}
-          onChange={(e: any) => setPrice(e.target.value)}
+          onChange={(e: any) => {
+            const str = e.target.value;
+            if (isValidPrice(str)) setPrice(str);
+          }}
         />
       </Price>
 
