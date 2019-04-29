@@ -28,7 +28,7 @@ const UpdateCategoryName = ({
       mutation={UPDATE_CATEGORY_NAME}
       variables={{categoryId, name}}
       onError={() => {
-        setError('Could not save');
+        setError('Something went wrong, unable to save');
       }}
     >
       {(updateMenuCategory: any, {loading}: any) => {
@@ -36,7 +36,6 @@ const UpdateCategoryName = ({
           <UpdateCategoryNameWrapper>
             <NameInput>
               <input
-                id="name"
                 value={name}
                 onChange={e => {
                   setError('');
@@ -75,7 +74,6 @@ const UPDATE_CATEGORY_NAME = gql`
 const UpdateCategoryNameWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
 
   input {
     font-size: 40px;

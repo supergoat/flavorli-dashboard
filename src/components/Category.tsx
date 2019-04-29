@@ -1,11 +1,11 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React from 'react';
 import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 import DeleteCategoryButton from '../containers/DeleteCategoryButton';
 import UpdateCategoryName from '../containers/UpdateCategoryName';
-import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
+import UpdateCategoryDescription from '../containers/UpdateCategoryDescription';
 
 import Colours from '../Colours';
 
@@ -14,16 +14,6 @@ interface Props {
 }
 
 const Category = ({category}: Props) => {
-  const textAreaEl: any = useRef();
-  useEffect(() => calculateTextAreaRows(textAreaEl));
-
-  const [description, setDescription] = useState(category.description || '');
-
-  const handleDescriptionChange = (event: any) => {
-    calculateTextAreaRows(textAreaEl);
-    setDescription(event.target.value);
-  };
-
   return (
     <CategoryWrapper>
       <MenuName
@@ -37,21 +27,10 @@ const Category = ({category}: Props) => {
         categoryId={category.id}
       />
 
-      <DescriptionTextArea>
-        <textarea
-          ref={textAreaEl}
-          onChange={handleDescriptionChange}
-          value={description}
-          placeholder="Description"
-        />
-
-        {description !== (category.description || '') && (
-          <Buttons>
-            <SaveButton src={require('../assets/icons/save.svg')} />
-            <CancelButton src={require('../assets/icons/cancel.svg')} />
-          </Buttons>
-        )}
-      </DescriptionTextArea>
+      <UpdateCategoryDescription
+        categoryDescription={category.description}
+        categoryId={category.id}
+      />
 
       <AddMenuButton
         onClick={() =>
