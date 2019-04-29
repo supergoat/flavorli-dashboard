@@ -12,7 +12,7 @@ const useErrors = (): [
   );
 
   const setErrors = (errors: Error[]) => {
-    let copyErrors: Map<string, string> = new Map(localErrors);
+    let copyErrors: Map<string, string> = new Map();
 
     errors.forEach(([key, value]: Error) => {
       copyErrors.set(key, value);

@@ -9,6 +9,7 @@ const Error = styled.div`
   display: flex;
   color: ${Colours.red};
   font-size: 10px;
+  font-weight: bold;
   margin-top: 5px;
   text-transform: uppercase;
   transition: all 400ms;

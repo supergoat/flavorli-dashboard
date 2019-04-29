@@ -3,15 +3,32 @@ import styled from 'styled-components/macro';
 import Colours from '../Colours';
 import Label from '../ui/Label';
 import ConfirmButtons from '../components/ConfirmButtons';
+import Error from '../ui/Error';
 import {uuid} from '../_utils/uuid';
 
 interface Props {
   option: any;
-  onSave: (arg: any) => void;
+  saving: boolean;
+  errors: Map<string, string>;
+  clearErrors: (errors: string[]) => void;
+  onSave: (option: {
+    id: string;
+    name: string;
+    min: string;
+    max: string;
+    items: {name: string; price: string}[];
+  }) => void;
   onCancel: () => void;
 }
 
-const Option = ({option, onSave, onCancel}: Props) => {
+const Option = ({
+  option,
+  saving,
+  errors,
+  clearErrors,
+  onSave,
+  onCancel,
+}: Props) => {
   const [name, setName] = useState(option.name || '');
   const [min, setMin] = useState(option.min || '');
   const [max, setMax] = useState(option.max || '');
@@ -21,16 +38,14 @@ const Option = ({option, onSave, onCancel}: Props) => {
 
   const handleSave = () => {
     onSave({
-      variables: {
-        id: option.id,
-        name,
-        min,
-        max,
-        items: optionItems.map((item: any) => ({
-          name: item.name,
-          price: item.price,
-        })),
-      },
+      id: option.id,
+      name,
+      min,
+      max,
+      items: optionItems.map((item: any) => ({
+        name: item.name,
+        price: item.price,
+      })),
     });
   };
 
@@ -54,82 +69,116 @@ const Option = ({option, onSave, onCancel}: Props) => {
       <Actions>
         <ConfirmButtons
           show={hasOptionBeenEdited}
-          saving={false}
+          saving={saving}
           onConfirm={handleSave}
           onCancel={onCancel}
         />
       </Actions>
 
+      <OptionError show={errors.has('server-error')}>
+        {errors.get('server-error')}
+      </OptionError>
+
       <Label>Option Name</Label>
+      <OptionError show={errors.has('name')}>{errors.get('name')}</OptionError>
 
       <OptionNameInput
-        id="name"
         value={name}
-        onChange={(e: any) => setName(e.target.value)}
+        onChange={(e: any) => {
+          clearErrors(['name']);
+          setName(e.target.value);
+        }}
         placeholder="Option Name"
       />
 
       <Label>How many items can the customer choose?</Label>
+      <OptionError show={errors.has('choices')}>
+        {errors.get('choices')}
+      </OptionError>
+
       <Choices>
         <MinInput
           id="min"
           value={min}
-          onChange={(e: any) => setMin(e.target.value)}
+          onChange={(e: any) => {
+            clearErrors(['choices']);
+            setMin(e.target.value);
+          }}
           placeholder="min"
         />
         to
         <MaxInput
           id="min"
           value={max}
-          onChange={(e: any) => setMax(e.target.value)}
+          onChange={(e: any) => {
+            clearErrors(['choices']);
+            setMax(e.target.value);
+          }}
           placeholder="max"
         />
       </Choices>
 
       <Label>Items</Label>
 
+      <OptionError show={errors.has('items')}>
+        {errors.get('items')}
+      </OptionError>
+
       <AddItemButton
         onClick={() => {
+          clearErrors(['items']);
           const copyOptionItems = cloneArray(optionItems);
           setOptionItems([
             ...copyOptionItems,
             {
               id: uuid(),
               name: '',
-              price: '0',
+              price: '',
             },
           ]);
         }}
       >
         ADD ITEM +
       </AddItemButton>
-
       <Items>
         {optionItems.map((optionItem, index) => {
           return (
             <Item key={optionItem.id}>
-              <ItemName
-                placeholder="Name"
-                value={optionItems[index].name}
-                onChange={(e: any) => {
-                  const value = e.target.value;
-                  const copyOptionItems = cloneArray(optionItems);
-                  copyOptionItems[index].name = value;
-                  setOptionItems(copyOptionItems);
-                }}
-              />
-              <ItemPrice>
-                <input
-                  placeholder="Price"
-                  value={optionItems[index].price}
+              <div>
+                <ItemName
+                  placeholder="Name"
+                  value={optionItems[index].name}
                   onChange={(e: any) => {
+                    clearErrors([`option-item-name-${index}`]);
                     const value = e.target.value;
                     const copyOptionItems = cloneArray(optionItems);
-                    copyOptionItems[index].price = value;
+                    copyOptionItems[index].name = value;
                     setOptionItems(copyOptionItems);
                   }}
                 />
-              </ItemPrice>
+                <OptionError show={errors.has(`option-item-name-${index}`)}>
+                  {errors.get(`option-item-name-${index}`)}
+                </OptionError>
+              </div>
+
+              <div>
+                <ItemPrice>
+                  <input
+                    placeholder="Price"
+                    value={optionItems[index].price}
+                    onChange={(e: any) => {
+                      clearErrors([`option-item-price-${index}`]);
+                      const value = e.target.value;
+                      const copyOptionItems = cloneArray(optionItems);
+                      copyOptionItems[index].price = value;
+                      setOptionItems(copyOptionItems);
+                    }}
+                  />
+                </ItemPrice>
+                <OptionError show={errors.has(`option-item-price-${index}`)}>
+                  {errors.get(`option-item-price-${index}`)}
+                </OptionError>
+              </div>
 
               <p
                 onClick={() => {
@@ -163,6 +212,14 @@ const OptionWrapper = styled.div`
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
 `;
 
+interface ErrorProps {
+  show?: boolean;
+}
+const OptionError = styled(Error)`
+  margin-top: 0;
+  max-height: ${(props: ErrorProps) => (props.show ? '15px' : '0')};
+`;
+
 const CancelButton = styled.img`
   width: 35px;
   height: 35px;
@@ -185,8 +242,8 @@ const OptionNameInput = styled.input`
   font-size: 16px;
   outline: none;
   border: none;
-  margin-bottom: 20px;
   font-weight: bold;
+  margin-bottom: 20px;
 `;
 
 const Choices = styled.div`
