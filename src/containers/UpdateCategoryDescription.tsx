@@ -73,7 +73,7 @@ const UpdateCategoryDescription = ({
               />
             </DescriptionInput>
 
-            <Error show={!!error}>{error}</Error>
+            <OptionError show={!!error}>{error}</OptionError>
           </UpdateCategoryDescriptionWrapper>
         );
       }}
@@ -109,4 +109,12 @@ const DescriptionInput = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+`;
+
+interface ErrorProps {
+  show?: boolean;
+}
+const OptionError = styled(Error)`
+  margin-top: 0;
+  max-height: ${(props: ErrorProps) => (props.show ? '15px' : '0')};
 `;

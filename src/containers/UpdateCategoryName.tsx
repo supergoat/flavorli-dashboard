@@ -59,7 +59,7 @@ const UpdateCategoryName = ({
                 placeholder="Name"
               />
 
-              <Error show={!!error}>{error}</Error>
+              <OptionError show={!!error}>{error}</OptionError>
             </NameInput>
 
             <ConfirmButtons
@@ -89,6 +89,7 @@ const UPDATE_CATEGORY_NAME = gql`
 const UpdateCategoryNameWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 5px;
 
   input {
     font-size: 40px;
@@ -102,4 +103,12 @@ const UpdateCategoryNameWrapper = styled.div`
 
 const NameInput = styled.div`
   width: 100%;
+`;
+
+interface ErrorProps {
+  show?: boolean;
+}
+const OptionError = styled(Error)`
+  margin-top: 0;
+  max-height: ${(props: ErrorProps) => (props.show ? '15px' : '0')};
 `;
