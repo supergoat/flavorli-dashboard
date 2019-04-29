@@ -2,6 +2,7 @@ import React from 'react';
 import styled, {css} from 'styled-components/macro';
 import Label from '../ui/Label';
 import Input from '../ui/Input';
+import Error from '../ui/Error';
 import Colours from '../Colours';
 
 import WarningIcon from '../assets/icons/warning.svg';
@@ -86,19 +87,4 @@ const RequiredError = styled.div`
   &:before {
     content: 'REQUIRED';
   }
-`;
-
-const Error = styled.div`
-  display: flex;
-  color: ${Colours.red};
-  font-size: 10px;
-  margin-top: 5px;
-  text-transform: uppercase;
-  transition: all 400ms;
-  height: 15px;
-  ${(props: ErrorProps) =>
-    css`
-      opacity: ${props.show ? 1 : 0};
-      transform: ${props.show ? 'translateY(0)' : 'translateY(-5px)'};
-    `}
 `;

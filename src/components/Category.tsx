@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 import DeleteCategoryButton from '../containers/DeleteCategoryButton';
+import UpdateCategoryName from '../containers/UpdateCategoryName';
 import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
 
 import Colours from '../Colours';
@@ -16,8 +17,7 @@ const Category = ({category}: Props) => {
   const textAreaEl: any = useRef();
   useEffect(() => calculateTextAreaRows(textAreaEl));
 
-  const [description, setDescription] = useState(category.description);
-  const [name, setName] = useState(category.name);
+  const [description, setDescription] = useState(category.description || '');
 
   const handleDescriptionChange = (event: any) => {
     calculateTextAreaRows(textAreaEl);
@@ -32,19 +32,26 @@ const Category = ({category}: Props) => {
         {category.menu.name}
       </MenuName>
 
-      <NameInput
-        id="name"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        placeholder="Name"
+      <UpdateCategoryName
+        categoryName={category.name}
+        categoryId={category.id}
       />
 
-      <DescriptionTextArea
-        ref={textAreaEl}
-        onChange={handleDescriptionChange}
-        value={description}
-        placeholder="Description"
-      />
+      <DescriptionTextArea>
+        <textarea
+          ref={textAreaEl}
+          onChange={handleDescriptionChange}
+          value={description}
+          placeholder="Description"
+        />
+
+        {description !== (category.description || '') && (
+          <Buttons>
+            <SaveButton src={require('../assets/icons/save.svg')} />
+            <CancelButton src={require('../assets/icons/cancel.svg')} />
+          </Buttons>
+        )}
+      </DescriptionTextArea>
 
       <AddMenuButton
         onClick={() =>
@@ -115,22 +122,35 @@ const MenuName = styled.h4`
   padding: 0 3px;
 `;
 
-const NameInput = styled.input`
-  font-size: 40px;
-  width: 100%;
-  outline: none;
-  padding: 10px 0;
-  border: none;
+const Buttons = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
-const DescriptionTextArea = styled.textarea`
-  font-size: 20px;
-  outline: none;
-  resize: none;
-  width: 100%;
-  padding: 10px 0;
+const SaveButton = styled.img`
+  width: 35px;
+  height: 35px;
+`;
+
+const CancelButton = styled.img`
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+`;
+
+const DescriptionTextArea = styled.div`
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
-  border: none;
+
+  textarea {
+    font-size: 20px;
+    outline: none;
+    resize: none;
+    width: 100%;
+    padding-bottom: 10px;
+    border: none;
+  }
 `;
 
 const AddMenuButton = styled(Button)`
