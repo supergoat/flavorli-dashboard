@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import gql from 'graphql-tag';
 import {Mutation, MutationFn} from 'react-apollo';
 import styled from 'styled-components/macro';
@@ -13,7 +13,18 @@ const UpdateCategoryName = ({
   categoryId: string;
 }) => {
   const [name, setName] = useState(categoryName);
+  const [hasBeenEdited, setHasBeenEdited] = useState(false);
   const [error, setError] = useState('');
+
+  /**
+   * Update name, when the name prop changes. This is needed when navigating
+   * between categories because the component doesn't not re-render therefore the
+   * name remains stale
+   */
+  useEffect(() => {
+    setHasBeenEdited(false);
+    setName(categoryName);
+  }, [categoryName]);
 
   const handleUpdate = (
     updateMenuCategory: MutationFn<any, {name: string}>,
@@ -21,6 +32,13 @@ const UpdateCategoryName = ({
     if (name.trim() === '') return setError('Name cannot be blank');
 
     updateMenuCategory();
+  };
+
+  const handleNameChange = (e: any) => {
+    const value = e.target.value;
+    setError('');
+    setName(value);
+    setHasBeenEdited(value !== categoryName);
   };
 
   return (
@@ -37,10 +55,7 @@ const UpdateCategoryName = ({
             <NameInput>
               <input
                 value={name}
-                onChange={e => {
-                  setError('');
-                  setName(e.target.value);
-                }}
+                onChange={handleNameChange}
                 placeholder="Name"
               />
 
@@ -48,7 +63,7 @@ const UpdateCategoryName = ({
             </NameInput>
 
             <ConfirmButtons
-              show={name !== categoryName}
+              show={hasBeenEdited}
               saving={loading}
               onConfirm={() => handleUpdate(updateMenuCategory)}
               onCancel={() => setName(categoryName)}

@@ -23,12 +23,12 @@ const Category = ({category}: Props) => {
       </MenuName>
 
       <UpdateCategoryName
-        categoryName={category.name}
+        categoryName={category.name || ''}
         categoryId={category.id}
       />
 
       <UpdateCategoryDescription
-        categoryDescription={category.description}
+        categoryDescription={category.description || ''}
         categoryId={category.id}
       />
 

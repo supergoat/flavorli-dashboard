@@ -27,7 +27,7 @@ const UpsertOption = ({option = {}, onSave, onCancel}: Props) => {
 
     if (name.trim() === '') localErrors.push(['name', 'required']);
 
-    if (max > items.length)
+    if (items.length !== 0 && max > items.length)
       localErrors.push([
         'choices',
         'Max cannot be greater than the number of items',

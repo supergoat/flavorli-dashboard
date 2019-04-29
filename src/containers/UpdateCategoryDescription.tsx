@@ -14,14 +14,32 @@ const UpdateCategoryDescription = ({
   categoryId: string;
 }) => {
   const textAreaEl: any = useRef();
-  useEffect(() => calculateTextAreaRows(textAreaEl));
 
   const [description, setDescription] = useState(categoryDescription);
+  const [hasBeenEdited, setHasBeenEdited] = useState(false);
   const [error, setError] = useState('');
 
+  /**
+   * Call calculateTextAreaRows once  when the component mounts. This is needed
+   * to ensure the textarea has the correct number of rows
+   */
+  useEffect(() => calculateTextAreaRows(textAreaEl), []);
+
+  /**
+   * Update description, when the description prop changes. This is needed when navigating
+   * between categories because  the component doesn't not re-render therefore the
+   * description remains stale
+   */
+  useEffect(() => {
+    setHasBeenEdited(false);
+    setDescription(categoryDescription);
+  }, [categoryDescription]);
+
   const handleDescriptionChange = (event: any) => {
+    const value = event.target.value;
     calculateTextAreaRows(textAreaEl);
-    setDescription(event.target.value);
+    setDescription(value);
+    setHasBeenEdited(value !== categoryDescription);
   };
 
   const handleUpdate = (
@@ -34,9 +52,7 @@ const UpdateCategoryDescription = ({
     <Mutation
       mutation={UPDATE_CATEGORY_DESCRIPTION}
       variables={{categoryId, description}}
-      onError={() => {
-        setError('Something went wrong, unable to save');
-      }}
+      onError={() => setError('Something went wrong, unable to save')}
     >
       {(updateMenuCategory: any, {loading}: any) => {
         return (
@@ -50,7 +66,7 @@ const UpdateCategoryDescription = ({
               />
 
               <ConfirmButtons
-                show={description !== categoryDescription}
+                show={hasBeenEdited}
                 saving={loading}
                 onConfirm={() => handleUpdate(updateMenuCategory)}
                 onCancel={() => setDescription(categoryDescription)}

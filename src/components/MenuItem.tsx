@@ -102,14 +102,14 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         }}
       />
 
-      <AddOptionButton
+      <CreateOptionButton
         onClick={() => {
           setIsCreatingOption(true);
           setIsEditingOption(null);
         }}
       >
-        ADD OPTION +
-      </AddOptionButton>
+        CREATE OPTION +
+      </CreateOptionButton>
 
       {isCreatingOption && (
         <CreatingOption>
@@ -298,7 +298,7 @@ const CreatingOption = styled.div`
   margin-top: 15px;
 `;
 
-const AddOptionButton = styled.div`
+const CreateOptionButton = styled.div`
   align-self: flex-start;
   font-size: 14px;
   padding: 10px 0;

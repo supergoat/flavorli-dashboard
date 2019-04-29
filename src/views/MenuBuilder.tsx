@@ -41,7 +41,7 @@ const MenuBuilder = (_: Props) => {
               )}
             </SideBar>
 
-            <RouterWrapper>
+            <RouterWrapper primary={false}>
               <Menu path="/menu/:menuId" />
               <Category path="/category/:categoryId" />
               <MenuItem path="/menuItem/:menuItemId" />
