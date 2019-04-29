@@ -11,7 +11,6 @@ const calculateTextAreaRows = (
   const currentRows = ~~(textAreaEl.current.scrollHeight / textareaLineHeight);
 
   textAreaEl.current.rows = currentRows;
-  console.log(currentRows, minRows);
 };
 
 export default calculateTextAreaRows;

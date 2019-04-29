@@ -25,7 +25,7 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
   const [dietarySelected, setDietarySelected] = useState(menuItem.dietary);
   const [selectedOptions, setSelectedOptions] = useState(menuItem.options);
   const [availableOptions, setAvailableOptions] = useState(options);
-  const [isAddingOption, setIsAddingOption] = useState(false);
+  const [isCreatingOption, setIsCreatingOption] = useState(false);
   const [editingOption, setIsEditingOption] = useState<any>(null);
 
   const handleDescriptionChange = (event: any) => {
@@ -100,22 +100,23 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
 
       <AddOptionButton
         onClick={() => {
-          setIsAddingOption(true);
+          setIsCreatingOption(true);
           setIsEditingOption(null);
         }}
       >
         ADD OPTION +
       </AddOptionButton>
 
-      {isAddingOption && (
-        <UpsertOption
-          option={{}}
-          onSave={(newOption: any) => {
-            setSelectedOptions([...selectedOptions, newOption]);
-            setIsAddingOption(false);
-          }}
-          onCancel={() => setIsAddingOption(false)}
-        />
+      {isCreatingOption && (
+        <CreatingOption>
+          <UpsertOption
+            onSave={(newOption: any) => {
+              setSelectedOptions([...selectedOptions, newOption]);
+              setIsCreatingOption(false);
+            }}
+            onCancel={() => setIsCreatingOption(false)}
+          />
+        </CreatingOption>
       )}
 
       <Options>
@@ -141,7 +142,7 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
               ) : (
                 <Option
                   onClick={() => {
-                    setIsAddingOption(false);
+                    setIsCreatingOption(false);
                     setIsEditingOption(option);
                   }}
                 >
@@ -285,6 +286,12 @@ const Option = styled.div`
 const OptionName = styled.p`
   color: ${Colours.oxfordBlue};
   font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 16px;
+`;
+
+const CreatingOption = styled.div`
+  margin-top: 15px;
 `;
 
 const AddOptionButton = styled.div`

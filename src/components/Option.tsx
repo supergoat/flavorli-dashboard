@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
-import Button from '../ui/Button';
 import Label from '../ui/Label';
+import ConfirmButtons from '../components/ConfirmButtons';
 import {uuid} from '../_utils/uuid';
 
 interface Props {
@@ -34,13 +34,33 @@ const Option = ({option, onSave, onCancel}: Props) => {
     });
   };
 
+  const cloneArray = (array: any[]) => JSON.parse(JSON.stringify(array));
+
+  const hasOptionBeenEdited =
+    name !== option.name ||
+    min !== option.min ||
+    max !== option.max ||
+    JSON.stringify(optionItems) !== JSON.stringify(option.items);
+
   return (
     <OptionWrapper>
-      <Header>
-        <Label>Option Name</Label>
+      {!hasOptionBeenEdited && (
+        <CancelButton
+          src={require('../assets/icons/cancel.svg')}
+          onClick={onCancel}
+        />
+      )}
 
-        <CloseButton onClick={onCancel}>X</CloseButton>
-      </Header>
+      <Actions>
+        <ConfirmButtons
+          show={hasOptionBeenEdited}
+          saving={false}
+          onConfirm={handleSave}
+          onCancel={onCancel}
+        />
+      </Actions>
+
+      <Label>Option Name</Label>
 
       <OptionNameInput
         id="name"
@@ -50,7 +70,6 @@ const Option = ({option, onSave, onCancel}: Props) => {
       />
 
       <Label>How many items can the customer choose?</Label>
-
       <Choices>
         <MinInput
           id="min"
@@ -71,8 +90,9 @@ const Option = ({option, onSave, onCancel}: Props) => {
 
       <AddItemButton
         onClick={() => {
+          const copyOptionItems = cloneArray(optionItems);
           setOptionItems([
-            ...optionItems,
+            ...copyOptionItems,
             {
               id: uuid(),
               name: '',
@@ -83,6 +103,7 @@ const Option = ({option, onSave, onCancel}: Props) => {
       >
         ADD ITEM +
       </AddItemButton>
+
       <Items>
         {optionItems.map((optionItem, index) => {
           return (
@@ -92,9 +113,9 @@ const Option = ({option, onSave, onCancel}: Props) => {
                 value={optionItems[index].name}
                 onChange={(e: any) => {
                   const value = e.target.value;
-                  const itemsCopy = [...optionItems];
-                  itemsCopy[index].name = value;
-                  setOptionItems(itemsCopy);
+                  const copyOptionItems = cloneArray(optionItems);
+                  copyOptionItems[index].name = value;
+                  setOptionItems(copyOptionItems);
                 }}
               />
               <ItemPrice>
@@ -103,9 +124,9 @@ const Option = ({option, onSave, onCancel}: Props) => {
                   value={optionItems[index].price}
                   onChange={(e: any) => {
                     const value = e.target.value;
-                    const itemsCopy = [...optionItems];
-                    itemsCopy[index].price = value;
-                    setOptionItems(itemsCopy);
+                    const copyOptionItems = cloneArray(optionItems);
+                    copyOptionItems[index].price = value;
+                    setOptionItems(copyOptionItems);
                   }}
                 />
               </ItemPrice>
@@ -123,10 +144,6 @@ const Option = ({option, onSave, onCancel}: Props) => {
           );
         })}
       </Items>
-
-      <SaveButton width="100px" onClick={handleSave}>
-        Save
-      </SaveButton>
     </OptionWrapper>
   );
 };
@@ -134,6 +151,7 @@ const Option = ({option, onSave, onCancel}: Props) => {
 export default Option;
 
 const OptionWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -141,13 +159,26 @@ const OptionWrapper = styled.div`
   width: 580px;
   background: ${Colours.white};
   border-radius: 4px;
-  padding: 20px 15px 15px;
+  padding: 15px;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
 `;
 
-const Header = styled.div`
+const CancelButton = styled.img`
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+`;
+
+const Actions = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 `;
 
 const OptionNameInput = styled.input`
@@ -155,11 +186,7 @@ const OptionNameInput = styled.input`
   outline: none;
   border: none;
   margin-bottom: 20px;
-`;
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  color: ${Colours.osloGrey};
+  font-weight: bold;
 `;
 
 const Choices = styled.div`
@@ -176,6 +203,10 @@ const MinInput = styled.input`
   font-size: 16px;
   outline: none;
   border: none;
+
+  &::placeholder {
+    font-weight: bold;
+  }
 `;
 
 const MaxInput = styled.input`
@@ -184,6 +215,10 @@ const MaxInput = styled.input`
   font-size: 16px;
   outline: none;
   border: none;
+
+  &::placeholder {
+    font-weight: bold;
+  }
 `;
 
 const Items = styled.div``;
@@ -198,7 +233,7 @@ const Item = styled.div`
   user-select: none;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
-  margin-bottom: 10px;
+  margin: 5px 0 10px;
   background: ${Colours.white};
 `;
 
@@ -233,13 +268,8 @@ const ItemPrice = styled.div`
 const AddItemButton = styled.div`
   align-self: flex-start;
   font-size: 12px;
-  padding: 5px 0;
   font-weight: bold;
   cursor: pointer;
   user-select: none;
-  margin: 5px 0;
-`;
-
-const SaveButton = styled(Button)`
-  align-self: flex-end;
+  padding: 10px 2px;
 `;

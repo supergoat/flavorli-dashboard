@@ -43,6 +43,7 @@ const SaveButton = styled.img`
   width: 35px;
   height: 35px;
   cursor: pointer;
+  z-index: 1;
 `;
 
 const CancelButton = styled.img`
@@ -50,6 +51,7 @@ const CancelButton = styled.img`
   height: 35px;
   margin-left: 10px;
   cursor: pointer;
+  z-index: 1;
 `;
 
 interface SavingProps {

@@ -4,12 +4,12 @@ import {Mutation} from 'react-apollo';
 import gql from 'graphql-tag';
 
 interface Props {
-  option: any;
+  option?: any;
   onCancel: any;
   onSave: any;
 }
 
-const UpsertOption = ({option, onSave, onCancel}: Props) => {
+const UpsertOption = ({option = {}, onSave, onCancel}: Props) => {
   return (
     <Mutation
       mutation={CREATE_MENU_ITEM_OPTION}
