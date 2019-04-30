@@ -4,6 +4,8 @@ import {RouteComponentProps, navigate} from '@reach/router';
 import Colours from '../Colours';
 import SelectOption from '../components/SelectOption';
 import Button from '../ui/Button';
+import Error from '../ui/Error';
+import Label from '../ui/Label';
 import SelectDietaryItems from './SelectDietaryItems';
 import DeleteMenuItemButton from '../containers/DeleteMenuItemButton';
 import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
@@ -15,8 +17,17 @@ interface Props extends RouteComponentProps {
   menuItem: any;
   options: any;
   onSave: (arg: any) => void;
+  errors: Map<string, string>;
+  clearErrors: (errors: string[]) => void;
 }
-const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
+const MenuItem = ({
+  categoryId,
+  menuItem,
+  options,
+  onSave,
+  errors,
+  clearErrors,
+}: Props) => {
   const textAreaEl: any = useRef();
   useEffect(() => calculateTextAreaRows(textAreaEl));
 
@@ -36,26 +47,30 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
 
   const handleSave = () => {
     onSave({
-      variables: {
-        id: menuItem.id,
-        categoryId,
-        name,
-        price: price,
-        description,
-        dietary: dietarySelected,
-        options: selectedOptions.map((o: any) => o.id),
-      },
+      id: menuItem.id,
+      categoryId,
+      name,
+      price: price,
+      description,
+      dietary: dietarySelected,
+      options: selectedOptions.map((o: any) => o.id),
     });
   };
 
   return (
     <MenuItemWrapper>
       <NameInput
-        id="name"
+        id="menu-item-name"
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={e => {
+          clearErrors(['name']);
+          setName(e.target.value);
+        }}
         placeholder="Name"
       />
+      <MenuItemError show={errors.has('name')}>
+        {errors.get('name')}
+      </MenuItemError>
 
       <DescriptionTextArea
         ref={textAreaEl}
@@ -65,20 +80,23 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         placeholder="Description"
       />
 
-      <Heading htmlFor="price">Price</Heading>
-
+      <Label htmlFor="price">Price</Label>
+      <MenuItemError show={errors.has('price')}>
+        {errors.get('price')}
+      </MenuItemError>
       <Price>
         <input
-          id="price"
+          id="menu-item-price"
           value={price}
           onChange={(e: any) => {
             const str = e.target.value;
+            clearErrors(['price']);
             if (isValidPrice(str)) setPrice(str);
           }}
         />
       </Price>
 
-      <Heading>Allergens</Heading>
+      <Label>Allergens</Label>
 
       <SelectDietaryItems
         selectedItems={dietarySelected}
@@ -91,7 +109,7 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         }
       />
 
-      <Heading>Options</Heading>
+      <Label>Options</Label>
       <SelectOption
         availableOptions={availableOptions}
         onAdd={(option: any) => {
@@ -186,28 +204,30 @@ const MenuItem = ({categoryId, menuItem, options, onSave}: Props) => {
         </Button>
       </Actions>
 
-      <ItemActions>
-        <ItemAction>
-          <div>
-            <h4>Hide Item</h4>
-            <p>Customers will not be able to view this item</p>
-          </div>
+      {menuItem.id && (
+        <ItemActions>
+          <ItemAction>
+            <div>
+              <h4>Hide Item</h4>
+              <p>Customers will not be able to view this item</p>
+            </div>
 
-          <Button secondary>HIDE ITEM</Button>
-        </ItemAction>
+            <Button secondary>HIDE ITEM</Button>
+          </ItemAction>
 
-        <ItemAction>
-          <div>
-            <h4>Delete Item</h4>
-            <p>Deleting this item, is an ireverisble action.</p>
-          </div>
+          <ItemAction>
+            <div>
+              <h4>Delete Item</h4>
+              <p>Deleting this item, is an ireverisble action.</p>
+            </div>
 
-          <DeleteMenuItemButton
-            categoryId={categoryId}
-            menuItemId={menuItem.id}
-          />
-        </ItemAction>
-      </ItemActions>
+            <DeleteMenuItemButton
+              categoryId={categoryId}
+              menuItemId={menuItem.id}
+            />
+          </ItemAction>
+        </ItemActions>
+      )}
     </MenuItemWrapper>
   );
 };
@@ -225,9 +245,12 @@ const MenuItemWrapper = styled.div`
   padding: 10px 0;
 `;
 
-const Heading = styled.label`
-  margin-bottom: 10px;
-  color: ${Colours.osloGrey};
+interface ErrorProps {
+  show?: boolean;
+}
+const MenuItemError = styled(Error)`
+  margin-top: 0;
+  max-height: ${(props: ErrorProps) => (props.show ? '15px' : '0')};
 `;
 
 const NameInput = styled.input`
