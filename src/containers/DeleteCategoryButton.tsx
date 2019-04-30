@@ -1,10 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import {Mutation} from 'react-apollo';
-import styled from 'styled-components/macro';
-import Colours from '../Colours';
 import {MENU_CATEGORIES_DATA} from '../views/MenuBuilder';
-import Button from '../ui/Button';
+import DeleteButton from './DeleteButton';
 import {navigate} from '@reach/router';
 
 const DeleteCategoryButton = ({
@@ -14,14 +11,6 @@ const DeleteCategoryButton = ({
   menuId: string;
   categoryId: string;
 }) => {
-  const handleDeleteMenuCategory = (deleteMenuCategory: any) => {
-    deleteMenuCategory({
-      variables: {
-        categoryId,
-      },
-    });
-  };
-
   const handleMenuDeleted = (cache: any, {data: {deleteMenuCategory}}: any) => {
     const {categories} = cache.readFragment({
       id: `Menu:${menuId}`,
@@ -43,20 +32,11 @@ const DeleteCategoryButton = ({
   };
 
   return (
-    <Mutation mutation={DELETE_MENU} update={handleMenuDeleted}>
-      {(deleteMenuCategory: any, {loading, error}: any) => {
-        return (
-          <DeleteCategoryButtonWrapper>
-            <DeleteButton
-              onClick={() => handleDeleteMenuCategory(deleteMenuCategory)}
-            >
-              {loading ? 'DELETING...' : 'DELETE CATEGORY'}
-            </DeleteButton>
-            <Error show={!!error}>Could not delete menu!</Error>
-          </DeleteCategoryButtonWrapper>
-        );
-      }}
-    </Mutation>
+    <DeleteButton
+      mutation={DELETE_MENU}
+      onDelete={handleMenuDeleted}
+      variables={{categoryId}}
+    />
   );
 };
 
@@ -69,28 +49,4 @@ const DELETE_MENU = gql`
       name
     }
   }
-`;
-
-const DeleteCategoryButtonWrapper = styled.div`
-  position: relative;
-`;
-
-const DeleteButton = styled(Button)`
-  background: ${Colours.red};
-  color: ${Colours.white};
-`;
-
-interface ErrorProps {
-  show?: boolean;
-}
-
-const Error = styled.div`
-  position: absolute;
-  right: -7px;
-  color: ${Colours.red};
-  transition: all 400ms;
-  width: 145px;
-  font-size: 14px;
-  margin-top: 5px;
-  opacity: ${(props: ErrorProps) => (props.show ? 1 : 0)};
 `;

@@ -54,7 +54,7 @@ const Category = ({category}: Props) => {
               <Info>
                 <Header>
                   <Name>{item.name}</Name>
-                  <Price>£{item.price}</Price>
+                  <Price>£{Number.parseFloat(item.price).toFixed(2)}</Price>
                 </Header>
                 <Dietary dietary={item.dietary} />
                 <Description>{item.description}</Description>
@@ -186,7 +186,6 @@ const ItemActions = styled.div`
 
 const ItemAction = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
   margin-bottom: 30px;
 
