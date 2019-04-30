@@ -58,6 +58,7 @@ const Category = ({category}: Props) => {
                 </Header>
                 <Dietary dietary={item.dietary} />
                 <Description>{item.description}</Description>
+                {!item.available && <Availability>Unavailable</Availability>}
               </Info>
             </MenuItem>
           );
@@ -132,6 +133,7 @@ const AddMenuButton = styled(Button)`
 const MenuItems = styled.div``;
 
 const MenuItem = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   padding: 10px;
@@ -170,6 +172,12 @@ const Price = styled.h4`
 
 const Description = styled.p`
   color: ${Colours.osloGrey};
+`;
+
+const Availability = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 `;
 
 const ItemActions = styled.div`

@@ -11,6 +11,7 @@ interface MenuItemType {
   categoryId: string;
   name: string;
   price: string;
+  available: boolean;
   description: string;
   dietary: string[];
   options: string[];
@@ -51,17 +52,17 @@ const UpsertMenuItem = ({options, categoryId, menuItem}: Props) => {
 
   const handleSave = (
     menuItem: MenuItemType,
-    addMenuItem: MutationFn<any, MenuItemType>,
+    upsertMenuItem: MutationFn<any, MenuItemType>,
   ) => {
     if (!isFormValid(menuItem)) return;
-    addMenuItem({
+    upsertMenuItem({
       variables: {...menuItem},
     });
   };
   return (
     <Mutation
       mutation={UPSERT_MENU_ITEM}
-      update={(cache: any, {data: {addMenuItem}}: any) => {
+      update={(cache: any, {data: {upsertMenuItem}}: any) => {
         if (!menuItem.id) {
           const {items} = cache.readFragment({
             id: `MenuCategory:${categoryId}`,
@@ -72,7 +73,7 @@ const UpsertMenuItem = ({options, categoryId, menuItem}: Props) => {
             id: `MenuCategory:${categoryId}`,
             fragment: CATEGORY_ITEMS,
             data: {
-              items: items ? [addMenuItem, ...items] : [addMenuItem],
+              items: items ? [upsertMenuItem, ...items] : [upsertMenuItem],
               __typename: 'MenuCategory',
             },
           });
@@ -81,14 +82,14 @@ const UpsertMenuItem = ({options, categoryId, menuItem}: Props) => {
         navigate(`/menu-builder/category/${categoryId}`);
       }}
     >
-      {(addMenuItem: any, {loading, error}: any) => {
+      {(upsertMenuItem: any, {loading, error}: any) => {
         return (
           <MenuItem
             categoryId={categoryId}
             menuItem={menuItem}
             options={options}
             onSave={(menuItem: MenuItemType) =>
-              handleSave(menuItem, addMenuItem)
+              handleSave(menuItem, upsertMenuItem)
             }
             errors={errors}
             clearErrors={clearErrors}
@@ -102,20 +103,22 @@ const UpsertMenuItem = ({options, categoryId, menuItem}: Props) => {
 export default UpsertMenuItem;
 
 const UPSERT_MENU_ITEM = gql`
-  mutation addMenuItem(
+  mutation upsertMenuItem(
     $categoryId: ID!
     $id: ID
     $name: String
     $price: String
+    $available: Boolean!
     $description: String
     $dietary: [String!]
     $options: [ID!]
   ) {
-    addMenuItem(
+    upsertMenuItem(
       categoryId: $categoryId
       id: $id
       name: $name
       price: $price
+      available: $available
       description: $description
       dietary: $dietary
       options: $options
@@ -124,6 +127,7 @@ const UPSERT_MENU_ITEM = gql`
       name
       description
       price
+      available
       dietary
       options {
         id

@@ -30,6 +30,7 @@ export const CATEGORY_ITEMS = gql`
       id
       name
       price
+      available
       description
       dietary
     }

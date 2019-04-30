@@ -31,6 +31,7 @@ const MenuItem = ({
   const textAreaEl: any = useRef();
   useEffect(() => calculateTextAreaRows(textAreaEl));
 
+  const [available, setAvailable] = useState(menuItem.available);
   const [name, setName] = useState(menuItem.name || '');
   const [price, setPrice] = useState(menuItem.price || '');
   const [description, setDescription] = useState(menuItem.description || '');
@@ -51,14 +52,23 @@ const MenuItem = ({
       categoryId,
       name,
       price: price,
+      available,
       description,
       dietary: dietarySelected,
       options: selectedOptions.map((o: any) => o.id),
     });
   };
 
+  console.log(available);
   return (
     <MenuItemWrapper>
+      <Availability
+        available={available}
+        onClick={() => setAvailable(!available)}
+      >
+        {available ? 'AVAILABLE' : 'UNAVAILABLE'}
+      </Availability>
+
       <NameInput
         id="menu-item-name"
         value={name}
@@ -208,15 +218,6 @@ const MenuItem = ({
         <ItemActions>
           <ItemAction>
             <div>
-              <h4>Hide Item</h4>
-              <p>Customers will not be able to view this item</p>
-            </div>
-
-            <Button secondary>HIDE ITEM</Button>
-          </ItemAction>
-
-          <ItemAction>
-            <div>
               <h4>Delete Item</h4>
               <p>Deleting this item, is an ireverisble action.</p>
             </div>
@@ -251,6 +252,20 @@ interface ErrorProps {
 const MenuItemError = styled(Error)`
   margin-top: 0;
   max-height: ${(props: ErrorProps) => (props.show ? '15px' : '0')};
+`;
+
+interface AvailabilityProps {
+  available?: boolean;
+}
+const Availability = styled.h3`
+  cursor: pointer;
+  user-select: none;
+  background: ${(props: AvailabilityProps) =>
+    props.available ? Colours.white : Colours.osloGrey};
+  padding: ${(props: AvailabilityProps) =>
+    props.available ? '7px 0' : '7px 5px'};
+  color: ${(props: AvailabilityProps) =>
+    props.available ? Colours.oxfordBlue : Colours.white};
 `;
 
 const NameInput = styled.input`
@@ -334,7 +349,7 @@ const CreateOptionButton = styled.div`
 const Actions = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 20px 0;
+  padding: 30px 0 10px;
 `;
 
 const ItemActions = styled.div`

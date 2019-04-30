@@ -8,6 +8,7 @@ const menuItem = {
   name: '',
   description: '',
   price: 0.0,
+  available: true,
   dietary: [],
   options: [],
 };

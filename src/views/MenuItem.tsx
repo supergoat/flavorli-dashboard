@@ -36,6 +36,7 @@ const GET_MENU_ITEM = gql`
       description
       price
       dietary
+      available
       category {
         id
       }
