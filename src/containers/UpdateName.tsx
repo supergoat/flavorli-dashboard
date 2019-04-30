@@ -1,57 +1,55 @@
 import React, {useState, useEffect} from 'react';
-import gql from 'graphql-tag';
 import {Mutation, MutationFn} from 'react-apollo';
 import styled from 'styled-components/macro';
 import ConfirmButtons from '../components/ConfirmButtons';
 import Error from '../ui/Error';
 
-const UpdateCategoryName = ({
-  categoryName = '',
-  categoryId,
+const UpdateName = ({
+  previousName = '',
+  variables,
+  mutation,
 }: {
-  categoryName: string;
-  categoryId: string;
+  previousName: string;
+  variables: {[key: string]: any};
+  mutation: MutationFn<any, any>;
 }) => {
-  const [name, setName] = useState(categoryName);
+  const [name, setName] = useState(previousName);
   const [hasBeenEdited, setHasBeenEdited] = useState(false);
   const [error, setError] = useState('');
 
   /**
    * Update name, when the name prop changes. This is needed when navigating
-   * between categories because the component doesn't not re-render therefore the
-   * name remains stale
+   * and the component does not re-render, therefore the name remains stale
    */
   useEffect(() => {
     setHasBeenEdited(false);
-    setName(categoryName);
-  }, [categoryName]);
+    setName(previousName);
+  }, [previousName]);
 
-  const handleUpdate = (
-    updateMenuCategory: MutationFn<any, {name: string}>,
-  ) => {
-    if (name.trim() === '') return setError('Name cannot be blank');
+  const handleUpdate = (mutationFn: MutationFn<any, any>) => {
+    if (name.trim() === '') return setError('required');
 
-    updateMenuCategory();
+    mutationFn();
   };
 
   const handleNameChange = (e: any) => {
     const value = e.target.value;
     setError('');
     setName(value);
-    setHasBeenEdited(value !== categoryName);
+    setHasBeenEdited(value !== previousName);
   };
 
   return (
     <Mutation
-      mutation={UPDATE_CATEGORY_NAME}
-      variables={{categoryId, name}}
+      mutation={mutation}
+      variables={{...variables, name}}
       onError={() => {
         setError('Something went wrong, unable to save');
       }}
     >
-      {(updateMenuCategory: any, {loading}: any) => {
+      {(mutationFn: any, {loading}: any) => {
         return (
-          <UpdateCategoryNameWrapper>
+          <UpdateNameWrapper>
             <NameInput>
               <input
                 value={name}
@@ -59,37 +57,28 @@ const UpdateCategoryName = ({
                 placeholder="Name"
               />
 
-              <OptionError show={!!error}>{error}</OptionError>
+              <NameError show={!!error}>{error}</NameError>
             </NameInput>
 
             <ConfirmButtons
               show={hasBeenEdited}
               saving={loading}
-              onConfirm={() => handleUpdate(updateMenuCategory)}
+              onConfirm={() => handleUpdate(mutationFn)}
               onCancel={() => {
                 setHasBeenEdited(false);
-                setName(categoryName);
+                setName(previousName);
               }}
             />
-          </UpdateCategoryNameWrapper>
+          </UpdateNameWrapper>
         );
       }}
     </Mutation>
   );
 };
 
-export default UpdateCategoryName;
+export default UpdateName;
 
-const UPDATE_CATEGORY_NAME = gql`
-  mutation updateMenuCategory($categoryId: ID!, $name: String) {
-    updateMenuCategory(categoryId: $categoryId, name: $name) {
-      id
-      name
-    }
-  }
-`;
-
-const UpdateCategoryNameWrapper = styled.div`
+const UpdateNameWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 5px;
@@ -111,7 +100,7 @@ const NameInput = styled.div`
 interface ErrorProps {
   show?: boolean;
 }
-const OptionError = styled(Error)`
+const NameError = styled(Error)`
   margin-top: 0;
   max-height: ${(props: ErrorProps) => (props.show ? '15px' : '0')};
 `;

@@ -6,7 +6,7 @@ import styled from 'styled-components/macro';
 import Button from '../ui/Button';
 import Colours from '../Colours';
 import DeleteMenuButton from '../containers/DeleteMenuButton';
-import UpdateMenuName from '../containers/UpdateMenuName';
+import UpdateName from '../containers/UpdateName';
 import UpdateMenuDescription from '../containers/UpdateMenuDescription';
 
 interface Props extends RouteComponentProps {
@@ -22,7 +22,11 @@ const Menu = ({menuId}: Props) => {
 
         return (
           <MenuWrapper>
-            <UpdateMenuName menuName={getMenu.name || ''} menuId={getMenu.id} />
+            <UpdateName
+              mutation={UPDATE_MENU_NAME}
+              previousName={getMenu.name || ''}
+              variables={{menuId: getMenu.id}}
+            />
 
             <UpdateMenuDescription
               menuDescription={getMenu.description || ''}
@@ -76,6 +80,14 @@ const GET_RESTAURANT_MENU = gql`
   }
 `;
 
+const UPDATE_MENU_NAME = gql`
+  mutation updateMenu($menuId: ID!, $name: String) {
+    updateMenu(menuId: $menuId, name: $name) {
+      id
+      name
+    }
+  }
+`;
 const MenuWrapper = styled.div`
   display: flex;
   flex-direction: column;

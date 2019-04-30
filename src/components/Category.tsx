@@ -1,10 +1,11 @@
 import React from 'react';
+import gql from 'graphql-tag';
 import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 import DeleteCategoryButton from '../containers/DeleteCategoryButton';
-import UpdateCategoryName from '../containers/UpdateCategoryName';
+import UpdateName from '../containers/UpdateName';
 import UpdateCategoryDescription from '../containers/UpdateCategoryDescription';
 
 import Colours from '../Colours';
@@ -22,9 +23,10 @@ const Category = ({category}: Props) => {
         {category.menu.name}
       </MenuName>
 
-      <UpdateCategoryName
-        categoryName={category.name || ''}
-        categoryId={category.id}
+      <UpdateName
+        mutation={UPDATE_CATEGORY_NAME}
+        previousName={category.name || ''}
+        variables={{categoryId: category.id}}
       />
 
       <UpdateCategoryDescription
@@ -88,6 +90,15 @@ const Category = ({category}: Props) => {
 };
 
 export default Category;
+
+const UPDATE_CATEGORY_NAME = gql`
+  mutation updateMenuCategory($categoryId: ID!, $name: String) {
+    updateMenuCategory(categoryId: $categoryId, name: $name) {
+      id
+      name
+    }
+  }
+`;
 
 const CategoryWrapper = styled.div`
   display: flex;
