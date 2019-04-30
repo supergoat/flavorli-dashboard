@@ -99,37 +99,7 @@ const CategoryWrapper = styled.div`
 const MenuName = styled.h4`
   color: ${Colours.osloGrey};
   padding: 0 3px;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const SaveButton = styled.img`
-  width: 35px;
-  height: 35px;
-`;
-
-const CancelButton = styled.img`
-  width: 35px;
-  height: 35px;
-  margin-left: 10px;
-`;
-
-const DescriptionTextArea = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-
-  textarea {
-    font-size: 20px;
-    outline: none;
-    resize: none;
-    width: 100%;
-    padding-bottom: 10px;
-    border: none;
-  }
+  cursor: pointer;
 `;
 
 const AddMenuButton = styled(Button)`

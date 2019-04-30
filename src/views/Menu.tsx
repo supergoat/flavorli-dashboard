@@ -7,6 +7,7 @@ import Button from '../ui/Button';
 import Colours from '../Colours';
 import DeleteMenuButton from '../containers/DeleteMenuButton';
 import UpdateMenuName from '../containers/UpdateMenuName';
+import UpdateMenuDescription from '../containers/UpdateMenuDescription';
 
 interface Props extends RouteComponentProps {
   menuId?: string;
@@ -23,7 +24,10 @@ const Menu = ({menuId}: Props) => {
           <MenuWrapper>
             <UpdateMenuName menuName={getMenu.name || ''} menuId={getMenu.id} />
 
-            <MenuDescription>Description</MenuDescription>
+            <UpdateMenuDescription
+              menuDescription={getMenu.description || ''}
+              menuId={getMenu.id}
+            />
 
             <ServiceDays>Monday to Friday</ServiceDays>
             <ServiceHours>9am to 10pm</ServiceHours>
@@ -64,6 +68,7 @@ const GET_RESTAURANT_MENU = gql`
     getMenu(menuId: $menuId) {
       id
       name
+      description
     }
     getRestaurant {
       id
@@ -76,14 +81,6 @@ const MenuWrapper = styled.div`
   flex-direction: column;
   width: 580px;
   padding: 20px 0;
-`;
-
-const MenuName = styled.h1`
-  font-size: 40px;
-`;
-
-const MenuDescription = styled.p`
-  margin: 10px 0;
 `;
 
 const ServiceDays = styled.h3``;
