@@ -66,7 +66,10 @@ const UpdateCategoryName = ({
               show={hasBeenEdited}
               saving={loading}
               onConfirm={() => handleUpdate(updateMenuCategory)}
-              onCancel={() => setName(categoryName)}
+              onCancel={() => {
+                setHasBeenEdited(false);
+                setName(categoryName);
+              }}
             />
           </UpdateCategoryNameWrapper>
         );

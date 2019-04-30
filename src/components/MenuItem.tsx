@@ -31,8 +31,8 @@ const MenuItem = ({
   const textAreaEl: any = useRef();
   useEffect(() => calculateTextAreaRows(textAreaEl));
 
-  const [name, setName] = useState(menuItem.name);
-  const [price, setPrice] = useState(menuItem.price);
+  const [name, setName] = useState(menuItem.name || '');
+  const [price, setPrice] = useState(menuItem.price || '');
   const [description, setDescription] = useState(menuItem.description || '');
   const [dietarySelected, setDietarySelected] = useState(menuItem.dietary);
   const [selectedOptions, setSelectedOptions] = useState(menuItem.options);

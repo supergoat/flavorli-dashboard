@@ -69,7 +69,10 @@ const UpdateCategoryDescription = ({
                 show={hasBeenEdited}
                 saving={loading}
                 onConfirm={() => handleUpdate(updateMenuCategory)}
-                onCancel={() => setDescription(categoryDescription)}
+                onCancel={() => {
+                  setHasBeenEdited(false);
+                  setDescription(categoryDescription);
+                }}
               />
             </DescriptionInput>
 

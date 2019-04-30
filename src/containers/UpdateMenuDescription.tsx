@@ -67,7 +67,10 @@ const UpdateMenuDescription = ({
                 show={hasBeenEdited}
                 saving={loading}
                 onConfirm={() => handleUpdate(updateMenu)}
-                onCancel={() => setDescription(menuDescription)}
+                onCancel={() => {
+                  setHasBeenEdited(false);
+                  setDescription(menuDescription);
+                }}
               />
             </DescriptionInput>
 

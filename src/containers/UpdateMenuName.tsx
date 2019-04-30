@@ -64,7 +64,10 @@ const UpdateMenuName = ({
               show={hasBeenEdited}
               saving={loading}
               onConfirm={() => handleUpdate(updateMenu)}
-              onCancel={() => setName(menuName)}
+              onCancel={() => {
+                setHasBeenEdited(false);
+                setName(menuName);
+              }}
             />
           </UpdateMenuNameWrapper>
         );
