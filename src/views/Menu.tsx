@@ -7,7 +7,7 @@ import Button from '../ui/Button';
 import Colours from '../Colours';
 import DeleteMenuButton from '../containers/DeleteMenuButton';
 import UpdateName from '../containers/UpdateName';
-import UpdateMenuDescription from '../containers/UpdateMenuDescription';
+import UpdateDescription from '../containers/UpdateDescription';
 
 interface Props extends RouteComponentProps {
   menuId?: string;
@@ -28,9 +28,10 @@ const Menu = ({menuId}: Props) => {
               variables={{menuId: getMenu.id}}
             />
 
-            <UpdateMenuDescription
-              menuDescription={getMenu.description || ''}
-              menuId={getMenu.id}
+            <UpdateDescription
+              mutation={UPDATE_MENU_DESCRIPTION}
+              previousDescription={getMenu.description || ''}
+              variables={{menuId: getMenu.id}}
             />
 
             <ServiceDays>Monday to Friday</ServiceDays>
@@ -88,6 +89,16 @@ const UPDATE_MENU_NAME = gql`
     }
   }
 `;
+
+const UPDATE_MENU_DESCRIPTION = gql`
+  mutation updateMenu($menuId: ID!, $description: String) {
+    updateMenu(menuId: $menuId, description: $description) {
+      id
+      description
+    }
+  }
+`;
+
 const MenuWrapper = styled.div`
   display: flex;
   flex-direction: column;

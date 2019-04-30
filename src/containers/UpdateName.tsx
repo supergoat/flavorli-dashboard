@@ -19,7 +19,7 @@ const UpdateName = ({
 
   /**
    * Update name, when the name prop changes. This is needed when navigating
-   * and the component does not re-render, therefore the name remains stale
+   * as the component does not re-render, therefore the name remains stale
    */
   useEffect(() => {
     setHasBeenEdited(false);

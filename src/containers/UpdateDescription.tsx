@@ -1,21 +1,22 @@
 import React, {useState, useEffect, useRef} from 'react';
-import gql from 'graphql-tag';
 import {Mutation, MutationFn} from 'react-apollo';
 import styled from 'styled-components/macro';
 import ConfirmButtons from '../components/ConfirmButtons';
 import Error from '../ui/Error';
 import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
 
-const UpdateCategoryDescription = ({
-  categoryDescription = '',
-  categoryId,
+const UpdateDescription = ({
+  previousDescription = '',
+  variables,
+  mutation,
 }: {
-  categoryDescription: string;
-  categoryId: string;
+  previousDescription: string;
+  variables: {[key: string]: any};
+  mutation: MutationFn<any, any>;
 }) => {
   const textAreaEl: any = useRef();
 
-  const [description, setDescription] = useState(categoryDescription);
+  const [description, setDescription] = useState(previousDescription);
   const [hasBeenEdited, setHasBeenEdited] = useState(false);
   const [error, setError] = useState('');
 
@@ -27,36 +28,33 @@ const UpdateCategoryDescription = ({
 
   /**
    * Update description, when the description prop changes. This is needed when navigating
-   * between categories because  the component doesn't not re-render therefore the
-   * description remains stale
+   * as the component doesn't not re-render therefore the description remains stale
    */
   useEffect(() => {
     setHasBeenEdited(false);
-    setDescription(categoryDescription);
-  }, [categoryDescription]);
+    setDescription(previousDescription);
+  }, [previousDescription]);
 
   const handleDescriptionChange = (event: any) => {
     const value = event.target.value;
     calculateTextAreaRows(textAreaEl);
     setDescription(value);
-    setHasBeenEdited(value !== categoryDescription);
+    setHasBeenEdited(value !== previousDescription);
   };
 
-  const handleUpdate = (
-    updateMenuCategory: MutationFn<any, {description: string}>,
-  ) => {
-    updateMenuCategory();
+  const handleUpdate = (mutationFn: MutationFn<any, any>) => {
+    mutationFn();
   };
 
   return (
     <Mutation
-      mutation={UPDATE_CATEGORY_DESCRIPTION}
-      variables={{categoryId, description}}
+      mutation={mutation}
+      variables={{...variables, description}}
       onError={() => setError('Something went wrong, unable to save')}
     >
-      {(updateMenuCategory: any, {loading}: any) => {
+      {(mutationFn: any, {loading}: any) => {
         return (
-          <UpdateCategoryDescriptionWrapper>
+          <UpdateDescriptionWrapper>
             <DescriptionInput>
               <textarea
                 ref={textAreaEl}
@@ -68,34 +66,25 @@ const UpdateCategoryDescription = ({
               <ConfirmButtons
                 show={hasBeenEdited}
                 saving={loading}
-                onConfirm={() => handleUpdate(updateMenuCategory)}
+                onConfirm={() => handleUpdate(mutationFn)}
                 onCancel={() => {
                   setHasBeenEdited(false);
-                  setDescription(categoryDescription);
+                  setDescription(previousDescription);
                 }}
               />
             </DescriptionInput>
 
             <OptionError show={!!error}>{error}</OptionError>
-          </UpdateCategoryDescriptionWrapper>
+          </UpdateDescriptionWrapper>
         );
       }}
     </Mutation>
   );
 };
 
-export default UpdateCategoryDescription;
+export default UpdateDescription;
 
-const UPDATE_CATEGORY_DESCRIPTION = gql`
-  mutation updateMenuCategory($categoryId: ID!, $description: String) {
-    updateMenuCategory(categoryId: $categoryId, description: $description) {
-      id
-      description
-    }
-  }
-`;
-
-const UpdateCategoryDescriptionWrapper = styled.div`
+const UpdateDescriptionWrapper = styled.div`
   margin-bottom: 20px;
 
   textarea {

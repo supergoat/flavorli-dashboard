@@ -6,7 +6,7 @@ import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 import DeleteCategoryButton from '../containers/DeleteCategoryButton';
 import UpdateName from '../containers/UpdateName';
-import UpdateCategoryDescription from '../containers/UpdateCategoryDescription';
+import UpdateDescription from '../containers/UpdateDescription';
 
 import Colours from '../Colours';
 
@@ -29,9 +29,10 @@ const Category = ({category}: Props) => {
         variables={{categoryId: category.id}}
       />
 
-      <UpdateCategoryDescription
-        categoryDescription={category.description || ''}
-        categoryId={category.id}
+      <UpdateDescription
+        mutation={UPDATE_CATEGORY_DESCRIPTION}
+        previousDescription={category.description || ''}
+        variables={{categoryId: category.id}}
       />
 
       <AddMenuButton
@@ -96,6 +97,15 @@ const UPDATE_CATEGORY_NAME = gql`
     updateMenuCategory(categoryId: $categoryId, name: $name) {
       id
       name
+    }
+  }
+`;
+
+const UPDATE_CATEGORY_DESCRIPTION = gql`
+  mutation updateMenuCategory($categoryId: ID!, $description: String) {
+    updateMenuCategory(categoryId: $categoryId, description: $description) {
+      id
+      description
     }
   }
 `;
