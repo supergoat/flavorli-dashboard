@@ -39,7 +39,7 @@ const DeleteButton = ({
                   setConfirmDelete(true);
                 }}
               >
-                Delete
+                DELETE
               </Button>
             )}
 
