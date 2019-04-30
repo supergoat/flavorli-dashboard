@@ -32,14 +32,15 @@ const DeleteButton = ({
             {loading && 'DELETING...'}
 
             {!confirmDelete && !loading && (
-              <Delete
+              <Button
+                danger
                 onClick={() => {
                   setError('');
                   setConfirmDelete(true);
                 }}
               >
-                DELETE
-              </Delete>
+                Delete
+              </Button>
             )}
 
             {confirmDelete && !loading && (
@@ -73,11 +74,6 @@ const DeleteButtonWrapper = styled.div`
   ${Button} {
     font-weight: bold;
   }
-`;
-
-const Delete = styled(Button)`
-  background: ${Colours.red};
-  color: ${Colours.white};
 `;
 
 const ConfirmDelete = styled.div`
