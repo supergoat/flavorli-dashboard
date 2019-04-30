@@ -6,6 +6,7 @@ import styled from 'styled-components/macro';
 import Button from '../ui/Button';
 import Colours from '../Colours';
 import DeleteMenuButton from '../containers/DeleteMenuButton';
+import UpdateMenuName from '../containers/UpdateMenuName';
 
 interface Props extends RouteComponentProps {
   menuId?: string;
@@ -20,7 +21,8 @@ const Menu = ({menuId}: Props) => {
 
         return (
           <MenuWrapper>
-            <MenuName>{getMenu.name}</MenuName>
+            <UpdateMenuName menuName={getMenu.name || ''} menuId={getMenu.id} />
+
             <MenuDescription>Description</MenuDescription>
 
             <ServiceDays>Monday to Friday</ServiceDays>
