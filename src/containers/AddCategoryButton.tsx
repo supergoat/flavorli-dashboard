@@ -1,5 +1,6 @@
 import AddCategory from '../components/AddCategory';
 import React, {useState} from 'react';
+import {navigate} from '@reach/router';
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import styled from 'styled-components/macro';
@@ -41,6 +42,7 @@ const AddCategoryButton = ({menuId}: {menuId: string}) => {
     });
 
     setAddingCategory(false);
+    navigate(`/menu-builder/category/${addMenuCategory.id}`);
   };
 
   return (

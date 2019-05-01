@@ -6,6 +6,7 @@ import Button from '../ui/Button';
 import AddMenu from '../components/AddMenu';
 import {RESTAURANT_MENUS_DATA} from '../views/MenuBuilder';
 import useErrors from '../_utils/useErrors';
+import {navigate} from '@reach/router';
 
 const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
   const [addingMenu, setAddingMenu] = useState(false);
@@ -43,6 +44,7 @@ const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
     });
 
     setAddingMenu(false);
+    navigate(`/menu-builder/menu/${addMenu.id}`);
   };
 
   return (
