@@ -59,7 +59,6 @@ const MenuItem = ({
     });
   };
 
-  console.log(available);
   return (
     <MenuItemWrapper>
       <Availability

@@ -133,7 +133,6 @@ const AddMenuButton = styled(Button)`
 const MenuItems = styled.div``;
 
 const MenuItem = styled.div`
-  position: relative;
   display: flex;
   width: 100%;
   padding: 10px;
@@ -172,12 +171,15 @@ const Price = styled.h4`
 
 const Description = styled.p`
   color: ${Colours.osloGrey};
+  min-height: 50px;
 `;
 
 const Availability = styled.div`
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+  display: flex;
+  justify-content: flex-end;
+  font-weight: bold;
+  margin-top: 5px;
+  text-transform: uppercase;
 `;
 
 const ItemActions = styled.div`
