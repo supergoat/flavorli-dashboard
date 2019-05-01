@@ -14,17 +14,20 @@ interface Props {
       name: string;
     }[];
   }[];
+  pathname: string;
 }
-const MenuList = ({menuList = []}: Props) => {
+const MenuList = ({menuList = [], pathname}: Props) => {
   const [menuId, setMenuId] = useState<String | undefined>(undefined);
 
   return (
     <MenuListWrapper>
       {menuList.map((menu: any) => {
         const isCurrentMenu = menuId === menu.id;
+        const isOnCurrentMenuHome =
+          `/menu-builder/menu/${menu.id}` === pathname;
 
         const onMenuListItemClick = () => {
-          if (isCurrentMenu) {
+          if (isOnCurrentMenuHome) {
             setMenuId(undefined);
             navigate(`/menu-builder`);
           } else {

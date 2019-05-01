@@ -14,8 +14,10 @@ import AddMenuButton from '../containers/AddMenuButton';
 import MenuItem from './MenuItem';
 import CreateMenuItem from './CreateMenuItem';
 
-interface Props extends RouteComponentProps {}
-const MenuBuilder = (_: Props) => {
+interface Props extends RouteComponentProps {
+  location?: any;
+}
+const MenuBuilder = ({location}: Props) => {
   return (
     <Query query={GET_RESTAURANT}>
       {({loading, error, data: {getRestaurant}}: any) => {
@@ -37,7 +39,10 @@ const MenuBuilder = (_: Props) => {
                   <MenuListLoadingItem />
                 </MenuListLoading>
               ) : (
-                <MenuList menuList={getRestaurant.menus} />
+                <MenuList
+                  menuList={getRestaurant.menus}
+                  pathname={location && location.pathname}
+                />
               )}
             </SideBar>
 
