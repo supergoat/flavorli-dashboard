@@ -87,6 +87,11 @@ const ADD_MENU = gql`
     addMenu(name: $name, restaurantId: $restaurantId) {
       id
       name
+      serviceTimes {
+        id
+        hours
+        days
+      }
       categories {
         id
         name

@@ -75,6 +75,11 @@ export const RESTAURANT_MENUS_DATA = gql`
     menus {
       id
       name
+      serviceTimes {
+        id
+        hours
+        days
+      }
       ...MenuCategories
     }
   }
