@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
-import {RouteComponentProps, Router} from '@reach/router';
+import {RouteComponentProps, Router, navigate} from '@reach/router';
 import styled, {keyframes} from 'styled-components/macro';
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
@@ -18,6 +18,26 @@ interface Props extends RouteComponentProps {
   location?: any;
 }
 const MenuBuilder = ({location}: Props) => {
+  const [currentMenuId, setCurrentMenuId] = useState('');
+
+  useEffect(() => {
+    const menuId = location.pathname.replace('/menu-builder/menu/', '');
+    setCurrentMenuId(menuId);
+  }, []);
+
+  const onMenuClick = (menuId: string) => {
+    const pathname = location && location.pathname;
+    const isOnCurrentMenuHome = `/menu-builder/menu/${menuId}` === pathname;
+
+    if (isOnCurrentMenuHome) {
+      setCurrentMenuId('');
+      navigate(`/menu-builder`);
+    } else {
+      setCurrentMenuId(menuId);
+      navigate(`/menu-builder/menu/${menuId}`);
+    }
+  };
+
   return (
     <Query query={GET_RESTAURANT}>
       {({loading, error, data: {getRestaurant}}: any) => {
@@ -28,6 +48,7 @@ const MenuBuilder = ({location}: Props) => {
             <Navbar />
             <SideBar>
               <AddMenuButton
+                onMenuAdded={(menuId: string) => setCurrentMenuId(menuId)}
                 restaurantId={!loading && getRestaurant && getRestaurant.id}
               />
 
@@ -40,8 +61,9 @@ const MenuBuilder = ({location}: Props) => {
                 </MenuListLoading>
               ) : (
                 <MenuList
+                  currentMenuId={currentMenuId}
+                  onMenuClick={onMenuClick}
                   menuList={getRestaurant.menus}
-                  pathname={location && location.pathname}
                 />
               )}
             </SideBar>

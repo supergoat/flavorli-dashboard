@@ -8,7 +8,13 @@ import {RESTAURANT_MENUS_DATA} from '../views/MenuBuilder';
 import useErrors from '../_utils/useErrors';
 import {navigate} from '@reach/router';
 
-const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
+const AddMenuButton = ({
+  restaurantId,
+  onMenuAdded,
+}: {
+  restaurantId: string;
+  onMenuAdded: (menuId: string) => void;
+}) => {
   const [addingMenu, setAddingMenu] = useState(false);
   const [errors, setErrors, clearErrors] = useErrors();
 
@@ -43,6 +49,7 @@ const AddMenuButton = ({restaurantId}: {restaurantId: string}) => {
       fragmentName: 'RestaurantMenus',
     });
 
+    onMenuAdded(addMenu.id);
     setAddingMenu(false);
     navigate(`/menu-builder/menu/${addMenu.id}`);
   };

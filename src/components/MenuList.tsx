@@ -1,5 +1,5 @@
-import React, {useState, Fragment} from 'react';
-import {navigate} from '@reach/router';
+import React, {Fragment} from 'react';
+
 import styled from 'styled-components/macro';
 import AddCategoryButton from '../containers/AddCategoryButton';
 import MenuCategories from '../components/MenuCategories';
@@ -14,34 +14,20 @@ interface Props {
       name: string;
     }[];
   }[];
-  pathname: string;
+  currentMenuId: string;
+  onMenuClick: (menuId: string) => void;
 }
-const MenuList = ({menuList = [], pathname}: Props) => {
-  const [menuId, setMenuId] = useState<String | undefined>(undefined);
-
+const MenuList = ({menuList = [], currentMenuId, onMenuClick}: Props) => {
   return (
     <MenuListWrapper>
       {menuList.map((menu: any) => {
-        const isCurrentMenu = menuId === menu.id;
-        const isOnCurrentMenuHome =
-          `/menu-builder/menu/${menu.id}` === pathname;
-
-        const onMenuListItemClick = () => {
-          if (isOnCurrentMenuHome) {
-            setMenuId(undefined);
-            navigate(`/menu-builder`);
-          } else {
-            setMenuId(menu.id);
-            navigate(`/menu-builder/menu/${menu.id}`);
-          }
-        };
-
+        const isCurrentMenu = currentMenuId === menu.id;
         return (
           <Fragment key={menu.id}>
             <MenuListItem
               menuName={menu.name}
               serviceHours={['12pm', '10pm']}
-              onClick={onMenuListItemClick}
+              onClick={() => onMenuClick(menu.id)}
             />
 
             {isCurrentMenu && (
