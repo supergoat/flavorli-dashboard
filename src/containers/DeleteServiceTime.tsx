@@ -3,13 +3,16 @@ import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import styled from 'styled-components/macro';
 import Error from '../ui/Error';
+import {MENU_SERVICE_TIMES_DATA} from '../views/MenuBuilder';
 
 const DeleteServiceTime = ({
   onDelete,
   serviceTimeId,
+  menuId,
 }: {
   onDelete: () => void;
   serviceTimeId: string;
+  menuId: string;
 }) => {
   const [error, setError] = useState('');
 
@@ -17,7 +20,25 @@ const DeleteServiceTime = ({
     <Mutation
       mutation={DELETE_SERVICE_TIME}
       variables={{id: serviceTimeId}}
-      onCompleted={onDelete}
+      update={(cache: any, {data: {deleteServiceTime}}: any) => {
+        const {serviceTimes} = cache.readFragment({
+          id: `Menu:${menuId}`,
+          fragment: MENU_SERVICE_TIMES_DATA,
+        });
+
+        cache.writeFragment({
+          id: `Menu:${menuId}`,
+          fragment: MENU_SERVICE_TIMES_DATA,
+          data: {
+            serviceTimes: serviceTimes.filter(
+              (item: any) => item.id !== deleteServiceTime.id,
+            ),
+            __typename: 'Menu',
+          },
+        });
+
+        onDelete();
+      }}
       onError={() => setError('Could not delete')}
     >
       {(deleteServiceTime: any, {loading}: any) => {

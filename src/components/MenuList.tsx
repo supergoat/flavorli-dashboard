@@ -26,7 +26,7 @@ const MenuList = ({menuList = [], currentMenuId, onMenuClick}: Props) => {
           <Fragment key={menu.id}>
             <MenuListItem
               menuName={menu.name}
-              serviceHours={['12pm', '10pm']}
+              noOfCategories={menu.categories.length}
               onClick={() => onMenuClick(menu.id)}
             />
 

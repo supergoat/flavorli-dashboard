@@ -92,20 +92,27 @@ export const MENU_CATEGORIES_DATA = gql`
   }
 `;
 
+export const MENU_SERVICE_TIMES_DATA = gql`
+  fragment ServiceTimes on Menu {
+    serviceTimes {
+      id
+      hours
+      days
+    }
+  }
+`;
+
 export const RESTAURANT_MENUS_DATA = gql`
   fragment RestaurantMenus on Restaurant {
     menus {
       id
       name
-      serviceTimes {
-        id
-        hours
-        days
-      }
+      ...ServiceTimes
       ...MenuCategories
     }
   }
   ${MENU_CATEGORIES_DATA}
+  ${MENU_SERVICE_TIMES_DATA}
 `;
 
 const GET_RESTAURANT = gql`

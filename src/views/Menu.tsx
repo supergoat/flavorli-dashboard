@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
 import {RouteComponentProps} from '@reach/router';
@@ -8,25 +8,14 @@ import Colours from '../Colours';
 import DeleteMenuButton from '../containers/DeleteMenuButton';
 import UpdateName from '../containers/UpdateName';
 import UpdateDescription from '../containers/UpdateDescription';
-import UpsertServiceTime from '../containers/UpsertServiceTime';
-import DeleteServiceTime from '../containers/DeleteServiceTime';
+import ServiceTimeList from '../components/ServiceTimeList';
 
 interface Props extends RouteComponentProps {
   menuId?: string;
 }
 const Menu = ({menuId}: Props) => {
-  const [serviceTimes, setServiceTimes] = useState<any[]>([]);
-  const [editingServiceTime, setEditingServiceTime] = useState<any>(null);
-  const [iseCreatingServiceTime, setIseCreatingServiceTime] = useState(false);
-
   return (
-    <Query
-      query={GET_RESTAURANT_MENU}
-      variables={{menuId: menuId}}
-      onCompleted={({getMenu}: any) =>
-        setServiceTimes(getMenu.serviceTimes || [])
-      }
-    >
+    <Query query={GET_RESTAURANT_MENU} variables={{menuId: menuId}}>
       {({loading, error, data: {getMenu, getRestaurant}}: any) => {
         if (loading) return 'Loading...';
 
@@ -46,87 +35,10 @@ const Menu = ({menuId}: Props) => {
               variables={{menuId: getMenu.id}}
             />
 
-            <AddService
-              onClick={() => {
-                setIseCreatingServiceTime(true);
-                setEditingServiceTime(null);
-              }}
-            >
-              ADD SERVICE TIMES +
-            </AddService>
-
-            <ServiceTimes>
-              {iseCreatingServiceTime && (
-                <ServiceListItem>
-                  <UpsertServiceTime
-                    serviceTime={{
-                      menuId: getMenu.id,
-                      hours: ['10:00', '22:00'],
-                      days: [
-                        'Monday',
-                        'Tuesday',
-                        'Wednesday',
-                        'Thursday',
-                        'Friday',
-                      ],
-                    }}
-                    onSave={(newServiceTime: any) => {
-                      setServiceTimes([...serviceTimes, newServiceTime]);
-                      setIseCreatingServiceTime(false);
-                    }}
-                    onCancel={() => setIseCreatingServiceTime(false)}
-                  />
-                </ServiceListItem>
-              )}
-
-              {serviceTimes.map((serviceTime: any) => (
-                <ServiceListItem key={serviceTime.id}>
-                  {editingServiceTime &&
-                  editingServiceTime.id === serviceTime.id ? (
-                    <UpsertServiceTime
-                      onSave={(updatedServiceTime: any) => {
-                        const copyServiceTimes = [...serviceTimes];
-                        const updatedServiceTimeIndex = copyServiceTimes.findIndex(
-                          (o: any) => o.id === updatedServiceTime.id,
-                        );
-
-                        copyServiceTimes[
-                          updatedServiceTimeIndex
-                        ] = updatedServiceTime;
-                        setServiceTimes(copyServiceTimes);
-
-                        setEditingServiceTime(null);
-                      }}
-                      serviceTime={{...editingServiceTime, menuId: getMenu.id}}
-                      onCancel={() => setEditingServiceTime(null)}
-                    />
-                  ) : (
-                    <Service>
-                      <ServiceInfo
-                        onClick={() => {
-                          setEditingServiceTime(serviceTime);
-                        }}
-                      >
-                        <ServiceDays>{serviceTime.days.join(', ')}</ServiceDays>
-                        <ServiceHours>
-                          {serviceTime.hours[0]} to {serviceTime.hours[1]}
-                        </ServiceHours>
-                      </ServiceInfo>
-                      <DeleteServiceTime
-                        serviceTimeId={serviceTime.id}
-                        onDelete={() => {
-                          setServiceTimes(
-                            serviceTimes.filter(
-                              (t: any) => t.id !== serviceTime.id,
-                            ),
-                          );
-                        }}
-                      />
-                    </Service>
-                  )}
-                </ServiceListItem>
-              ))}
-            </ServiceTimes>
+            <ServiceTimeList
+              menuServiceTimes={getMenu.serviceTimes}
+              menuId={getMenu.id}
+            />
 
             <Options>
               <Option>
@@ -217,44 +129,3 @@ const Option = styled.div`
     margin-left: 10px;
   }
 `;
-
-const AddService = styled.div`
-  align-self: flex-start;
-  font-size: 14px;
-  padding: 10px 0;
-  font-weight: bold;
-  cursor: pointer;
-  user-select: none;
-  margin: 10px 0;
-`;
-
-const ServiceTimes = styled.div``;
-
-const ServiceListItem = styled.div`
-  margin-bottom: 10px;
-`;
-
-const Service = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 15px;
-  color: ${Colours.osloGrey};
-  cursor: pointer;
-  user-select: none;
-  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-`;
-
-const ServiceInfo = styled.div`
-  flex: 1;
-`;
-
-const ServiceDays = styled.p`
-  color: ${Colours.oxfordBlue};
-  font-weight: bold;
-  margin-bottom: 5px;
-  font-size: 16px;
-`;
-const ServiceHours = styled.p``;

@@ -3,17 +3,16 @@ import styled from 'styled-components/macro';
 import Colours from '../Colours';
 
 interface Props {
-  serviceHours: [string, string];
+  noOfCategories: number;
   onClick: () => void;
   menuName: string;
 }
-const MenuListItem = ({menuName, serviceHours, onClick}: Props) => {
+const MenuListItem = ({menuName, noOfCategories, onClick}: Props) => {
   return (
     <MenuListItemWrapper onClick={onClick}>
       <MenuName>{menuName}</MenuName>
-      <MenuServiceHours>Monday to Friday</MenuServiceHours>
       <MenuServiceHours>
-        {serviceHours[0]} to {serviceHours[1]}
+        {noOfCategories} Categor{noOfCategories == 1 ? 'y' : 'ies'}
       </MenuServiceHours>
     </MenuListItemWrapper>
   );

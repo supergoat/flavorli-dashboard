@@ -3,6 +3,7 @@ import ServiceTime from '../components/ServiceTime';
 import {Mutation, MutationFn} from 'react-apollo';
 import gql from 'graphql-tag';
 import useErrors from '../_utils/useErrors';
+import {MENU_SERVICE_TIMES_DATA} from '../views/MenuBuilder';
 
 interface ServiceTimeType {
   id: string;
@@ -42,9 +43,27 @@ const UpsertServiceTime = ({serviceTime, onSave, onCancel}: Props) => {
   return (
     <Mutation
       mutation={UPSERT_SERVICE_TIME}
-      update={(_: any, {data: {upsertServiceTime}}: any) =>
-        onSave(upsertServiceTime)
-      }
+      update={(cache: any, {data: {upsertServiceTime}}: any) => {
+        if (!serviceTime.id) {
+          const {serviceTimes} = cache.readFragment({
+            id: `Menu:${serviceTime.menuId}`,
+            fragment: MENU_SERVICE_TIMES_DATA,
+          });
+
+          cache.writeFragment({
+            id: `Menu:${serviceTime.menuId}`,
+            fragment: MENU_SERVICE_TIMES_DATA,
+            data: {
+              serviceTimes: serviceTimes
+                ? [...serviceTimes, upsertServiceTime]
+                : [upsertServiceTime],
+              __typename: 'Menu',
+            },
+          });
+        }
+
+        onSave(upsertServiceTime);
+      }}
       onError={() => {
         setErrors([['server-error', 'Something  went wrong, unable to save']]);
       }}

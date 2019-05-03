@@ -68,15 +68,6 @@ const Category = ({category}: Props) => {
       <ItemActions>
         <ItemAction>
           <div>
-            <h4>Hide Category</h4>
-            <p>Customers will not be able to view this category</p>
-          </div>
-
-          <Button secondary>HIDE CATEGORY</Button>
-        </ItemAction>
-
-        <ItemAction>
-          <div>
             <h4>Delete Category</h4>
             <p>Deleting this category, is an ireverisble action.</p>
           </div>
