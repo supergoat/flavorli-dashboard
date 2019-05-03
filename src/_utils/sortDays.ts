@@ -1,5 +1,5 @@
 const sortDays = (days: any) => {
-  var daysOfWeek = [
+  const daysOfWeek = [
     'Monday',
     'Tuesday',
     'Wednesday',

@@ -7,6 +7,7 @@ import SelectDays from './SelectDays';
 import SelectMonths from './SelectMonths';
 import Error from '../ui/Error';
 import sortDays from '../_utils/sortDays';
+import sortMonths from '../_utils/sortMonths';
 
 interface Props {
   serviceTime: any;
@@ -130,7 +131,9 @@ const ServiceTime = ({
           setServiceMonths((items: any) => {
             if (items.includes(item))
               return items.filter((i: any) => i !== item);
-            return [...items, item];
+
+            const sortedMonths = sortMonths([...items, item]);
+            return sortedMonths;
           })
         }
       />
