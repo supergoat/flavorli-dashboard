@@ -4,6 +4,7 @@ import Colours from '../Colours';
 import Label from '../ui/Label';
 import ConfirmButtons from './ConfirmButtons';
 import SelectDays from './SelectDays';
+import SelectMonths from './SelectMonths';
 import Error from '../ui/Error';
 
 interface Props {
@@ -14,8 +15,9 @@ interface Props {
   onSave: (serviceTime: {
     menuId: string;
     id: string;
-    days: string[];
     hours: [string, string];
+    days: string[];
+    months: string[];
   }) => void;
   onCancel: () => void;
 }
@@ -30,8 +32,8 @@ const ServiceTime = ({
 }: Props) => {
   const [opensAt, setOpensAt] = useState(serviceTime.hours[0]);
   const [closesAt, setClosesAt] = useState(serviceTime.hours[1]);
-
   const [days, setServiceDays] = useState(serviceTime.days);
+  const [months, setServiceMonths] = useState(serviceTime.months);
 
   const handleSave = () => {
     onSave({
@@ -39,12 +41,21 @@ const ServiceTime = ({
       id: serviceTime.id,
       hours: [opensAt, closesAt],
       days,
+      months,
     });
   };
 
+  // BUG: THIS DOES NOT WORK PROPERLY
   const hasServiceBeenEdited =
     JSON.stringify(serviceTime) !==
-    JSON.stringify({days, hours: [opensAt, closesAt]});
+    JSON.stringify({
+      id: serviceTime.id,
+      hours: [opensAt, closesAt],
+      days,
+      months,
+      __typename: 'ServiceTime',
+      menuId: serviceTime.menuId,
+    });
 
   return (
     <ServiceTimeWrapper>
@@ -101,6 +112,21 @@ const ServiceTime = ({
         selectedDays={days}
         onSelect={item =>
           setServiceDays((items: any) => {
+            if (items.includes(item))
+              return items.filter((i: any) => i !== item);
+            return [...items, item];
+          })
+        }
+      />
+
+      <Label>Service Months</Label>
+      <ServiceTimeError show={errors.has('months')}>
+        {errors.get('months')}
+      </ServiceTimeError>
+      <SelectMonths
+        selectedMonths={months}
+        onSelect={item =>
+          setServiceMonths((items: any) => {
             if (items.includes(item))
               return items.filter((i: any) => i !== item);
             return [...items, item];

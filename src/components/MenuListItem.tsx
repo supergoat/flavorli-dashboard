@@ -12,7 +12,7 @@ const MenuListItem = ({menuName, noOfCategories, onClick}: Props) => {
     <MenuListItemWrapper onClick={onClick}>
       <MenuName>{menuName}</MenuName>
       <MenuServiceHours>
-        {noOfCategories} Categor{noOfCategories == 1 ? 'y' : 'ies'}
+        {noOfCategories} Categor{noOfCategories === 1 ? 'y' : 'ies'}
       </MenuServiceHours>
     </MenuListItemWrapper>
   );

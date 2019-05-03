@@ -31,9 +31,10 @@ const ServiceTimeList = ({menuId, menuServiceTimes}: Props) => {
           <ServiceListItem>
             <UpsertServiceTime
               serviceTime={{
-                menuId,
                 hours: ['10:00', '22:00'],
                 days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                months: [],
+                menuId,
               }}
               onSave={(newServiceTime: any) => {
                 setServiceTimes([...serviceTimes, newServiceTime]);
@@ -71,10 +72,11 @@ const ServiceTimeList = ({menuId, menuServiceTimes}: Props) => {
                     setEditingServiceTime(serviceTime);
                   }}
                 >
-                  <ServiceDays>{serviceTime.days.join(', ')}</ServiceDays>
                   <ServiceHours>
                     {serviceTime.hours[0]} to {serviceTime.hours[1]}
                   </ServiceHours>
+                  <ServiceDays>{serviceTime.days.join(', ')}</ServiceDays>
+                  <ServiceMonths>{serviceTime.months.join(', ')}</ServiceMonths>
                 </ServiceInfo>
                 <DeleteServiceTime
                   serviceTimeId={serviceTime.id}
@@ -129,10 +131,14 @@ const ServiceInfo = styled.div`
   flex: 1;
 `;
 
-const ServiceDays = styled.p`
+const ServiceHours = styled.p`
   color: ${Colours.oxfordBlue};
-  font-weight: bold;
   margin-bottom: 5px;
-  font-size: 16px;
 `;
-const ServiceHours = styled.p``;
+
+const ServiceDays = styled.p`
+  margin-bottom: 5px;
+  font-weight: bold;
+`;
+
+const ServiceMonths = styled.p``;

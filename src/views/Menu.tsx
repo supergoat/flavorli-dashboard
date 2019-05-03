@@ -72,6 +72,7 @@ const GET_RESTAURANT_MENU = gql`
         id
         hours
         days
+        months
       }
     }
     getRestaurant {

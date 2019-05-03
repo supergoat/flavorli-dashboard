@@ -94,11 +94,19 @@ const UPSERT_SERVICE_TIME = gql`
     $menuId: ID!
     $hours: [String!]
     $days: [String!]
+    $months: [String!]
   ) {
-    upsertServiceTime(id: $id, menuId: $menuId, hours: $hours, days: $days) {
+    upsertServiceTime(
+      id: $id
+      menuId: $menuId
+      hours: $hours
+      days: $days
+      months: $months
+    ) {
       id
       hours
       days
+      months
     }
   }
 `;

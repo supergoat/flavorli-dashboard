@@ -98,6 +98,7 @@ export const MENU_SERVICE_TIMES_DATA = gql`
       id
       hours
       days
+      months
     }
   }
 `;
