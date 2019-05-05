@@ -1,11 +1,12 @@
 import React from 'react';
+import {GET_RESTAURANT} from './MenuBuilder';
 import {Query} from 'react-apollo';
 import styled from 'styled-components/macro';
 import {RouteComponentProps} from '@reach/router';
 import Account from '../components/Account';
 import Navbar from '../components/Navbar';
 import SideBar from '../components/SideBar';
-import {GET_RESTAURANT} from './MenuBuilder';
+import Colours from '../Colours';
 
 interface Props extends RouteComponentProps {}
 const AccountView = (_: Props) => {
@@ -18,7 +19,11 @@ const AccountView = (_: Props) => {
         return (
           <AccountWrapper>
             <Navbar />
-            <SideBar />
+            <SideBar>
+              <Navigation>
+                <NavigationItem>Restaurant Details</NavigationItem>
+              </Navigation>
+            </SideBar>
 
             <Account restaurant={getRestaurant} />
           </AccountWrapper>
@@ -34,6 +39,22 @@ const AccountWrapper = styled.div`
   padding-bottom: 50px;
   width: 100%;
   margin-top: 61px;
+`;
+const Navigation = styled.div`
+  padding: 20px;
+`;
+const NavigationItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 15px;
+  color: ${Colours.osloGrey};
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  margin: 5px 0;
 `;
 
 export default AccountView;

@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import {GET_RESTAURANT} from '../views/MenuBuilder';
+import {Query} from 'react-apollo';
 import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import LogOutButton from '../containers/LogOutButton';
@@ -15,34 +17,42 @@ const Navbar = () => {
   });
 
   return (
-    <NavbarWrapper hasShadow={hasShadow}>
-      <OpenTimes>
-        <Dot /> Open - Accepting Orders
-      </OpenTimes>
-      <RestaurantInfo onClick={() => setShowDropdown(d => !d)}>
-        <RestaurantName>
-          <p>BIFF'S JACK SHACK</p>
-          <p>Biff Burrows</p>
-        </RestaurantName>
-        <Avatar />
-      </RestaurantInfo>
+    <Query query={GET_RESTAURANT}>
+      {({loading, error, data: {getRestaurant}}: any) => {
+        if (loading) return <NavbarWrapper />;
+        if (error) return <NavbarWrapper />;
+        return (
+          <NavbarWrapper hasShadow={hasShadow}>
+            <OpenTimes>
+              <Dot /> Open - Accepting Orders
+            </OpenTimes>
+            <RestaurantInfo onClick={() => setShowDropdown(d => !d)}>
+              <RestaurantName>
+                <p>{getRestaurant.name}</p>
+                <p>Biff Burrows</p>
+              </RestaurantName>
+              <Avatar />
+            </RestaurantInfo>
 
-      <Dropdown showDropdown={showDropdown}>
-        <DropDownItem onClick={() => navigate('/account')}>
-          Account
-        </DropDownItem>
-        <DropDownItem onClick={() => navigate('/menu-builder')}>
-          Menu Builder
-        </DropDownItem>
-        <DropDownItem onClick={() => navigate('/')}>Orders</DropDownItem>
-        <DropDownItem>Order History</DropDownItem>
-        <DropDownItem>Settings</DropDownItem>
+            <Dropdown showDropdown={showDropdown}>
+              <DropDownItem onClick={() => navigate('/account')}>
+                Account
+              </DropDownItem>
+              <DropDownItem onClick={() => navigate('/menu-builder')}>
+                Menu Builder
+              </DropDownItem>
+              <DropDownItem onClick={() => navigate('/')}>Orders</DropDownItem>
+              <DropDownItem>Order History</DropDownItem>
+              <DropDownItem>Settings</DropDownItem>
 
-        <DropDownItem>
-          <LogOutButton />
-        </DropDownItem>
-      </Dropdown>
-    </NavbarWrapper>
+              <DropDownItem>
+                <LogOutButton />
+              </DropDownItem>
+            </Dropdown>
+          </NavbarWrapper>
+        );
+      }}
+    </Query>
   );
 };
 

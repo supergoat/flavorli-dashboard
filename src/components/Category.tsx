@@ -23,6 +23,7 @@ const Category = ({category}: Props) => {
       </MenuName>
 
       <UpdateInput
+        name="name"
         mutation={UPDATE_CATEGORY_NAME}
         inputValue={category.name || ''}
         variables={{categoryId: category.id}}
@@ -38,6 +39,7 @@ const Category = ({category}: Props) => {
           }
         `}
         textarea
+        name="description"
         textareaLineHeight={30}
         placeholder="Description"
         mutation={UPDATE_CATEGORY_DESCRIPTION}

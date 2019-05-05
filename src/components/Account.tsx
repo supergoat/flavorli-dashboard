@@ -13,6 +13,7 @@ interface Props {
 const Account = ({restaurant}: Props) => {
   return (
     <AccountWrapper>
+      {/* <MenuName>RESTAURANT DETAILS</MenuName> */}
       <UpdateInput
         style={css`
           margin-bottom: 20px;
@@ -22,6 +23,7 @@ const Account = ({restaurant}: Props) => {
             width: 100%;
           }
         `}
+        name="name"
         placeholder="Name"
         inputValue={restaurant.name}
         variables={{restaurantId: restaurant.id}}
@@ -38,6 +40,7 @@ const Account = ({restaurant}: Props) => {
           }
         `}
         textarea
+        name="description"
         textareaLineHeight={30}
         placeholder="Description"
         inputValue={restaurant.description}
@@ -52,10 +55,14 @@ const Account = ({restaurant}: Props) => {
       />
 
       <UpdateInput
-        style={{
-          fontSize: '20px',
-          width: '100%',
-        }}
+        style={css`
+          input {
+            font-size: 20px;
+            width: 100%;
+            padding: 8px 0;
+          }
+        `}
+        name="tel"
         placeholder="Tel"
         inputValue={restaurant.tel}
         variables={{restaurantId: restaurant.id}}
@@ -76,6 +83,13 @@ const AccountWrapper = styled.div`
   width: 580px;
   background: ${Colours.white};
   padding: 10px 0;
+`;
+
+const MenuName = styled.h4`
+  color: ${Colours.osloGrey};
+  padding: 0 3px;
+  cursor: pointer;
+  margin-bottom: 10px;
 `;
 
 const UPDATE_RESTAURANT_NAME = gql`

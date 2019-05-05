@@ -9,6 +9,7 @@ const UpdateInput = ({
   inputValue = '',
   variables,
   mutation,
+  name,
   placeholder,
   textarea,
   style,
@@ -17,6 +18,7 @@ const UpdateInput = ({
   inputValue: string;
   variables: {[key: string]: any};
   mutation: MutationFn<any, any>;
+  name: string;
   placeholder?: string;
   textarea?: boolean;
   style?: any;
@@ -68,7 +70,7 @@ const UpdateInput = ({
   return (
     <Mutation
       mutation={mutation}
-      variables={{...variables, value}}
+      variables={{...variables, [name]: value}}
       onError={() => {
         setError('Something went wrong, unable to save');
       }}

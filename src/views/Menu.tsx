@@ -23,12 +23,14 @@ const Menu = ({menuId}: Props) => {
         return (
           <MenuWrapper>
             <UpdateInput
+              name="name"
               mutation={UPDATE_MENU_NAME}
               inputValue={getMenu.name || ''}
               variables={{menuId: getMenu.id}}
             />
 
             <UpdateInput
+              name="description"
               style={css`
                 textarea {
                   font-size: 20px;
