@@ -1,0 +1,65 @@
+import React from 'react';
+import styled from 'styled-components/macro';
+import Colours from '../Colours';
+
+const OrderListItem = ({order}: {order: any}) => {
+  return (
+    <OrderListItemWrapper>
+      <CustomerInfo>
+        <Avatar />
+        <div>
+          <CustomerName>{order.customer.name}</CustomerName>
+          <OrderTime>
+            Due at <span>{order.dueAt}</span>
+          </OrderTime>
+        </div>
+      </CustomerInfo>
+
+      <OrderId>#{order.id}</OrderId>
+    </OrderListItemWrapper>
+  );
+};
+
+export default OrderListItem;
+
+const OrderListItemWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background: var(--white);
+  border-radius: 3px;
+  color: var(--oxfordBlue);
+  padding: 0;
+  margin-bottom: 15px;
+  font-weight: 300;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
+  padding: 20px 15px;
+`;
+
+const CustomerInfo = styled.div`
+  display: flex;
+`;
+
+const Avatar = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background: grey;
+  margin-right: 15px;
+`;
+
+const CustomerName = styled.h4`
+  margin-bottom: 2px;
+`;
+
+const OrderId = styled.p``;
+
+const OrderTime = styled.h3`
+  font-size: 16px;
+  color: ${Colours.osloGrey};
+
+  span {
+    font-weight: bold;
+    font-size: 20px;
+    color: ${Colours.oxfordBlue};
+  }
+`;
