@@ -1,12 +1,11 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import {navigate} from '@reach/router';
-import styled from 'styled-components/macro';
+import styled, {css} from 'styled-components/macro';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 import DeleteCategoryButton from '../containers/DeleteCategoryButton';
-import UpdateName from '../containers/UpdateName';
-import UpdateDescription from '../containers/UpdateDescription';
+import UpdateInput from '../containers/UpdateInput';
 
 import Colours from '../Colours';
 
@@ -23,15 +22,26 @@ const Category = ({category}: Props) => {
         {category.menu.name}
       </MenuName>
 
-      <UpdateName
+      <UpdateInput
         mutation={UPDATE_CATEGORY_NAME}
-        previousName={category.name || ''}
+        inputValue={category.name || ''}
         variables={{categoryId: category.id}}
       />
 
-      <UpdateDescription
+      <UpdateInput
+        style={css`
+          margin-bottom: 20px;
+          textarea {
+            font-size: 20px;
+            width: 100%;
+            line-height: 30px;
+          }
+        `}
+        textarea
+        textareaLineHeight={30}
+        placeholder="Description"
         mutation={UPDATE_CATEGORY_DESCRIPTION}
-        previousDescription={category.description || ''}
+        inputValue={category.description || ''}
         variables={{categoryId: category.id}}
       />
 

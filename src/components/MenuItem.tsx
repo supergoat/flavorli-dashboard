@@ -29,7 +29,7 @@ const MenuItem = ({
   clearErrors,
 }: Props) => {
   const textAreaEl: any = useRef();
-  useEffect(() => calculateTextAreaRows(textAreaEl));
+  useEffect(() => calculateTextAreaRows({textAreaEl}));
 
   const [available, setAvailable] = useState(menuItem.available);
   const [name, setName] = useState(menuItem.name || '');
@@ -42,7 +42,7 @@ const MenuItem = ({
   const [editingOption, setIsEditingOption] = useState<any>(null);
 
   const handleDescriptionChange = (event: any) => {
-    calculateTextAreaRows(textAreaEl);
+    calculateTextAreaRows({textAreaEl});
     setDescription(event.target.value);
   };
 

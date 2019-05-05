@@ -28,7 +28,9 @@ const Navbar = () => {
       </RestaurantInfo>
 
       <Dropdown showDropdown={showDropdown}>
-        <DropDownItem>Account</DropDownItem>
+        <DropDownItem onClick={() => navigate('/account')}>
+          Account
+        </DropDownItem>
         <DropDownItem onClick={() => navigate('/menu-builder')}>
           Menu Builder
         </DropDownItem>

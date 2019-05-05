@@ -2,12 +2,11 @@ import React from 'react';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
 import {RouteComponentProps} from '@reach/router';
-import styled from 'styled-components/macro';
+import styled, {css} from 'styled-components/macro';
 import Button from '../ui/Button';
 import Colours from '../Colours';
 import DeleteMenuButton from '../containers/DeleteMenuButton';
-import UpdateName from '../containers/UpdateName';
-import UpdateDescription from '../containers/UpdateDescription';
+import UpdateInput from '../containers/UpdateInput';
 import ServiceTimeList from '../components/ServiceTimeList';
 
 interface Props extends RouteComponentProps {
@@ -23,15 +22,25 @@ const Menu = ({menuId}: Props) => {
 
         return (
           <MenuWrapper>
-            <UpdateName
+            <UpdateInput
               mutation={UPDATE_MENU_NAME}
-              previousName={getMenu.name || ''}
+              inputValue={getMenu.name || ''}
               variables={{menuId: getMenu.id}}
             />
 
-            <UpdateDescription
+            <UpdateInput
+              style={css`
+                textarea {
+                  font-size: 20px;
+                  width: 100%;
+                  line-height: 30px;
+                }
+              `}
+              textarea
+              textareaLineHeight={30}
+              placeholder="Description"
               mutation={UPDATE_MENU_DESCRIPTION}
-              previousDescription={getMenu.description || ''}
+              inputValue={getMenu.description || ''}
               variables={{menuId: getMenu.id}}
             />
 

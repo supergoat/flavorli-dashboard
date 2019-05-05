@@ -1,8 +1,12 @@
-const calculateTextAreaRows = (
-  textAreaEl: any,
-  minRows: number = 1,
-  textareaLineHeight: number = 24,
-) => {
+const calculateTextAreaRows = ({
+  textAreaEl,
+  minRows = 1,
+  textareaLineHeight = 24,
+}: {
+  textAreaEl: any;
+  minRows?: number;
+  textareaLineHeight?: number;
+}) => {
   const textAreaElRows = textAreaEl.current && textAreaEl.current.rows;
   if (!textAreaElRows) return;
 

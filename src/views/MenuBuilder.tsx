@@ -116,10 +116,20 @@ export const RESTAURANT_MENUS_DATA = gql`
   ${MENU_SERVICE_TIMES_DATA}
 `;
 
-const GET_RESTAURANT = gql`
+export const GET_RESTAURANT = gql`
   query getRestaurant {
     getRestaurant {
       id
+      name
+      description
+      tel
+      address {
+        id
+        number
+        streetName
+        city
+        postalCode
+      }
       ...RestaurantMenus
     }
   }

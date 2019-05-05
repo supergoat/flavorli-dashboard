@@ -47,6 +47,7 @@ const ServiceTime = ({
     });
   };
 
+  // This comparison will only work, if the order of the keys is correct
   const hasServiceBeenEdited =
     JSON.stringify(serviceTime) !==
     JSON.stringify({
