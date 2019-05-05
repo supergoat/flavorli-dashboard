@@ -5,7 +5,7 @@ import Order from './Order';
 import SideBar from '../components/SideBar';
 import Navbar from '../components/Navbar';
 import Colours from '../Colours';
-import OrderList from '../components/OrderList';
+import OrderList from '../containers/OrderList';
 
 interface Props extends RouteComponentProps {}
 
@@ -19,7 +19,7 @@ const OrderView = (_: Props) => {
           <Tab>In Progress</Tab>
           <Tab>Ready</Tab>
         </Tabs>
-        <OrderList />
+        <OrderList restaurantId={'cjumsnzj9001d0707xfdi5lbe'} />
       </SideBar>
 
       <Order />

@@ -23,7 +23,16 @@ const Category = ({category}: Props) => {
       </MenuName>
 
       <UpdateInput
+        style={css`
+          margin-bottom: 20px;
+          input {
+            font-size: 40px;
+            font-weight: 300;
+            width: 100%;
+          }
+        `}
         name="name"
+        placeholder="Name"
         mutation={UPDATE_CATEGORY_NAME}
         inputValue={category.name || ''}
         variables={{categoryId: category.id}}

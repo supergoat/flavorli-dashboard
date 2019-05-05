@@ -15,7 +15,7 @@ const OrderListItem = ({order}: {order: any}) => {
         </div>
       </CustomerInfo>
 
-      <OrderId>#{order.id}</OrderId>
+      <OrderId>#{order.orderNo}</OrderId>
     </OrderListItemWrapper>
   );
 };
