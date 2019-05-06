@@ -8,7 +8,7 @@ interface Props extends RouteComponentProps {}
 const App = (_: Props) => {
   return (
     <Router>
-      <Orders path="/" />
+      <Orders path="/*" />
       <Account path="/account" />
       <MenuBuilder path="/menu-builder/*" />
     </Router>

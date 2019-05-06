@@ -1,121 +1,102 @@
 import React from 'react';
+import {RouteComponentProps} from '@reach/router';
 import styled from 'styled-components/macro';
-
+import gql from 'graphql-tag';
+import {Query} from 'react-apollo';
 import OrderItems from '../components/OrderItems';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 
-const items = [
-  {
-    id: '1',
-    name: 'Burger',
-    modifiers: [
-      {
-        name: 'Choose Sauce',
-        items: [
-          {
-            name: 'Tomato Sauce',
-            price: 0.0,
-          },
-        ],
-      },
-      {
-        name: 'Toppings',
-        items: [
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-        ],
-      },
-    ],
-    price: 11.0,
-    quantity: 1,
-  },
-  {
-    id: '2',
-    name: 'Burger',
-    modifiers: [
-      {
-        name: 'Choose Sauce',
-        items: [
-          {
-            name: 'Tomato Sauce',
-            price: 0.0,
-          },
-        ],
-      },
-      {
-        name: 'Toppings',
-        items: [
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-          {
-            name: 'Cheese',
-            price: 0.0,
-          },
-        ],
-      },
-    ],
-    price: 11.0,
-    quantity: 1,
-  },
-];
-
-const Order = () => {
+interface Props extends RouteComponentProps {
+  orderId?: string;
+}
+const Order = ({orderId}: Props) => {
   return (
-    <OrderWrapper>
-      <OrderInfo>
-        <OrderDueTime>
-          <p>
-            Due in <span>15 min</span>
-          </p>
-        </OrderDueTime>
-        <OrderId>
-          <span>#</span>001
-        </OrderId>
-      </OrderInfo>
-      <TimeBadge>On Time</TimeBadge>
+    <Query query={GET_ORDER} variables={{id: orderId}}>
+      {({loading, error, data: {getOrder}}: any) => {
+        if (loading) return 'Loading...';
+        if (error) return `Error! ${error.message}`;
 
-      <Customer>
-        <CustomerInfo>
-          <Avatar />
-          <div>
-            <CustomerName>Panayiotis Nicolaou</CustomerName>
-            <Dietary dietary={['vegan']} />
-          </div>
-        </CustomerInfo>
+        return (
+          <OrderWrapper>
+            <OrderInfo>
+              <OrderDueTime>
+                <p>
+                  Due at <span>{getOrder.dueAt}</span>
+                </p>
+              </OrderDueTime>
+              <OrderId>
+                <span>#</span>
+                {getOrder.orderNo}
+              </OrderId>
+            </OrderInfo>
+            <TimeBadge>On Time</TimeBadge>
 
-        <OrderActions>
-          <ContactCustomer>Contact Customer</ContactCustomer>
-          <EditOrder secondary>Edit Order</EditOrder>
-        </OrderActions>
-      </Customer>
+            <Customer>
+              <CustomerInfo>
+                <Avatar />
+                <div>
+                  <CustomerName>{getOrder.customer.name}</CustomerName>
+                  <Dietary dietary={['vegan']} />
+                </div>
+              </CustomerInfo>
 
-      <OrderSummary>Order Summary</OrderSummary>
+              <OrderActions>
+                <ContactCustomer>CONTACT CUSTOMER</ContactCustomer>
+                <EditOrder secondary>EDIT ORDER</EditOrder>
+              </OrderActions>
+            </Customer>
 
-      <OrderItems items={items} />
-      <Total>
-        <div>Total: </div>
-        <div>£10.00</div>
-      </Total>
-      <Actions>
-        <Button secondary width="35%">
-          Cancel Order
-        </Button>
-        <Button width="55%">Ready For Pickup</Button>
-      </Actions>
-    </OrderWrapper>
+            <OrderSummary>Order Summary</OrderSummary>
+
+            <OrderItems items={getOrder.items} />
+            <Total>
+              <div>Total: </div>
+              <div>£{getOrder.total}</div>
+            </Total>
+            <Actions>
+              <Button secondary width="35%">
+                Cancel Order
+              </Button>
+              <Button width="55%">Ready For Pickup</Button>
+            </Actions>
+          </OrderWrapper>
+        );
+      }}
+    </Query>
   );
 };
 
 export default Order;
+
+const GET_ORDER = gql`
+  query getOrder($id: ID!) {
+    getOrder(id: $id) {
+      id
+      orderNo
+      dueAt
+      total
+      customer {
+        name
+      }
+      items {
+        id
+        name
+        price
+        quantity
+        options {
+          id
+          name
+          items {
+            id
+            name
+            price
+          }
+        }
+      }
+    }
+  }
+`;
 
 const OrderWrapper = styled.div`
   display: flex;
@@ -152,7 +133,7 @@ const OrderId = styled.h1`
 
 const TimeBadge = styled.div`
   align-self: flex-start;
-  font-size: 12px;
+  font-size: 16px;
   padding: 5px 10px;
   background: green;
   border-radius: 4px;
@@ -213,9 +194,12 @@ const OrderActions = styled.div`
 
 const ContactCustomer = styled(Button)`
   margin-bottom: 15px;
+  font-size: 12px;
 `;
 
-const EditOrder = styled(Button)``;
+const EditOrder = styled(Button)`
+  font-size: 12px;
+`;
 
 const Total = styled.div`
   display: flex;

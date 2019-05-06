@@ -1,5 +1,7 @@
-import React from 'react';
-import {RouteComponentProps} from '@reach/router';
+import React, {useState} from 'react';
+import gql from 'graphql-tag';
+import {Query, Subscription} from 'react-apollo';
+import {RouteComponentProps, Router} from '@reach/router';
 import styled, {css} from 'styled-components/macro';
 import Order from './Order';
 import SideBar from '../components/SideBar';
@@ -7,27 +9,145 @@ import Navbar from '../components/Navbar';
 import Colours from '../Colours';
 import OrderList from '../containers/OrderList';
 
+// restaurantId={'cjumsnzj9001d0707xfdi5lbe'}
+
 interface Props extends RouteComponentProps {}
+const OrdersView = (_: Props) => {
+  const [newOrders, setNewOrders] = useState(0);
+  const [inProgressOrders, setInProgressOrders] = useState(0);
+  const [readyOrders, setReadyOrders] = useState(0);
+  const [status, setStatus] = useState('Pending');
 
-const OrderView = (_: Props) => {
   return (
-    <OrderWrapper>
-      <Navbar />
-      <SideBar>
-        <Tabs>
-          <Tab selected>New</Tab>
-          <Tab>In Progress</Tab>
-          <Tab>Ready</Tab>
-        </Tabs>
-        <OrderList restaurantId={'cjumsnzj9001d0707xfdi5lbe'} />
-      </SideBar>
+    <Query
+      query={GET_ORDERS}
+      variables={{status}}
+      fetchPolicy="cache-and-network"
+      onCompleted={({getOrders}: any) =>
+        status === 'Pending' && setNewOrders(getOrders.length)
+      }
+    >
+      {({loading, error, data: {getOrders}, subscribeToMore}: any) => {
+        const subscribeToMoreOrders = () =>
+          subscribeToMore({
+            document: ORDERS_SUBSCRIPTION,
+            variables: {restaurantId: 'cjumsnzj9001d0707xfdi5lbe'},
+            updateQuery: (prev: any, {subscriptionData}: any) => {
+              setNewOrders(newOrders + 1);
+              if (status !== 'Pending') return;
+              if (!subscriptionData.data) return prev;
+              const newOrder = subscriptionData.data.getRestaurantOrders;
 
-      <Order />
-    </OrderWrapper>
+              return Object.assign({}, prev, {
+                getOrders: [newOrder, ...prev.getOrders],
+              });
+            },
+          });
+
+        return (
+          <OrderWrapper>
+            <Navbar />
+            <SideBar>
+              <Tabs>
+                <Tab
+                  selected={status === 'Pending'}
+                  onClick={() => setStatus('Pending')}
+                >
+                  New {newOrders > 0 && newOrders}
+                </Tab>
+                <Tab
+                  selected={status === 'InProgress'}
+                  onClick={() => setStatus('InProgress')}
+                >
+                  In Progress {inProgressOrders > 0 && inProgressOrders}
+                </Tab>
+                <Tab
+                  selected={status === 'Ready'}
+                  onClick={() => setStatus('Ready')}
+                >
+                  Ready {readyOrders > 0 && readyOrders}
+                </Tab>
+              </Tabs>
+
+              {!loading && (
+                <OrderList
+                  orders={getOrders}
+                  subscribeToMore={subscribeToMoreOrders}
+                />
+              )}
+            </SideBar>
+
+            <Router>
+              <Order path="/order/:orderId" />
+            </Router>
+          </OrderWrapper>
+        );
+      }}
+    </Query>
   );
 };
 
-export default OrderView;
+export default OrdersView;
+
+const ORDERS_SUBSCRIPTION = gql`
+  subscription getRestaurantOrders($restaurantId: ID!) {
+    getRestaurantOrders(restaurantId: $restaurantId) {
+      id
+      orderNo
+      dueAt
+      total
+      status
+      customer {
+        name
+      }
+      items {
+        id
+        name
+        price
+        quantity
+        options {
+          id
+          name
+          items {
+            id
+            name
+            price
+          }
+        }
+      }
+    }
+  }
+`;
+
+const GET_ORDERS = gql`
+  query getOrders($status: String) {
+    getOrders(status: $status) {
+      id
+      orderNo
+      dueAt
+      total
+      status
+      customer {
+        name
+      }
+      items {
+        id
+        name
+        price
+        quantity
+        options {
+          id
+          name
+          items {
+            id
+            name
+            price
+          }
+        }
+      }
+    }
+  }
+`;
 
 const OrderWrapper = styled.div`
   display: flex;
@@ -55,6 +175,7 @@ const Tab = styled.div`
   padding: 20px 10px;
   color: var(--osloGrey);
   border-bottom: 1px solid var(--gallery);
+  cursor: pointer;
 
   ${(props: TabProps) =>
     props.selected &&

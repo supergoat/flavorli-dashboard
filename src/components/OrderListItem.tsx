@@ -1,10 +1,11 @@
 import React from 'react';
+import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
 
 const OrderListItem = ({order}: {order: any}) => {
   return (
-    <OrderListItemWrapper>
+    <OrderListItemWrapper onClick={() => navigate(`/order/${order.id}`)}>
       <CustomerInfo>
         <Avatar />
         <div>
@@ -33,6 +34,7 @@ const OrderListItemWrapper = styled.div`
   font-weight: 300;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   padding: 20px 15px;
+  cursor: pointer;
 `;
 
 const CustomerInfo = styled.div`

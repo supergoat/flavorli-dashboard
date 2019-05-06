@@ -4,7 +4,8 @@ import styled from 'styled-components/macro';
 type OrderItemType = {
   id: string;
   name: string;
-  modifiers: {
+  options: {
+    id: string;
     name: string;
     items: {
       name: string;
@@ -26,30 +27,26 @@ const OrderItems = ({items}: Props) => {
           <OrderItemInfo>
             <Quantity>{orderItem.quantity}</Quantity>
             <Name>{orderItem.name}</Name>
-            <Price>{orderItem.price.toFixed(2)}</Price>
+            <Price>{orderItem.price}</Price>
           </OrderItemInfo>
 
-          <Modifiers>
-            {orderItem.modifiers.map((modifier: any) => {
+          <Options>
+            {orderItem.options.map((option: any) => {
               return (
-                <Modifier>
-                  <ModifierName key={modifier.name}>
-                    {modifier.name}
-                  </ModifierName>
-                  {modifier.items.map((modifierItem: any) => {
+                <Option key={option.id}>
+                  <OptionName key={option.name}>{option.name}</OptionName>
+                  {option.items.map((optionItem: any) => {
                     return (
-                      <ModifierItem key={modifierItem.name}>
-                        <ModifierItemName>{modifierItem.name}</ModifierItemName>
-                        <ModifierItemPrice>
-                          {modifierItem.price.toFixed(2)}
-                        </ModifierItemPrice>
-                      </ModifierItem>
+                      <OptionItem key={optionItem.name}>
+                        <OptionItemName>{optionItem.name}</OptionItemName>
+                        <OptionItemPrice>{optionItem.price}</OptionItemPrice>
+                      </OptionItem>
                     );
                   })}
-                </Modifier>
+                </Option>
               );
             })}
-          </Modifiers>
+          </Options>
         </OrderItem>
       ))}
     </>
@@ -90,35 +87,35 @@ const Price = styled.div`
   }
 `;
 
-const Modifiers = styled.div``;
+const Options = styled.div``;
 
-const Modifier = styled.div`
+const Option = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   margin-bottom: 15px;
 `;
 
-const ModifierName = styled.h2`
+const OptionName = styled.h2`
   width: 90%;
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
   margin-bottom: 5px;
 `;
 
-const ModifierItemName = styled.p`
+const OptionItemName = styled.p`
   font-size: 16px;
   color: var(--osloGrey);
   margin-bottom: 5px;
 `;
 
-const ModifierItem = styled.div`
+const OptionItem = styled.div`
   display: flex;
   justify-content: space-between;
   width: 90%;
 `;
 
-const ModifierItemPrice = styled.div`
+const OptionItemPrice = styled.div`
   font-size: 14px;
   width: 20%;
   text-align: right;
