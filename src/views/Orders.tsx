@@ -23,9 +23,11 @@ const OrdersView = (_: Props) => {
       query={GET_ORDERS}
       variables={{status}}
       fetchPolicy="cache-and-network"
-      onCompleted={({getOrders}: any) =>
-        status === 'Pending' && setNewOrders(getOrders.length)
-      }
+      onCompleted={({getOrders}: any) => {
+        if (status === 'Pending') setNewOrders(getOrders.length);
+        if (status === 'InProgress') setInProgressOrders(getOrders.length);
+        if (status === 'Ready') setReadyOrders(getOrders.length);
+      }}
     >
       {({loading, error, data: {getOrders}, subscribeToMore}: any) => {
         const subscribeToMoreOrders = () =>
@@ -53,19 +55,23 @@ const OrdersView = (_: Props) => {
                   selected={status === 'Pending'}
                   onClick={() => setStatus('Pending')}
                 >
-                  New {newOrders > 0 && newOrders}
+                  New {newOrders > 0 && <TabNumber> {newOrders}</TabNumber>}
                 </Tab>
                 <Tab
                   selected={status === 'InProgress'}
                   onClick={() => setStatus('InProgress')}
                 >
-                  In Progress {inProgressOrders > 0 && inProgressOrders}
+                  In Progress
+                  {inProgressOrders > 0 && (
+                    <TabNumber>{inProgressOrders}</TabNumber>
+                  )}
                 </Tab>
                 <Tab
                   selected={status === 'Ready'}
                   onClick={() => setStatus('Ready')}
                 >
-                  Ready {readyOrders > 0 && readyOrders}
+                  Ready
+                  {readyOrders > 0 && <TabNumber>{readyOrders}</TabNumber>}
                 </Tab>
               </Tabs>
 
@@ -172,10 +178,11 @@ const Tab = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-  padding: 20px 10px;
+  padding: 20px 0;
   color: var(--osloGrey);
   border-bottom: 1px solid var(--gallery);
   cursor: pointer;
+  font-size: 15px;
 
   ${(props: TabProps) =>
     props.selected &&
@@ -185,4 +192,16 @@ const Tab = styled.div`
       color: var(--oxfordBlue);
       font-weight: bold;
     `}
+`;
+
+const TabNumber = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${Colours.oxfordBlue};
+  color: ${Colours.white};
+  padding: 4px 8px;
+  border-radius: 3px;
+  margin-left: 5px;
+  font-size: 11px;
 `;
