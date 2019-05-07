@@ -1,11 +1,10 @@
 import React from 'react';
-import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
 
-const OrderListItem = ({order}: {order: any}) => {
+const OrderListItem = ({order, onClick}: {order: any; onClick: () => void}) => {
   return (
-    <OrderListItemWrapper onClick={() => navigate(`/order/${order.id}`)}>
+    <OrderListItemWrapper onClick={onClick}>
       <CustomerInfo>
         <Avatar />
         <div>

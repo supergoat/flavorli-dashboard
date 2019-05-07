@@ -1,13 +1,14 @@
 import React from 'react';
-import {RouteComponentProps} from '@reach/router';
+
 import styled from 'styled-components/macro';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
 import OrderItems from '../components/OrderItems';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
+import UpdateOrderStatus from '../containers/UpdateOrderStatus';
 
-interface Props extends RouteComponentProps {
+interface Props {
   orderId?: string;
 }
 const Order = ({orderId}: Props) => {
@@ -30,7 +31,9 @@ const Order = ({orderId}: Props) => {
                 {getOrder.orderNo}
               </OrderId>
             </OrderInfo>
-            <TimeBadge>On Time</TimeBadge>
+            <TimeBadge>
+              {getOrder.status === 'InProgress' ? 'On Time' : getOrder.status}
+            </TimeBadge>
 
             <Customer>
               <CustomerInfo>
@@ -55,10 +58,68 @@ const Order = ({orderId}: Props) => {
               <div>£{getOrder.total}</div>
             </Total>
             <Actions>
-              <Button secondary width="35%">
-                Cancel Order
-              </Button>
-              <Button width="55%">Ready For Pickup</Button>
+              {getOrder.status === 'Pending' && (
+                <>
+                  <UpdateOrderStatus
+                    orderId={getOrder.id}
+                    status="Declined"
+                    width="35%"
+                    secondary
+                  >
+                    Decline Order
+                  </UpdateOrderStatus>
+
+                  <UpdateOrderStatus
+                    orderId={getOrder.id}
+                    status="InProgress"
+                    width="55%"
+                  >
+                    Accept Order
+                  </UpdateOrderStatus>
+                </>
+              )}
+
+              {getOrder.status === 'InProgress' && (
+                <>
+                  <UpdateOrderStatus
+                    orderId={getOrder.id}
+                    status="Canceled"
+                    width="35%"
+                    secondary
+                  >
+                    Cancel Order
+                  </UpdateOrderStatus>
+
+                  <UpdateOrderStatus
+                    orderId={getOrder.id}
+                    status="Ready"
+                    width="55%"
+                  >
+                    Ready for Pickup
+                  </UpdateOrderStatus>
+                </>
+              )}
+
+              {getOrder.status === 'Ready' && (
+                <>
+                  <UpdateOrderStatus
+                    orderId={getOrder.id}
+                    status="NotDelivered"
+                    width="35%"
+                    secondary
+                  >
+                    Not Delivered
+                  </UpdateOrderStatus>
+
+                  <UpdateOrderStatus
+                    orderId={getOrder.id}
+                    status="Delivered"
+                    width="55%"
+                  >
+                    Delivered
+                  </UpdateOrderStatus>
+                </>
+              )}
             </Actions>
           </OrderWrapper>
         );
@@ -76,6 +137,7 @@ const GET_ORDER = gql`
       orderNo
       dueAt
       total
+      status
       customer {
         name
       }
