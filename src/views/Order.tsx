@@ -64,7 +64,7 @@ const Order = ({orderId}: Props) => {
                     orderId={getOrder.id}
                     status="Declined"
                     width="35%"
-                    secondary
+                    danger
                   >
                     Decline Order
                   </UpdateOrderStatus>
@@ -85,7 +85,7 @@ const Order = ({orderId}: Props) => {
                     orderId={getOrder.id}
                     status="Canceled"
                     width="35%"
-                    secondary
+                    danger
                   >
                     Cancel Order
                   </UpdateOrderStatus>
@@ -106,7 +106,6 @@ const Order = ({orderId}: Props) => {
                     orderId={getOrder.id}
                     status="NotDelivered"
                     width="35%"
-                    secondary
                   >
                     Not Delivered
                   </UpdateOrderStatus>
@@ -115,6 +114,7 @@ const Order = ({orderId}: Props) => {
                     orderId={getOrder.id}
                     status="Delivered"
                     width="55%"
+                    success
                   >
                     Delivered
                   </UpdateOrderStatus>

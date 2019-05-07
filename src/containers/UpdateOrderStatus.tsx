@@ -8,13 +8,15 @@ const UpdateOrder = ({
   orderId,
   status,
   width,
-  secondary,
+  danger,
+  success,
   children,
 }: {
   orderId: string;
   status: string;
   width: string;
-  secondary?: boolean;
+  danger?: boolean;
+  success?: boolean;
   children: any;
 }) => {
   const [error, setError] = useState('');
@@ -31,7 +33,8 @@ const UpdateOrder = ({
             <Button
               width={width}
               onClick={() => updateOrder()}
-              secondary={secondary}
+              danger={danger}
+              success={success}
             >
               {children}
             </Button>
