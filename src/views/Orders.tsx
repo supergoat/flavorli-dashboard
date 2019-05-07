@@ -69,7 +69,9 @@ const OrdersView = (_: Props) => {
                 <Tab
                   selected={status === 'Pending'}
                   onClick={() => {
-                    if (newOrders.length > 0) setOrderId(newOrders[0].id);
+                    newOrders.length > 0
+                      ? setOrderId(newOrders[0].id)
+                      : setOrderId('');
                     setStatus('Pending');
                   }}
                 >
@@ -81,8 +83,9 @@ const OrdersView = (_: Props) => {
                 <Tab
                   selected={status === 'InProgress'}
                   onClick={() => {
-                    if (inProgressOrders.length > 0)
-                      setOrderId(inProgressOrders[0].id);
+                    inProgressOrders.length > 0
+                      ? setOrderId(inProgressOrders[0].id)
+                      : setOrderId('');
                     setStatus('InProgress');
                   }}
                 >
@@ -94,7 +97,9 @@ const OrdersView = (_: Props) => {
                 <Tab
                   selected={status === 'Ready'}
                   onClick={() => {
-                    if (readyOrders.length > 0) setOrderId(readyOrders[0].id);
+                    readyOrders.length > 0
+                      ? setOrderId(readyOrders[0].id)
+                      : setOrderId('');
                     setStatus('Ready');
                   }}
                 >
