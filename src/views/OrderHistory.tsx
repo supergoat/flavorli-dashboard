@@ -6,6 +6,7 @@ import styled from 'styled-components/macro';
 import OrderItems from '../components/OrderItems';
 import Navbar from '../containers/Navbar';
 import SideBar from '../components/SideBar';
+import {formatTime} from '../_utils/formatTime';
 
 import Colours from '../Colours';
 
@@ -13,6 +14,7 @@ interface Props extends RouteComponentProps {}
 
 const OrderHistory = (_: Props) => {
   const [selectedOrderId, setSelectedOrderId] = useState('');
+
   return (
     <OrderHistoryWrapper>
       <Navbar />
@@ -27,7 +29,16 @@ const OrderHistory = (_: Props) => {
 
             return (
               <>
+                <OrderSummary>
+                  <Status>Status</Status>
+                  <Customer>Customer</Customer>
+                  <OrderId>Order</OrderId>
+                  <OrderTotal>Total</OrderTotal>
+                </OrderSummary>
+
                 {getOrderHistory.map((order: any) => {
+                  const lastUpdated = new Date(order.updatedAt);
+
                   return (
                     <Order
                       key={order.id}
@@ -40,7 +51,7 @@ const OrderHistory = (_: Props) => {
                       <OrderSummary>
                         <Status>
                           <p>{order.status}</p>
-                          <p>{order.dueAt}</p>
+                          <p>{formatTime(lastUpdated)}</p>
                         </Status>
 
                         <Customer>
@@ -57,7 +68,7 @@ const OrderHistory = (_: Props) => {
                           <OrderItems items={order.items} />
                           <Total>
                             <div>Total: </div>
-                            <div>£10.00</div>
+                            <div>£{order.total}</div>
                           </Total>
                         </OrderDetails>
                       )}
@@ -79,10 +90,11 @@ const GET_ORDER_HISTORY = gql`
   query getOrderHistory {
     getOrderHistory {
       id
-      orderNo
+      updatedAt
       dueAt
       total
       status
+      orderNo
       customer {
         name
       }
@@ -140,10 +152,22 @@ const OrderSummary = styled.div`
   padding: 20px;
 `;
 
+const Status = styled.div`
+  width: 20%;
+`;
+
 const Customer = styled.div`
   display: flex;
   align-items: center;
   width: 40%;
+`;
+
+const OrderId = styled.div`
+  width: 20%;
+`;
+const OrderTotal = styled.div`
+  width: 20%;
+  text-align: right;
 `;
 
 const Avatar = styled.img`
@@ -154,29 +178,17 @@ const Avatar = styled.img`
   margin-right: 10px;
 `;
 
-const Status = styled.div`
-  width: 20%;
-`;
-
-const OrderId = styled.div`
-  width: 20%;
-`;
-const OrderTotal = styled.div`
-  width: 10%;
-  text-align: right;
-`;
-
 const OrderDetails = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 30px 20px 30px 25%;
-  background: ${Colours.alabaster};
+  padding: 30px 20px 30px 26%;
+  background: ${Colours.alabasterLight};
 `;
 
 const Total = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 500;
   padding-left: 10%;
 `;
