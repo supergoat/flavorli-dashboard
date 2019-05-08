@@ -3,7 +3,7 @@ import {GET_RESTAURANT} from '../views/MenuBuilder';
 import {Query} from 'react-apollo';
 import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
-import LogOutButton from '../containers/LogOutButton';
+import LogOutButton from './LogOutButton';
 import Colours from '../Colours';
 
 const Navbar = () => {
@@ -42,7 +42,9 @@ const Navbar = () => {
                 Menu Builder
               </DropDownItem>
               <DropDownItem onClick={() => navigate('/')}>Orders</DropDownItem>
-              <DropDownItem>Order History</DropDownItem>
+              <DropDownItem onClick={() => navigate('/order-history')}>
+                Order History
+              </DropDownItem>
               <DropDownItem>Settings</DropDownItem>
 
               <DropDownItem>

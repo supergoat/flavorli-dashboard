@@ -9,10 +9,10 @@ type OrderItemType = {
     name: string;
     items: {
       name: string;
-      price: number;
+      price: string;
     }[];
   }[];
-  price: number;
+  price: string;
   quantity: number;
 };
 

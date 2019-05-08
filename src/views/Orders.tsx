@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import gql from 'graphql-tag';
-import {Query, Subscription} from 'react-apollo';
+import {Query} from 'react-apollo';
 import {RouteComponentProps} from '@reach/router';
 import styled, {css} from 'styled-components/macro';
 import Order from './Order';
 import SideBar from '../components/SideBar';
-import Navbar from '../components/Navbar';
+import Navbar from '../containers/Navbar';
 import Colours from '../Colours';
 import OrderList from '../containers/OrderList';
 

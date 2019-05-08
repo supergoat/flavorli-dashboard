@@ -4,7 +4,7 @@ import {Query} from 'react-apollo';
 import styled from 'styled-components/macro';
 import {RouteComponentProps} from '@reach/router';
 import Account from '../components/Account';
-import Navbar from '../components/Navbar';
+import Navbar from '../containers/Navbar';
 import SideBar from '../components/SideBar';
 import Colours from '../Colours';
 

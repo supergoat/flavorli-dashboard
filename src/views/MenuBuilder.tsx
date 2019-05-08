@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
 import {RouteComponentProps, Router, navigate} from '@reach/router';
 import styled, {keyframes} from 'styled-components/macro';
-import Navbar from '../components/Navbar';
+import Navbar from '../containers/Navbar';
 import SideBar from '../components/SideBar';
 import Menu from './Menu';
 import Category from './Category';
