@@ -35,18 +35,16 @@ const Navbar = () => {
             </RestaurantInfo>
 
             <Dropdown showDropdown={showDropdown}>
-              <DropDownItem onClick={() => navigate('/account')}>
-                Account
-              </DropDownItem>
+              <DropDownItem onClick={() => navigate('/')}>Orders</DropDownItem>
               <DropDownItem onClick={() => navigate('/menu-builder')}>
                 Menu Builder
               </DropDownItem>
-              <DropDownItem onClick={() => navigate('/')}>Orders</DropDownItem>
               <DropDownItem onClick={() => navigate('/order-history')}>
                 Order History
               </DropDownItem>
-              <DropDownItem>Settings</DropDownItem>
-
+              <DropDownItem onClick={() => navigate('/account')}>
+                Account
+              </DropDownItem>
               <DropDownItem>
                 <LogOutButton />
               </DropDownItem>
