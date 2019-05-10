@@ -98,7 +98,16 @@ export const MENU_SERVICE_TIMES_DATA = gql`
       id
       hours
       days
-      months
+    }
+  }
+`;
+
+export const RESTAURANT_OPENING_TIMES_DATA = gql`
+  fragment RestaurantOpeningTimes on Restaurant {
+    openingTimes {
+      id
+      hours
+      days
     }
   }
 `;
@@ -131,9 +140,11 @@ export const GET_RESTAURANT = gql`
         postalCode
       }
       ...RestaurantMenus
+      ...RestaurantOpeningTimes
     }
   }
   ${RESTAURANT_MENUS_DATA}
+  ${RESTAURANT_OPENING_TIMES_DATA}
 `;
 
 const MenuBuilderWrapper = styled.div`

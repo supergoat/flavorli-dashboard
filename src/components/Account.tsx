@@ -5,6 +5,7 @@ import UpdateInput from '../containers/UpdateInput';
 import UpdateAddress from '../containers/UpdateAddress';
 
 import Colours from '../Colours';
+import OpeningTimeList from './OpeningTimeList';
 
 interface Props {
   restaurant: any;
@@ -13,7 +14,6 @@ interface Props {
 const Account = ({restaurant}: Props) => {
   return (
     <AccountWrapper>
-      {/* <MenuName>RESTAURANT DETAILS</MenuName> */}
       <UpdateInput
         style={css`
           margin-bottom: 20px;
@@ -56,6 +56,7 @@ const Account = ({restaurant}: Props) => {
 
       <UpdateInput
         style={css`
+          margin-bottom: 10px;
           input {
             font-size: 20px;
             width: 100%;
@@ -67,6 +68,11 @@ const Account = ({restaurant}: Props) => {
         inputValue={restaurant.tel}
         variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_TEL}
+      />
+
+      <OpeningTimeList
+        restaurantId={restaurant.id}
+        restaurantOpeningTimes={restaurant.openingTimes}
       />
     </AccountWrapper>
   );
@@ -83,13 +89,6 @@ const AccountWrapper = styled.div`
   width: 580px;
   background: ${Colours.white};
   padding: 10px 0;
-`;
-
-const MenuName = styled.h4`
-  color: ${Colours.osloGrey};
-  padding: 0 3px;
-  cursor: pointer;
-  margin-bottom: 10px;
 `;
 
 const UPDATE_RESTAURANT_NAME = gql`

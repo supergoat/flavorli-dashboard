@@ -77,7 +77,10 @@ const OrdersView = (_: Props) => {
                 >
                   New{' '}
                   {newOrders.length > 0 && (
-                    <TabNumber> {newOrders.length}</TabNumber>
+                    <TabNumber selected={status === 'Pending'}>
+                      {' '}
+                      {newOrders.length}
+                    </TabNumber>
                   )}
                 </Tab>
                 <Tab
@@ -91,7 +94,10 @@ const OrdersView = (_: Props) => {
                 >
                   In Progress
                   {inProgressOrders.length > 0 && (
-                    <TabNumber> {inProgressOrders.length}</TabNumber>
+                    <TabNumber selected={status === 'InProgress'}>
+                      {' '}
+                      {inProgressOrders.length}
+                    </TabNumber>
                   )}
                 </Tab>
                 <Tab
@@ -105,7 +111,10 @@ const OrdersView = (_: Props) => {
                 >
                   Ready
                   {readyOrders.length > 0 && (
-                    <TabNumber> {readyOrders.length}</TabNumber>
+                    <TabNumber selected={status === 'Ready'}>
+                      {' '}
+                      {readyOrders.length}
+                    </TabNumber>
                   )}
                 </Tab>
               </Tabs>
@@ -233,10 +242,17 @@ const TabNumber = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${Colours.oxfordBlue};
+  background: ${Colours.osloGrey};
   color: ${Colours.white};
   padding: 4px 8px;
   border-radius: 3px;
   margin-left: 5px;
   font-size: 11px;
+
+  ${(props: TabProps) =>
+    props.selected &&
+    css`
+      background: ${Colours.oxfordBlue};
+      color: ${Colours.white};
+    `}
 `;

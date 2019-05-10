@@ -33,7 +33,6 @@ const ServiceTimeList = ({menuId, menuServiceTimes}: Props) => {
               serviceTime={{
                 hours: ['10:00', '22:00'],
                 days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                months: [],
                 menuId,
               }}
               onSave={(newServiceTime: any) => {
@@ -76,7 +75,6 @@ const ServiceTimeList = ({menuId, menuServiceTimes}: Props) => {
                     {serviceTime.hours[0]} to {serviceTime.hours[1]}
                   </ServiceHours>
                   <ServiceDays>{serviceTime.days.join(', ')}</ServiceDays>
-                  <ServiceMonths>{serviceTime.months.join(', ')}</ServiceMonths>
                 </ServiceInfo>
                 <DeleteServiceTime
                   serviceTimeId={serviceTime.id}
@@ -140,5 +138,3 @@ const ServiceDays = styled.p`
   margin-bottom: 5px;
   font-weight: bold;
 `;
-
-const ServiceMonths = styled.p``;

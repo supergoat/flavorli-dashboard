@@ -1,5 +1,5 @@
 import React from 'react';
-import ServiceTime from '../components/ServiceTime';
+import AddTime from '../components/AddTime';
 import {Mutation, MutationFn} from 'react-apollo';
 import gql from 'graphql-tag';
 import useErrors from '../_utils/useErrors';
@@ -70,9 +70,9 @@ const UpsertServiceTime = ({serviceTime, onSave, onCancel}: Props) => {
     >
       {(upsertServiceTime: any, {loading}: any) => {
         return (
-          <ServiceTime
+          <AddTime
             saving={loading}
-            serviceTime={serviceTime}
+            addTime={serviceTime}
             errors={errors}
             clearErrors={clearErrors}
             onSave={(serviceTime: any) =>
@@ -94,19 +94,11 @@ const UPSERT_SERVICE_TIME = gql`
     $menuId: ID!
     $hours: [String!]
     $days: [String!]
-    $months: [String!]
   ) {
-    upsertServiceTime(
-      id: $id
-      menuId: $menuId
-      hours: $hours
-      days: $days
-      months: $months
-    ) {
+    upsertServiceTime(id: $id, menuId: $menuId, hours: $hours, days: $days) {
       id
       hours
       days
-      months
     }
   }
 `;

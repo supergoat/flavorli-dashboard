@@ -4,64 +4,46 @@ import Colours from '../Colours';
 import Label from '../ui/Label';
 import ConfirmButtons from './ConfirmButtons';
 import SelectDays from './SelectDays';
-import SelectMonths from './SelectMonths';
 import Error from '../ui/Error';
 import sortDays from '../_utils/sortDays';
-import sortMonths from '../_utils/sortMonths';
 
 interface Props {
-  serviceTime: any;
+  addTime: any;
   saving: boolean;
   errors: Map<string, string>;
   clearErrors: (errors: string[]) => void;
-  onSave: (serviceTime: {
-    menuId: string;
-    id: string;
-    hours: [string, string];
-    days: string[];
-    months: string[];
-  }) => void;
+  onSave: (addTime: any) => void;
   onCancel: () => void;
 }
 
-const ServiceTime = ({
-  serviceTime,
+const AddTime = ({
+  addTime,
   saving,
   errors,
   clearErrors,
   onSave,
   onCancel,
 }: Props) => {
-  const [opensAt, setOpensAt] = useState(serviceTime.hours[0]);
-  const [closesAt, setClosesAt] = useState(serviceTime.hours[1]);
-  const [days, setServiceDays] = useState(serviceTime.days);
-  const [months, setServiceMonths] = useState(serviceTime.months);
+  const [opensAt, setOpensAt] = useState(addTime.hours[0]);
+  const [closesAt, setClosesAt] = useState(addTime.hours[1]);
+  const [days, setAddTimeDays] = useState(addTime.days);
 
   const handleSave = () => {
     onSave({
-      menuId: serviceTime.menuId,
-      id: serviceTime.id,
+      ...addTime,
       hours: [opensAt, closesAt],
       days,
-      months,
     });
   };
 
-  // This comparison will only work, if the order of the keys is correct
-  const hasServiceBeenEdited =
-    JSON.stringify(serviceTime) !==
-    JSON.stringify({
-      id: serviceTime.id,
-      hours: [opensAt, closesAt],
-      days,
-      months,
-      __typename: 'ServiceTime',
-      menuId: serviceTime.menuId,
-    });
+  const hasAddTimeBeenEdited =
+    !addTime.id ||
+    JSON.stringify(addTime.hours) !== JSON.stringify([opensAt, closesAt]) ||
+    JSON.stringify(addTime.days) !== JSON.stringify(days);
 
   return (
-    <ServiceTimeWrapper>
-      {!hasServiceBeenEdited && (
+    <AddTimeWrapper>
+      {!hasAddTimeBeenEdited && (
         <CancelButton
           src={require('../assets/icons/cancel.svg')}
           onClick={onCancel}
@@ -70,28 +52,28 @@ const ServiceTime = ({
 
       <Actions>
         <ConfirmButtons
-          show={hasServiceBeenEdited}
+          show={hasAddTimeBeenEdited}
           saving={saving}
           onConfirm={handleSave}
           onCancel={onCancel}
         />
       </Actions>
 
-      <ServiceTimeError show={errors.has('server-error')}>
+      <AddTimeError show={errors.has('server-error')}>
         {errors.get('server-error')}
-      </ServiceTimeError>
+      </AddTimeError>
 
-      <Label>Serving Between</Label>
-      <ServiceTimeError show={errors.has('service-hours')}>
-        {errors.get('service-hours')}
-      </ServiceTimeError>
+      <Label>Available Hours</Label>
+      <AddTimeError show={errors.has('add-time-hours')}>
+        {errors.get('add-time-hours')}
+      </AddTimeError>
 
-      <ServiceHours>
+      <AddTimeHours>
         <Time
           type="time"
           value={opensAt}
           onChange={(e: any) => {
-            clearErrors(['service-hours']);
+            clearErrors(['add-time-hours']);
             setOpensAt(e.target.value);
           }}
         />
@@ -100,20 +82,20 @@ const ServiceTime = ({
           type="time"
           value={closesAt}
           onChange={(e: any) => {
-            clearErrors(['service-hours']);
+            clearErrors(['add-time-hours']);
             setClosesAt(e.target.value);
           }}
         />
-      </ServiceHours>
+      </AddTimeHours>
 
-      <Label>Service Days</Label>
-      <ServiceTimeError show={errors.has('days')}>
+      <Label>Available Days</Label>
+      <AddTimeError show={errors.has('days')}>
         {errors.get('days')}
-      </ServiceTimeError>
+      </AddTimeError>
       <SelectDays
         selectedDays={days}
         onSelect={item =>
-          setServiceDays((items: any) => {
+          setAddTimeDays((items: any) => {
             if (items.includes(item))
               return items.filter((i: any) => i !== item);
             const sortedDays = sortDays([...items, item]);
@@ -121,30 +103,13 @@ const ServiceTime = ({
           })
         }
       />
-
-      <Label>Service Months</Label>
-      <ServiceTimeError show={errors.has('months')}>
-        {errors.get('months')}
-      </ServiceTimeError>
-      <SelectMonths
-        selectedMonths={months}
-        onSelect={item =>
-          setServiceMonths((items: any) => {
-            if (items.includes(item))
-              return items.filter((i: any) => i !== item);
-
-            const sortedMonths = sortMonths([...items, item]);
-            return sortedMonths;
-          })
-        }
-      />
-    </ServiceTimeWrapper>
+    </AddTimeWrapper>
   );
 };
 
-export default ServiceTime;
+export default AddTime;
 
-const ServiceTimeWrapper = styled.div`
+const AddTimeWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -160,7 +125,7 @@ const ServiceTimeWrapper = styled.div`
 interface ErrorProps {
   show?: boolean;
 }
-const ServiceTimeError = styled(Error)`
+const AddTimeError = styled(Error)`
   margin-top: 0;
   max-height: ${(props: ErrorProps) => (props.show ? '15px' : '0')};
 `;
@@ -183,7 +148,7 @@ const Actions = styled.div`
   right: 15px;
 `;
 
-const ServiceHours = styled.div`
+const AddTimeHours = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;

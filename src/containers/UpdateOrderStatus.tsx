@@ -10,6 +10,7 @@ const UpdateOrder = ({
   width,
   danger,
   success,
+  secondary,
   children,
 }: {
   orderId: string;
@@ -17,6 +18,7 @@ const UpdateOrder = ({
   width: string;
   danger?: boolean;
   success?: boolean;
+  secondary?: boolean;
   children: any;
 }) => {
   const [error, setError] = useState('');
@@ -35,6 +37,7 @@ const UpdateOrder = ({
               onClick={() => updateOrder()}
               danger={danger}
               success={success}
+              secondary={secondary}
             >
               {children}
             </Button>
