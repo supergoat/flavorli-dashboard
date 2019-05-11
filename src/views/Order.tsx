@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 import styled from 'styled-components/macro';
 import gql from 'graphql-tag';
@@ -8,13 +8,27 @@ import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 import UpdateOrderStatus from '../containers/UpdateOrderStatus';
 import SelectTime from '../components/SelectTime';
+import isValidPrice from '../_utils/isValidPrice';
+import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
 
 interface Props {
   orderId?: string;
 }
 const Order = ({orderId}: Props) => {
+  const textAreaEl: any = useRef();
+  useEffect(() => calculateTextAreaRows({textAreaEl, minRows: 2}));
+
   const [showDelayOrder, setShowDelayOrder] = useState(false);
+  const [showPriceAdjustment, setShowPriceAdjustment] = useState(false);
+  const [price, setPrice] = useState('');
+  const [reason, setReason] = useState('');
+
   const [selectedTime, setSelectedTime] = useState('');
+
+  const handleReasonChange = (event: any) => {
+    calculateTextAreaRows({textAreaEl, minRows: 2});
+    setReason(event.target.value);
+  };
 
   return (
     <Query query={GET_ORDER} variables={{id: orderId}}>
@@ -56,7 +70,12 @@ const Order = ({orderId}: Props) => {
                   </DelayOrder>
                 )}
                 {getOrder.status === 'InProgress' && (
-                  <AdjustPrice secondary>ADJUST PRICE</AdjustPrice>
+                  <AdjustPrice
+                    secondary
+                    onClick={() => setShowPriceAdjustment(true)}
+                  >
+                    ADJUST PRICE
+                  </AdjustPrice>
                 )}
               </OrderActions>
             </Customer>
@@ -76,6 +95,56 @@ const Order = ({orderId}: Props) => {
                       secondary
                       width="35%"
                       onClick={() => setShowDelayOrder(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button width="60%">Notify Customer</Button>
+                  </Actions>
+                </Modal>
+              </BackDrop>
+            )}
+
+            {showPriceAdjustment && (
+              <BackDrop>
+                <Modal>
+                  <Heading>ADJUST PRICE</Heading>
+                  <SubHeading>Adjustment amount</SubHeading>
+
+                  <Price>
+                    <input
+                      id="menu-item-price"
+                      value={price}
+                      onChange={(e: any) => {
+                        const str = e.target.value;
+                        if (isValidPrice(str)) setPrice(str);
+                      }}
+                    />
+                  </Price>
+
+                  <SubHeading>Reason for price adjusment</SubHeading>
+                  <ReasonForPriceAdjustment
+                    value={reason}
+                    ref={textAreaEl}
+                    onChange={handleReasonChange}
+                  />
+
+                  <AdjustedTotal>
+                    <div>Previous Total:</div>
+                    <div>£{getOrder.total}</div>
+                  </AdjustedTotal>
+
+                  <AdjustedTotal>
+                    <div>New Total:</div>
+                    <div>
+                      £{(Number(getOrder.total) + Number(price)).toFixed(2)}
+                    </div>
+                  </AdjustedTotal>
+
+                  <Actions>
+                    <Button
+                      secondary
+                      width="35%"
+                      onClick={() => setShowPriceAdjustment(false)}
                     >
                       Cancel
                     </Button>
@@ -197,7 +266,6 @@ const GET_ORDER = gql`
 `;
 
 const OrderWrapper = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
@@ -211,7 +279,7 @@ const OrderWrapper = styled.div`
 const Actions = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
 const OrderInfo = styled.div`
@@ -315,6 +383,41 @@ const AdjustPrice = styled(Button)`
   cursor: pointer;
 `;
 
+const Price = styled.div`
+  display: flex;
+  align-items: center;
+  width: 30%;
+  font-size: 22px;
+  margin-bottom: 20px;
+  border: 1px solid var(--osloGrey);
+  border-radius: 3px;
+  padding: 5px 10px;
+
+  &:before {
+    content: '£';
+  }
+
+  input {
+    margin-left: 5px;
+    width: 100%;
+    font-size: 20px;
+    outline: none;
+    border: none;
+  }
+`;
+
+const ReasonForPriceAdjustment = styled.textarea`
+  width: 100%;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid var(--osloGrey);
+  border-radius: 3px;
+  margin-bottom: 20px;
+  padding: 5px;
+  resize: none;
+  max-height: 100px;
+`;
+
 const Total = styled.div`
   display: flex;
   justify-content: space-between;
@@ -334,10 +437,11 @@ const BackDrop = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   padding-top: 15%;
+  z-index: 1;
 `;
 
 const Modal = styled.div`
@@ -354,5 +458,11 @@ const Heading = styled.h1`
 `;
 
 const SubHeading = styled.h3`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+`;
+
+const AdjustedTotal = styled.h3`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 `;

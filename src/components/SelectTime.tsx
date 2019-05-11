@@ -43,7 +43,7 @@ const Time = styled.div`
   margin-right: 2%;
   margin-bottom: 10px;
   padding: 5px;
-  height: 40px;
+  height: 50px;
   border-radius: 3px;
   font-size: 16px;
   cursor: pointer;
@@ -62,10 +62,10 @@ const Time = styled.div`
 `;
 
 const times: string[] = [
-  '5 MIN',
-  '10 MIN',
-  '15 MIN',
-  '20 MIN',
-  '25 MIN',
-  '30 MIN',
+  '5 min',
+  '10 min',
+  '15 min',
+  '20 min',
+  '25 min',
+  '30 min',
 ];
