@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import styled from 'styled-components/macro';
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import Button from '../ui/Button';
@@ -24,28 +25,28 @@ const UpdateOrder = ({
   const [error, setError] = useState('');
 
   return (
-    <Mutation
-      mutation={UPDATE_ORDER}
-      variables={{orderId, status}}
-      onError={() => setError('Could not update')}
-    >
-      {(updateOrder: any, {loading}: any) => {
-        return (
-          <>
+    <UpdateOrderWrapper width={width}>
+      <Mutation
+        mutation={UPDATE_ORDER}
+        variables={{orderId, status}}
+        onError={() => setError('Could not update')}
+      >
+        {(updateOrder: any, {loading}: any) => {
+          return (
             <Button
-              width={width}
               onClick={() => updateOrder()}
               danger={danger}
               success={success}
+              width="100%"
               secondary={secondary}
             >
               {children}
             </Button>
-            <Error show={!!error}>{error}</Error>
-          </>
-        );
-      }}
-    </Mutation>
+          );
+        }}
+      </Mutation>
+      <Error show={!!error}>{error}</Error>
+    </UpdateOrderWrapper>
   );
 };
 
@@ -58,4 +59,14 @@ const UPDATE_ORDER = gql`
       status
     }
   }
+`;
+
+interface UpdateOrderWrapperProps {
+  width?: string;
+}
+const UpdateOrderWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: ${(props: UpdateOrderWrapperProps) => props.width || '100%'};
 `;

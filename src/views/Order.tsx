@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import styled from 'styled-components/macro';
 import gql from 'graphql-tag';
@@ -7,11 +7,15 @@ import OrderItems from '../components/OrderItems';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 import UpdateOrderStatus from '../containers/UpdateOrderStatus';
+import SelectTime from '../components/SelectTime';
 
 interface Props {
   orderId?: string;
 }
 const Order = ({orderId}: Props) => {
+  const [showDelayOrder, setShowDelayOrder] = useState(false);
+  const [selectedTime, setSelectedTime] = useState('');
+
   return (
     <Query query={GET_ORDER} variables={{id: orderId}}>
       {({loading, error, data: {getOrder}}: any) => {
@@ -40,15 +44,46 @@ const Order = ({orderId}: Props) => {
                 <Avatar />
                 <div>
                   <CustomerName>{getOrder.customer.name}</CustomerName>
+                  <CustomerTel>{getOrder.customer.tel}</CustomerTel>
                   <Dietary dietary={['vegan']} />
                 </div>
               </CustomerInfo>
 
               <OrderActions>
-                <ContactCustomer>CONTACT CUSTOMER</ContactCustomer>
-                <EditOrder secondary>EDIT ORDER</EditOrder>
+                {getOrder.status === 'InProgress' && (
+                  <DelayOrder secondary onClick={() => setShowDelayOrder(true)}>
+                    DELAY ORDER
+                  </DelayOrder>
+                )}
+                {getOrder.status === 'InProgress' && (
+                  <AdjustPrice secondary>ADJUST PRICE</AdjustPrice>
+                )}
               </OrderActions>
             </Customer>
+
+            {showDelayOrder && (
+              <BackDrop>
+                <Modal>
+                  <Heading>Delay Order</Heading>
+                  <SubHeading>How long do you need?</SubHeading>
+                  <SelectTime
+                    onSelect={(time: string) => setSelectedTime(time)}
+                    selectedTime={selectedTime}
+                  />
+
+                  <Actions>
+                    <Button
+                      secondary
+                      width="35%"
+                      onClick={() => setShowDelayOrder(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button width="60%">Notify Customer</Button>
+                  </Actions>
+                </Modal>
+              </BackDrop>
+            )}
 
             <OrderSummary>Order Summary</OrderSummary>
 
@@ -140,6 +175,7 @@ const GET_ORDER = gql`
       status
       customer {
         name
+        tel
       }
       items {
         id
@@ -161,6 +197,7 @@ const GET_ORDER = gql`
 `;
 
 const OrderWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
@@ -168,12 +205,13 @@ const OrderWrapper = styled.div`
   padding: 20px 35px;
   width: 580px;
   background: var(--white);
+  margin-top: 5px;
 `;
 
 const Actions = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 50px;
+  margin-top: 20px;
 `;
 
 const OrderInfo = styled.div`
@@ -224,6 +262,7 @@ const Customer = styled.div`
   justify-content: space-between;
   margin-bottom: 20px;
 `;
+
 const CustomerInfo = styled.div`
   display: flex;
   align-items: center;
@@ -235,11 +274,16 @@ const CustomerName = styled.h1`
   margin-bottom: 5px;
 `;
 
+const CustomerTel = styled.p`
+  margin-bottom: 5px;
+  color: var(--osloGrey);
+`;
+
 const Avatar = styled.img`
   flex-shrink: 0;
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
   background: grey;
   margin-right: 10px;
 `;
@@ -254,13 +298,21 @@ const OrderActions = styled.div`
   }
 `;
 
-const ContactCustomer = styled(Button)`
+const DelayOrder = styled(Button)`
   margin-bottom: 15px;
   font-size: 12px;
+  margin-bottom: 10px;
+  box-shadow: none;
+  border: 1px solid var(--osloGrey);
+  cursor: pointer;
 `;
 
-const EditOrder = styled(Button)`
+const AdjustPrice = styled(Button)`
   font-size: 12px;
+  width: 155px;
+  box-shadow: none;
+  border: 1px solid var(--osloGrey);
+  cursor: pointer;
 `;
 
 const Total = styled.div`
@@ -274,4 +326,33 @@ const Total = styled.div`
 
 const OrderSummary = styled.h3`
   margin-bottom: 15px;
+`;
+
+const BackDrop = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  padding-top: 15%;
+`;
+
+const Modal = styled.div`
+  width: 400px;
+  background: white;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  align-self: flex-start;
+`;
+
+const Heading = styled.h1`
+  margin-bottom: 10px;
+`;
+
+const SubHeading = styled.h3`
+  margin-bottom: 20px;
 `;
