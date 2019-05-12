@@ -33,6 +33,7 @@ const MenuItem = ({
 
   const [available, setAvailable] = useState(menuItem.available);
   const [name, setName] = useState(menuItem.name || '');
+  const [image, setImage] = useState(menuItem.image || '');
   const [price, setPrice] = useState(menuItem.price || '');
   const [description, setDescription] = useState(menuItem.description || '');
   const [dietarySelected, setDietarySelected] = useState(menuItem.dietary);
@@ -51,6 +52,7 @@ const MenuItem = ({
       id: menuItem.id,
       categoryId,
       name,
+      image,
       price: price,
       available,
       description,
@@ -89,7 +91,26 @@ const MenuItem = ({
         placeholder="Description"
       />
 
-      <Label htmlFor="price">Price</Label>
+      {image ? (
+        <MenuItemImage src={image} alt={`${menuItem.name} image`} />
+      ) : (
+        <SelectImageText htmlFor="menu-item-image">
+          Image Preview
+        </SelectImageText>
+      )}
+
+      <Label htmlFor="menu-item-image">Image url</Label>
+
+      <ImageInput
+        id="menu-item-image"
+        value={image}
+        onChange={(e: any) => {
+          const str = e.target.value;
+          setImage(str);
+        }}
+      />
+
+      <Label htmlFor="menu-item-price">Price</Label>
       <MenuItemError show={errors.has('price')}>
         {errors.get('price')}
       </MenuItemError>
@@ -106,7 +127,6 @@ const MenuItem = ({
       </Price>
 
       <Label>Allergens</Label>
-
       <SelectDietaryItems
         selectedItems={dietarySelected}
         onSelect={item =>
@@ -267,6 +287,27 @@ const Availability = styled.h3`
     props.available ? Colours.oxfordBlue : Colours.white};
 `;
 
+const SelectImageText = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 250px;
+  margin-bottom: 20px;
+  border: 1px solid lightgrey;
+  background: ${Colours.white};
+  cursor: pointer;
+`;
+
+const MenuItemImage = styled.img`
+  width: 250px;
+  height: 250px;
+  margin-bottom: 20px;
+  border: 1px solid lightgrey;
+  background: ${Colours.white};
+  object-fit: cover;
+`;
+
 const NameInput = styled.input`
   font-size: 40px;
   width: 100%;
@@ -279,6 +320,15 @@ const DescriptionTextArea = styled.textarea`
   font-size: 20px;
   outline: none;
   resize: none;
+  width: 100%;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  border: none;
+`;
+
+const ImageInput = styled.input`
+  font-size: 20px;
+  outline: none;
   width: 100%;
   padding: 10px 0;
   margin-bottom: 20px;

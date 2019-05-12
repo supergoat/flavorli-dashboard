@@ -10,6 +10,7 @@ interface MenuItemType {
   id: string;
   categoryId: string;
   name: string;
+  image: string;
   price: string;
   available: boolean;
   description: string;
@@ -107,6 +108,7 @@ const UPSERT_MENU_ITEM = gql`
     $categoryId: ID!
     $id: ID
     $name: String
+    $image: String
     $price: String
     $available: Boolean!
     $description: String
@@ -117,6 +119,7 @@ const UPSERT_MENU_ITEM = gql`
       categoryId: $categoryId
       id: $id
       name: $name
+      image: $image
       price: $price
       available: $available
       description: $description
@@ -125,6 +128,7 @@ const UPSERT_MENU_ITEM = gql`
     ) {
       id
       name
+      image
       description
       price
       available

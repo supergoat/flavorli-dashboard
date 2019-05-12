@@ -33,6 +33,7 @@ const GET_MENU_ITEM = gql`
     getMenuItem(menuItemId: $menuItemId) {
       id
       name
+      image
       description
       price
       dietary

@@ -72,7 +72,7 @@ const Category = ({category}: Props) => {
               key={item.id}
               onClick={() => navigate(`/menu-builder/menuItem/${item.id}`)}
             >
-              <Image src={item.id} alt={item.name} />
+              <Image src={item.image} alt={item.name} />
               <Info>
                 <Header>
                   <Name>{item.name}</Name>
