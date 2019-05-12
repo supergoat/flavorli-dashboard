@@ -107,7 +107,7 @@ const Order = ({orderId}: Props) => {
             {showPriceAdjustment && (
               <BackDrop>
                 <Modal>
-                  <Heading>ADJUST PRICE</Heading>
+                  <Heading> Adjust Price</Heading>
                   <SubHeading>Adjustment amount</SubHeading>
 
                   <Price>
@@ -454,6 +454,7 @@ const Modal = styled.div`
 `;
 
 const Heading = styled.h1`
+  font-size: 25px;
   margin-bottom: 10px;
 `;
 

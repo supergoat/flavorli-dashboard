@@ -132,6 +132,8 @@ export const GET_RESTAURANT = gql`
       name
       description
       tel
+      image
+      logo
       address {
         id
         number

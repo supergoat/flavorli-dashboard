@@ -31,6 +31,7 @@ const Category = ({category}: Props) => {
             width: 100%;
           }
         `}
+        required
         name="name"
         placeholder="Name"
         mutation={UPDATE_CATEGORY_NAME}

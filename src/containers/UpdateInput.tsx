@@ -10,6 +10,7 @@ const UpdateInput = ({
   variables,
   mutation,
   name,
+  required,
   placeholder,
   textarea,
   style,
@@ -19,6 +20,7 @@ const UpdateInput = ({
   variables: {[key: string]: any};
   mutation: MutationFn<any, any>;
   name: string;
+  required?: boolean;
   placeholder?: string;
   textarea?: boolean;
   style?: any;
@@ -47,7 +49,7 @@ const UpdateInput = ({
 
   const handleUpdate = (mutationFn: MutationFn<any, any>) => {
     setError('');
-    if (value.trim() === '') return setError('required');
+    if (value.trim() === '' && required) return setError('required');
 
     mutationFn();
   };

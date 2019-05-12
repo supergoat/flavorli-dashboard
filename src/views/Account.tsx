@@ -21,7 +21,9 @@ const AccountView = (_: Props) => {
             <Navbar />
             <SideBar>
               <Navigation>
-                <NavigationItem>Restaurant Details</NavigationItem>
+                <NavigationItem selected>Restaurant Details</NavigationItem>
+                <NavigationItem>Admin Details</NavigationItem>
+                <NavigationItem>Payment Details</NavigationItem>
               </Navigation>
             </SideBar>
 
@@ -43,18 +45,25 @@ const AccountWrapper = styled.div`
 const Navigation = styled.div`
   padding: 20px;
 `;
+
+interface NavigationItemProps {
+  selected?: boolean;
+}
 const NavigationItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   padding: 20px 15px;
-  color: ${Colours.osloGrey};
+  color: ${(props: NavigationItemProps) =>
+    props.selected ? Colours.oxfordBlue : Colours.osloGrey};
+  font-weight: ${(props: NavigationItemProps) =>
+    props.selected ? 'bold' : 'normal'};
   cursor: pointer;
   user-select: none;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
-  margin: 5px 0;
+  margin: 10px 0;
 `;
 
 export default AccountView;

@@ -31,6 +31,7 @@ const Menu = ({menuId}: Props) => {
                   width: 100%;
                 }
               `}
+              required
               name="name"
               placeholder="Name"
               mutation={UPDATE_MENU_NAME}
@@ -92,7 +93,6 @@ const GET_RESTAURANT_MENU = gql`
         id
         hours
         days
-        months
       }
     }
     getRestaurant {
