@@ -4,24 +4,16 @@ import OrderListItem from '../components/OrderListItem';
 
 const OrderList = ({
   orders = [],
-  onClick,
   subscribeToMore,
 }: {
   orders: any;
-  onClick: (id: string) => void;
   subscribeToMore?: any;
 }) => {
   useEffect(() => subscribeToMore && subscribeToMore(), []);
   return (
     <Orders>
       {orders.map((order: any) => {
-        return (
-          <OrderListItem
-            key={order.id}
-            onClick={() => onClick(order.id)}
-            order={order}
-          />
-        );
+        return <OrderListItem key={order.id} order={order} />;
       })}
     </Orders>
   );

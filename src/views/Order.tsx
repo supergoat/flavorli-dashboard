@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-
+import {RouteComponentProps} from '@reach/router';
 import styled from 'styled-components/macro';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
@@ -11,7 +11,7 @@ import SelectTime from '../components/SelectTime';
 import isValidPrice from '../_utils/isValidPrice';
 import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
 
-interface Props {
+interface Props extends RouteComponentProps {
   orderId?: string;
 }
 const Order = ({orderId}: Props) => {
@@ -208,19 +208,19 @@ const Order = ({orderId}: Props) => {
                 <>
                   <UpdateOrderStatus
                     orderId={getOrder.id}
-                    status="NotDelivered"
+                    status="NotCollected"
                     width="35%"
                     secondary
                   >
-                    Not Delivered
+                    Not Collected
                   </UpdateOrderStatus>
 
                   <UpdateOrderStatus
                     orderId={getOrder.id}
-                    status="Delivered"
+                    status="Collected"
                     width="55%"
                   >
-                    Delivered
+                    Collected
                   </UpdateOrderStatus>
                 </>
               )}

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
@@ -29,6 +30,7 @@ const UpdateOrder = ({
       <Mutation
         mutation={UPDATE_ORDER}
         variables={{orderId, status}}
+        onCompleted={() => navigate('/')}
         onError={() => setError('Could not update')}
       >
         {(updateOrder: any, {loading}: any) => {

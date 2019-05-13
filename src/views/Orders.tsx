@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
-import {RouteComponentProps} from '@reach/router';
+import {RouteComponentProps, Router, navigate} from '@reach/router';
 import styled, {css} from 'styled-components/macro';
 import Order from './Order';
 import SideBar from '../components/SideBar';
@@ -70,15 +70,14 @@ const OrdersView = (_: Props) => {
                   selected={status === 'Pending'}
                   onClick={() => {
                     newOrders.length > 0
-                      ? setOrderId(newOrders[0].id)
-                      : setOrderId('');
+                      ? navigate(`/order/${newOrders[0].id}`)
+                      : navigate(`/`);
                     setStatus('Pending');
                   }}
                 >
                   New{' '}
                   {newOrders.length > 0 && (
                     <TabNumber selected={status === 'Pending'}>
-                      {' '}
                       {newOrders.length}
                     </TabNumber>
                   )}
@@ -87,15 +86,14 @@ const OrdersView = (_: Props) => {
                   selected={status === 'InProgress'}
                   onClick={() => {
                     inProgressOrders.length > 0
-                      ? setOrderId(inProgressOrders[0].id)
-                      : setOrderId('');
+                      ? navigate(`/order/${inProgressOrders[0].id}`)
+                      : navigate(`/`);
                     setStatus('InProgress');
                   }}
                 >
                   In Progress
                   {inProgressOrders.length > 0 && (
                     <TabNumber selected={status === 'InProgress'}>
-                      {' '}
                       {inProgressOrders.length}
                     </TabNumber>
                   )}
@@ -104,15 +102,14 @@ const OrdersView = (_: Props) => {
                   selected={status === 'Ready'}
                   onClick={() => {
                     readyOrders.length > 0
-                      ? setOrderId(readyOrders[0].id)
-                      : setOrderId('');
+                      ? navigate(`/order/${readyOrders[0].id}`)
+                      : navigate(`/`);
                     setStatus('Ready');
                   }}
                 >
                   Ready
                   {readyOrders.length > 0 && (
                     <TabNumber selected={status === 'Ready'}>
-                      {' '}
                       {readyOrders.length}
                     </TabNumber>
                   )}
@@ -121,14 +118,15 @@ const OrdersView = (_: Props) => {
 
               {!loading && (
                 <OrderList
-                  onClick={(id: string) => setOrderId(id)}
                   orders={displayingOrders}
                   subscribeToMore={subscribeToMoreOrders}
                 />
               )}
             </SideBar>
 
-            {orderId && <Order orderId={orderId} />}
+            <Router>
+              <Order path="/order/:orderId" />
+            </Router>
           </OrderWrapper>
         );
       }}
