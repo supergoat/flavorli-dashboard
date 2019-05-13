@@ -29,7 +29,7 @@ const Navbar = () => {
             <RestaurantInfo onClick={() => setShowDropdown(d => !d)}>
               <RestaurantName>
                 <p>{getRestaurant.name}</p>
-                <p>Biff Burrows</p>
+                <p>{getRestaurant.admin.name}</p>
               </RestaurantName>
               <Avatar />
             </RestaurantInfo>
@@ -42,8 +42,8 @@ const Navbar = () => {
               <DropDownItem onClick={() => navigate('/order-history')}>
                 Order History
               </DropDownItem>
-              <DropDownItem onClick={() => navigate('/account')}>
-                Account
+              <DropDownItem onClick={() => navigate('/settings')}>
+                Settings
               </DropDownItem>
               <DropDownItem>
                 <LogOutButton />

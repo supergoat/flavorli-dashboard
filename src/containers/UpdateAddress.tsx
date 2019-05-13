@@ -6,7 +6,7 @@ import Error from '../ui/Error';
 import useErrors from '../_utils/useErrors';
 import Colours from '../Colours';
 
-const UpdateTel = ({
+const UpdateAddress = ({
   previousAddress = {
     number: '',
     streetName: '',
@@ -33,8 +33,8 @@ const UpdateTel = ({
   const [errors, setErrors, clearErrors] = useErrors();
 
   /**
-   * Update tel, when the tel prop changes. This is needed when navigating
-   * as the component does not re-render, therefore the tel remains stale
+   * Update address, when the address prop changes. This is needed when navigating
+   * as the component does not re-render, therefore the address remains stale
    */
   useEffect(() => {
     setNumber(previousAddress.number);
@@ -173,7 +173,7 @@ const UpdateTel = ({
   );
 };
 
-export default UpdateTel;
+export default UpdateAddress;
 
 interface UpdateAddressWrapperProps {
   hasBeenEdited?: boolean;

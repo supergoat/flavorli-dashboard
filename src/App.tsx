@@ -2,7 +2,7 @@ import React from 'react';
 import {RouteComponentProps, Router} from '@reach/router';
 import Orders from './views/Orders';
 import OrderHistory from './views/OrderHistory';
-import Account from './views/Account';
+import Settings from './views/Settings';
 import MenuBuilder from './views/MenuBuilder';
 
 interface Props extends RouteComponentProps {}
@@ -11,7 +11,7 @@ const App = (_: Props) => {
     <Router>
       <Orders path="/*" />
       <OrderHistory path="/order-history" />
-      <Account path="/account" />
+      <Settings path="/settings/*" />
       <MenuBuilder path="/menu-builder/*" />
     </Router>
   );

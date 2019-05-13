@@ -28,6 +28,7 @@ const MenuList = ({menuList = [], currentMenuId, onMenuClick}: Props) => {
               menuName={menu.name}
               noOfCategories={menu.categories.length}
               onClick={() => onMenuClick(menu.id)}
+              isCurrentMenu={isCurrentMenu}
             />
 
             {isCurrentMenu && (

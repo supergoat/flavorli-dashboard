@@ -11,9 +11,9 @@ interface Props {
   restaurant: any;
 }
 
-const Account = ({restaurant}: Props) => {
+const RestaurantDetails = ({restaurant}: Props) => {
   return (
-    <AccountWrapper>
+    <RestaurantDetailsWrapper>
       <Cover>
         {restaurant.image ? (
           <RestaurantCoverImage
@@ -145,11 +145,11 @@ const Account = ({restaurant}: Props) => {
         restaurantId={restaurant.id}
         restaurantOpeningTimes={restaurant.openingTimes}
       />
-    </AccountWrapper>
+    </RestaurantDetailsWrapper>
   );
 };
 
-export default Account;
+export default RestaurantDetails;
 
 const UPDATE_RESTAURANT_NAME = gql`
   mutation updateRestaurant($restaurantId: ID!, $name: String) {
@@ -210,7 +210,7 @@ const UPDATE_RESTAURANT_TEL = gql`
   }
 `;
 
-const AccountWrapper = styled.div`
+const RestaurantDetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;

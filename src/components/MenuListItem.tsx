@@ -6,10 +6,16 @@ interface Props {
   noOfCategories: number;
   onClick: () => void;
   menuName: string;
+  isCurrentMenu: boolean;
 }
-const MenuListItem = ({menuName, noOfCategories, onClick}: Props) => {
+const MenuListItem = ({
+  menuName,
+  noOfCategories,
+  onClick,
+  isCurrentMenu,
+}: Props) => {
   return (
-    <MenuListItemWrapper onClick={onClick}>
+    <MenuListItemWrapper onClick={onClick} selected={isCurrentMenu}>
       <MenuName>{menuName}</MenuName>
       <MenuServiceHours>
         {noOfCategories} Categor{noOfCategories === 1 ? 'y' : 'ies'}
@@ -20,13 +26,17 @@ const MenuListItem = ({menuName, noOfCategories, onClick}: Props) => {
 
 export default MenuListItem;
 
+interface MenuItemWrapperProps {
+  selected?: boolean;
+}
 const MenuListItemWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   padding: 20px 15px;
-  color: ${Colours.osloGrey};
+  color: ${(props: MenuItemWrapperProps) =>
+    props.selected ? Colours.oxfordBlue : Colours.osloGrey};
   cursor: pointer;
   user-select: none;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
@@ -35,7 +45,6 @@ const MenuListItemWrapper = styled.div`
 `;
 
 const MenuName = styled.p`
-  color: ${Colours.oxfordBlue};
   font-weight: bold;
 `;
 

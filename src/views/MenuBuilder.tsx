@@ -141,6 +141,11 @@ export const GET_RESTAURANT = gql`
         city
         postalCode
       }
+      admin {
+        id
+        name
+        email
+      }
       ...RestaurantMenus
       ...RestaurantOpeningTimes
     }
