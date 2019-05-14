@@ -20,7 +20,10 @@ const OrderListItem = ({order}: {order: any}) => {
         </div>
       </CustomerInfo>
 
-      <OrderId>#{order.orderNo}</OrderId>
+      <div>
+        <OrderId>#{order.orderNo}</OrderId>
+        {order.delayedBy > 0 && <TimeBadge>Delayed</TimeBadge>}
+      </div>
     </OrderListItemWrapper>
   );
 };
@@ -57,7 +60,21 @@ const CustomerName = styled.h4`
   margin-bottom: 2px;
 `;
 
-const OrderId = styled.p``;
+const OrderId = styled.p`
+  margin-bottom: 5px;
+  text-align: right;
+`;
+
+const TimeBadge = styled.div`
+  align-self: flex-start;
+  font-size: 16px;
+  padding: 5px 10px;
+  border: 1px solid ${Colours.red};
+  border-radius: 4px;
+  color: ${Colours.red};
+  font-weight: normal;
+  margin-right: -5px;
+`;
 
 const OrderTime = styled.h3`
   font-size: 16px;
