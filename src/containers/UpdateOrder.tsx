@@ -33,10 +33,14 @@ const UpdateOrder = ({
 
   const variables: any = {orderId};
 
-  if (status !== undefined) variables.status = status;
-  if (priceAdjustment !== undefined)
-    variables.priceAdjustment = priceAdjustment;
-  if (delayedBy !== undefined) variables.delayedBy = delayedBy;
+  if (status) variables.status = status;
+  if (priceAdjustment) variables.priceAdjustment = priceAdjustment;
+  if (delayedBy) variables.delayedBy = delayedBy;
+
+  const isValid =
+    (status && status !== '') ||
+    (priceAdjustment && priceAdjustment !== '') ||
+    (delayedBy && priceAdjustment !== '');
 
   return (
     <UpdateOrderWrapper width={width}>
@@ -52,7 +56,7 @@ const UpdateOrder = ({
         {(updateOrder: any, {loading}: any) => {
           return (
             <Button
-              onClick={() => updateOrder()}
+              onClick={() => isValid && updateOrder()}
               danger={danger}
               success={success}
               width="100%"

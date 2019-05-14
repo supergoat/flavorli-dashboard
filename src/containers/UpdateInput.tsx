@@ -11,6 +11,7 @@ const UpdateInput = ({
   mutation,
   name,
   required,
+  validator = (value: any) => true,
   placeholder,
   textarea,
   style,
@@ -21,6 +22,7 @@ const UpdateInput = ({
   mutation: MutationFn<any, any>;
   name: string;
   required?: boolean;
+  validator?: (value: any) => boolean;
   placeholder?: string;
   textarea?: boolean;
   style?: any;
@@ -51,12 +53,16 @@ const UpdateInput = ({
     setError('');
     if (value.trim() === '' && required) return setError('required');
 
+    // If value doesn't pass validator test return
+    if (!validator(value)) return;
+
     mutationFn();
   };
 
   const handleInputValueChange = (e: any) => {
     const value = e.target.value;
     setError('');
+    if (!validator(value)) return;
     setValue(value);
     setHasBeenEdited(value !== inputValue);
   };

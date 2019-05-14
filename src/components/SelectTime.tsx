@@ -30,6 +30,7 @@ export default SelectTime;
 const SelectTimeWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  margin-top: 20px;
 `;
 
 interface TimeProps {

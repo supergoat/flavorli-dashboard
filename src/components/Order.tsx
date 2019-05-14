@@ -410,7 +410,7 @@ const ReasonForPriceAdjustment = styled.textarea`
   outline: none;
   border: 1px solid var(--osloGrey);
   border-radius: 3px;
-  margin: 20px 0;
+  margin-bottom: 20px;
   padding: 5px;
   resize: none;
   max-height: 100px;

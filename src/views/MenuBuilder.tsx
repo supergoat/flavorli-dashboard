@@ -112,6 +112,17 @@ export const RESTAURANT_OPENING_TIMES_DATA = gql`
   }
 `;
 
+export const RESTAURANT_PREPARATION_TIMES_DATA = gql`
+  fragment RestaurantPreparationTimes on Restaurant {
+    preparationTimes {
+      id
+      time
+      hours
+      day
+    }
+  }
+`;
+
 export const RESTAURANT_MENUS_DATA = gql`
   fragment RestaurantMenus on Restaurant {
     menus {
@@ -134,6 +145,8 @@ export const GET_RESTAURANT = gql`
       tel
       image
       logo
+      averagePreparationTime
+      averageBusyPreparationTime
       address {
         id
         number

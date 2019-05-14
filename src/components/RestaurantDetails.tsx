@@ -33,9 +33,7 @@ const RestaurantDetails = ({restaurant}: Props) => {
           <SelectRestaurantLogo>Preview Logo</SelectRestaurantLogo>
         )}
       </Cover>
-
       <Label>Restaurant name</Label>
-
       <UpdateInput
         style={css`
           margin-bottom: 20px;
@@ -52,7 +50,6 @@ const RestaurantDetails = ({restaurant}: Props) => {
         variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_NAME}
       />
-
       <Label>Restaurant cover image url</Label>
       <UpdateInput
         style={css`
@@ -71,7 +68,6 @@ const RestaurantDetails = ({restaurant}: Props) => {
         variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_IMAGE}
       />
-
       <Label>Restaurant logo url</Label>
       <UpdateInput
         style={css`
@@ -90,9 +86,7 @@ const RestaurantDetails = ({restaurant}: Props) => {
         variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_LOGO}
       />
-
       <Label>Restaurant description</Label>
-
       <UpdateInput
         style={css`
           margin-bottom: 20px;
@@ -110,14 +104,12 @@ const RestaurantDetails = ({restaurant}: Props) => {
         variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_DESCRIPTION}
       />
-
       <Label>Restaurant address</Label>
       <UpdateAddress
         previousAddress={restaurant.address}
         variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_ADDRESS}
       />
-
       <Label>Restaurant tel</Label>
       <UpdateInput
         style={css`
@@ -134,6 +126,47 @@ const RestaurantDetails = ({restaurant}: Props) => {
         variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_TEL}
       />
+      <Label>Average Food Preparation Time</Label>
+      <PreparationTime>
+        <UpdateInput
+          style={css`
+            margin-bottom: 20px;
+            width: 100%;
+            input {
+              font-size: 20px;
+              width: 100%;
+              padding: 8px 0;
+            }
+          `}
+          validator={(input: number) => input < 100}
+          name="averagePreparationTime"
+          inputValue={restaurant.averagePreparationTime}
+          variables={{restaurantId: restaurant.id}}
+          mutation={UPDATE_RESTAURANT_AVERAGE_PREPARATION_TIME}
+        />
+        <p>minutes</p>
+      </PreparationTime>
+
+      <Label>Average Food Preparation Time When Busy</Label>
+      <PreparationTime>
+        <UpdateInput
+          style={css`
+            margin-bottom: 20px;
+            width: 100%;
+            input {
+              font-size: 20px;
+              width: 100%;
+              padding: 8px 0;
+            }
+          `}
+          validator={(input: number) => input < 100}
+          name="averageBusyPreparationTime"
+          inputValue={restaurant.averageBusyPreparationTime}
+          variables={{restaurantId: restaurant.id}}
+          mutation={UPDATE_RESTAURANT_AVERAGE_BUSY_PREPARATION_TIME}
+        />
+        <p>minutes</p>
+      </PreparationTime>
 
       <OpeningTimeList
         restaurantId={restaurant.id}
@@ -181,6 +214,35 @@ const UPDATE_RESTAURANT_DESCRIPTION = gql`
   }
 `;
 
+const UPDATE_RESTAURANT_AVERAGE_PREPARATION_TIME = gql`
+  mutation updateRestaurant(
+    $restaurantId: ID!
+    $averagePreparationTime: String
+  ) {
+    updateRestaurant(
+      restaurantId: $restaurantId
+      averagePreparationTime: $averagePreparationTime
+    ) {
+      id
+      averagePreparationTime
+    }
+  }
+`;
+
+const UPDATE_RESTAURANT_AVERAGE_BUSY_PREPARATION_TIME = gql`
+  mutation updateRestaurant(
+    $restaurantId: ID!
+    $averageBusyPreparationTime: String
+  ) {
+    updateRestaurant(
+      restaurantId: $restaurantId
+      averageBusyPreparationTime: $averageBusyPreparationTime
+    ) {
+      id
+      averageBusyPreparationTime
+    }
+  }
+`;
 const UPDATE_RESTAURANT_ADDRESS = gql`
   mutation updateRestaurant($restaurantId: ID!, $address: AddressWhereInput) {
     updateRestaurant(restaurantId: $restaurantId, address: $address) {
@@ -260,4 +322,14 @@ const SelectRestaurantLogo = styled.h2`
   border: 1px solid lightgrey;
   margin-bottom: 20px;
   background: ${Colours.white};
+`;
+
+const PreparationTime = styled.div`
+  position: relative;
+  display: flex;
+  p {
+    position: absolute;
+    left: 30px;
+    top: 10px;
+  }
 `;
