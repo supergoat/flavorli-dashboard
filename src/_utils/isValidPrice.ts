@@ -15,6 +15,7 @@ const countDecimals = (str: number) => {
 };
 
 const isValidPrice = (price: any) => {
+  if (price === '-') return true;
   return (isInt(price) || isFloat(price)) && countDecimals(price) <= 2;
 };
 

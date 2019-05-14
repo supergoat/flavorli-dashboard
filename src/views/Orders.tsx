@@ -13,7 +13,6 @@ import OrderList from '../containers/OrderList';
 
 interface Props extends RouteComponentProps {}
 const OrdersView = (_: Props) => {
-  const [orderId, setOrderId] = useState('');
   const [newOrders, setNewOrders] = useState<any>([]);
   const [inProgressOrders, setInProgressOrders] = useState<any>([]);
   const [readyOrders, setReadyOrders] = useState<any>([]);
@@ -144,6 +143,8 @@ const ORDERS_SUBSCRIPTION = gql`
       dueAt
       total
       status
+      priceAdjustment
+      delayedBy
       customer {
         name
       }
@@ -174,6 +175,8 @@ const GET_ORDERS = gql`
       dueAt
       total
       status
+      priceAdjustment
+      delayedBy
       customer {
         name
       }

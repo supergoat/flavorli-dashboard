@@ -2,8 +2,12 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import Colours from '../Colours';
 import {navigate} from '@reach/router';
+import {formatTime} from '../_utils/formatTime';
 
 const OrderListItem = ({order}: {order: any}) => {
+  let dueAt = new Date(order.dueAt);
+  dueAt.setMinutes(dueAt.getMinutes() + order.delayedBy);
+
   return (
     <OrderListItemWrapper onClick={() => navigate(`/order/${order.id}`)}>
       <CustomerInfo>
@@ -11,7 +15,7 @@ const OrderListItem = ({order}: {order: any}) => {
         <div>
           <CustomerName>{order.customer.name}</CustomerName>
           <OrderTime>
-            Due at <span>{order.dueAt}</span>
+            Due at <span>{formatTime(dueAt)}</span>
           </OrderTime>
         </div>
       </CustomerInfo>

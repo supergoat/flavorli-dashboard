@@ -8,7 +8,10 @@ import Error from '../ui/Error';
 
 const UpdateOrder = ({
   orderId,
+  onUpdate = () => {},
   status,
+  delayedBy,
+  priceAdjustment,
   width,
   danger,
   success,
@@ -16,7 +19,10 @@ const UpdateOrder = ({
   children,
 }: {
   orderId: string;
-  status: string;
+  onUpdate?: () => void;
+  status?: string;
+  delayedBy?: number;
+  priceAdjustment?: string;
   width: string;
   danger?: boolean;
   success?: boolean;
@@ -25,12 +31,22 @@ const UpdateOrder = ({
 }) => {
   const [error, setError] = useState('');
 
+  const variables: any = {orderId};
+
+  if (status !== undefined) variables.status = status;
+  if (priceAdjustment !== undefined)
+    variables.priceAdjustment = priceAdjustment;
+  if (delayedBy !== undefined) variables.delayedBy = delayedBy;
+
   return (
     <UpdateOrderWrapper width={width}>
       <Mutation
         mutation={UPDATE_ORDER}
-        variables={{orderId, status}}
-        onCompleted={() => navigate('/')}
+        variables={variables}
+        onCompleted={() => {
+          status && navigate('/');
+          onUpdate();
+        }}
         onError={() => setError('Could not update')}
       >
         {(updateOrder: any, {loading}: any) => {
@@ -42,7 +58,7 @@ const UpdateOrder = ({
               width="100%"
               secondary={secondary}
             >
-              {children}
+              {loading ? 'Updating...' : children}
             </Button>
           );
         }}
@@ -55,10 +71,22 @@ const UpdateOrder = ({
 export default UpdateOrder;
 
 const UPDATE_ORDER = gql`
-  mutation updateOrder($orderId: ID!, $status: String) {
-    updateOrder(orderId: $orderId, status: $status) {
+  mutation updateOrder(
+    $orderId: ID!
+    $status: String
+    $priceAdjustment: String
+    $delayedBy: Int
+  ) {
+    updateOrder(
+      orderId: $orderId
+      status: $status
+      priceAdjustment: $priceAdjustment
+      delayedBy: $delayedBy
+    ) {
       id
       status
+      priceAdjustment
+      delayedBy
     }
   }
 `;

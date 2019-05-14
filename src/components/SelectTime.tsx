@@ -18,7 +18,7 @@ const SelectTime = ({
             selected={selectedTime === time}
             onClick={() => onSelect(time)}
           >
-            <p>{time}</p>
+            <p>{time} min</p>
           </Time>
         );
       })}
@@ -61,11 +61,4 @@ const Time = styled.div`
   }
 `;
 
-const times: string[] = [
-  '5 min',
-  '10 min',
-  '15 min',
-  '20 min',
-  '25 min',
-  '30 min',
-];
+const times: number[] = [5, 10, 15, 20, 25, 30];

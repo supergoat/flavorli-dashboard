@@ -21,10 +21,7 @@ const RestaurantDetails = ({restaurant}: Props) => {
             alt={`${restaurant.name} cover image`}
           />
         ) : (
-          <UploadText>
-            <p>Cover</p>
-            <span>(tap to select)</span>
-          </UploadText>
+          <SelectCoverImage>Preview Cover Image</SelectCoverImage>
         )}
 
         {restaurant.logo ? (
@@ -33,10 +30,7 @@ const RestaurantDetails = ({restaurant}: Props) => {
             alt={`${restaurant.name} logo`}
           />
         ) : (
-          <UploadText>
-            <p>Logo</p>
-            <span>(tap to select)</span>
-          </UploadText>
+          <SelectRestaurantLogo>Preview Logo</SelectRestaurantLogo>
         )}
       </Cover>
 
@@ -233,7 +227,7 @@ const Cover = styled.label`
   background: ${Colours.white};
 `;
 
-const UploadText = styled.h2`
+const SelectCoverImage = styled.h2`
   text-align: center;
 `;
 
@@ -244,6 +238,17 @@ const RestaurantCoverImage = styled.img`
 `;
 
 const RestaurantLogo = styled.img`
+  position: absolute;
+  bottom: -50px;
+  right: 20px;
+  height: 130px;
+  width: 130px;
+  border: 1px solid lightgrey;
+  margin-bottom: 20px;
+  background: ${Colours.white};
+`;
+
+const SelectRestaurantLogo = styled.h2`
   display: flex;
   justify-content: center;
   align-items: center;

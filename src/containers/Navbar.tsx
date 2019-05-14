@@ -42,7 +42,9 @@ const Navbar = () => {
               <DropDownItem onClick={() => navigate('/order-history')}>
                 Order History
               </DropDownItem>
-              <DropDownItem onClick={() => navigate('/settings')}>
+              <DropDownItem
+                onClick={() => navigate('/settings/restaurant-details')}
+              >
                 Settings
               </DropDownItem>
               <DropDownItem>
