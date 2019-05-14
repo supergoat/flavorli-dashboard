@@ -22,7 +22,9 @@ const OrderListItem = ({order}: {order: any}) => {
 
       <div>
         <OrderId>#{order.orderNo}</OrderId>
-        {order.delayedBy > 0 && <TimeBadge>Delayed</TimeBadge>}
+        {order.delayedBy > 0 && order.status !== 'Ready' && (
+          <TimeBadge>Delayed</TimeBadge>
+        )}
       </div>
     </OrderListItemWrapper>
   );
