@@ -32,6 +32,8 @@ const GET_ORDER = gql`
       status
       priceAdjustment
       delayedBy
+      cancelReason
+      priceAdjustmentReason
       customer {
         name
         tel

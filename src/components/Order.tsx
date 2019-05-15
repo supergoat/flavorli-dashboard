@@ -1,10 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import OrderItems from '../components/OrderItems';
 import Button from '../ui/Button';
 import Dietary from '../components/Dietary';
 import UpdateOrder from '../containers/UpdateOrder';
 import SelectTime from '../components/SelectTime';
+import SelectCancelReason from '../components/SelectCancelReason';
 import isValidPrice from '../_utils/isValidPrice';
 import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
 import Label from '../ui/Label';
@@ -17,8 +19,10 @@ const Order = ({order}: {order: any}) => {
 
   const [showDelayOrder, setShowDelayOrder] = useState(false);
   const [showPriceAdjustment, setShowPriceAdjustment] = useState(false);
+  const [showCancelOrder, setShowCancelOrder] = useState(false);
+  const [selectedCancelReason, setSelectedCancelReason] = useState('');
   const [price, setPrice] = useState(order.priceAdjustment);
-  const [reason, setReason] = useState('');
+  const [reason, setReason] = useState(order.priceAdjustmentReason);
   const [priceError, setPriceError] = useState('');
 
   const [selectedTime, setSelectedTime] = useState(order.delayedBy);
@@ -108,8 +112,7 @@ const Order = ({order}: {order: any}) => {
 
               <UpdateOrder
                 onUpdate={() => setShowDelayOrder(false)}
-                orderId={order.id}
-                delayedBy={selectedTime}
+                variables={{orderId: order.id, delayedBy: selectedTime}}
                 width="60%"
               >
                 Notify Customer
@@ -128,7 +131,6 @@ const Order = ({order}: {order: any}) => {
             <Price>
               <input
                 id="menu-item-price"
-                onBlur={() => setPriceError(price !== '' ? '' : 'Required')}
                 value={price}
                 onChange={(e: any) => {
                   const str = e.target.value;
@@ -176,9 +178,54 @@ const Order = ({order}: {order: any}) => {
               </Button>
 
               <UpdateOrder
-                orderId={order.id}
+                variables={{
+                  orderId: order.id,
+                  priceAdjustment: price,
+                  priceAdjustmentReason: reason,
+                }}
+                validator={() => {
+                  if (price === '') {
+                    setPriceError('required');
+                    return false;
+                  }
+                  return true;
+                }}
                 onUpdate={() => setShowPriceAdjustment(false)}
-                priceAdjustment={price}
+                width="60%"
+              >
+                Notify Customer
+              </UpdateOrder>
+            </Actions>
+          </Modal>
+        </BackDrop>
+      )}
+
+      {showCancelOrder && (
+        <BackDrop>
+          <Modal>
+            <Heading>Cancel Order</Heading>
+            <Label>What is the reason for cancelling?</Label>
+            <SelectCancelReason
+              onSelect={(reason: string) => setSelectedCancelReason(reason)}
+              selectedCancelReason={selectedCancelReason}
+            />
+
+            <Actions>
+              <Button
+                secondary
+                width="35%"
+                onClick={() => setShowCancelOrder(false)}
+              >
+                Cancel
+              </Button>
+
+              <UpdateOrder
+                onUpdate={() => setShowCancelOrder(false)}
+                variables={{
+                  orderId: order.id,
+                  status: 'Cancelled',
+                  cancelReason: selectedCancelReason,
+                }}
                 width="60%"
               >
                 Notify Customer
@@ -204,15 +251,25 @@ const Order = ({order}: {order: any}) => {
         {order.status === 'Pending' && (
           <>
             <UpdateOrder
-              orderId={order.id}
-              status="Declined"
+              variables={{
+                orderId: order.id,
+                status: 'Declined',
+              }}
+              onUpdate={() => navigate('/')}
               width="35%"
               secondary
             >
               Decline Order
             </UpdateOrder>
 
-            <UpdateOrder orderId={order.id} status="InProgress" width="55%">
+            <UpdateOrder
+              variables={{
+                orderId: order.id,
+                status: 'InProgress',
+              }}
+              onUpdate={() => navigate('/')}
+              width="55%"
+            >
               Accept Order
             </UpdateOrder>
           </>
@@ -220,16 +277,18 @@ const Order = ({order}: {order: any}) => {
 
         {order.status === 'InProgress' && (
           <>
-            <UpdateOrder
-              orderId={order.id}
-              status="Canceled"
-              width="35%"
-              danger
-            >
+            <Button width="35%" onClick={() => setShowCancelOrder(true)} danger>
               Cancel Order
-            </UpdateOrder>
+            </Button>
 
-            <UpdateOrder orderId={order.id} status="Ready" width="55%">
+            <UpdateOrder
+              variables={{
+                orderId: order.id,
+                status: 'Ready',
+              }}
+              onUpdate={() => navigate('/')}
+              width="55%"
+            >
               Ready for Pickup
             </UpdateOrder>
           </>
@@ -238,15 +297,25 @@ const Order = ({order}: {order: any}) => {
         {order.status === 'Ready' && (
           <>
             <UpdateOrder
-              orderId={order.id}
-              status="NotCollected"
+              variables={{
+                orderId: order.id,
+                status: 'NotCollected',
+              }}
+              onUpdate={() => navigate('/')}
               width="35%"
               secondary
             >
               Not Collected
             </UpdateOrder>
 
-            <UpdateOrder orderId={order.id} status="Collected" width="55%">
+            <UpdateOrder
+              variables={{
+                orderId: order.id,
+                status: 'Collected',
+              }}
+              onUpdate={() => navigate('/')}
+              width="55%"
+            >
               Collected
             </UpdateOrder>
           </>

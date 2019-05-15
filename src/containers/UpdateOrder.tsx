@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
@@ -7,22 +6,18 @@ import Button from '../ui/Button';
 import Error from '../ui/Error';
 
 const UpdateOrder = ({
-  orderId,
   onUpdate = () => {},
-  status,
-  delayedBy,
-  priceAdjustment,
+  validator = () => true,
+  variables,
   width,
   danger,
   success,
   secondary,
   children,
 }: {
-  orderId: string;
   onUpdate?: () => void;
-  status?: string;
-  delayedBy?: number;
-  priceAdjustment?: string;
+  validator?: () => boolean;
+  variables: any;
   width: string;
   danger?: boolean;
   success?: boolean;
@@ -31,32 +26,18 @@ const UpdateOrder = ({
 }) => {
   const [error, setError] = useState('');
 
-  const variables: any = {orderId};
-
-  if (status) variables.status = status;
-  if (priceAdjustment) variables.priceAdjustment = priceAdjustment;
-  if (delayedBy) variables.delayedBy = delayedBy;
-
-  const isValid =
-    (status && status !== '') ||
-    (priceAdjustment && priceAdjustment !== '') ||
-    (delayedBy && priceAdjustment !== '');
-
   return (
     <UpdateOrderWrapper width={width}>
       <Mutation
         mutation={UPDATE_ORDER}
         variables={variables}
-        onCompleted={() => {
-          status && navigate('/');
-          onUpdate();
-        }}
+        onCompleted={onUpdate}
         onError={() => setError('Could not update')}
       >
         {(updateOrder: any, {loading}: any) => {
           return (
             <Button
-              onClick={() => isValid && updateOrder()}
+              onClick={() => validator() && updateOrder()}
               danger={danger}
               success={success}
               width="100%"
@@ -80,17 +61,23 @@ const UPDATE_ORDER = gql`
     $status: String
     $priceAdjustment: String
     $delayedBy: Int
+    $cancelReason: String
+    $priceAdjustmentReason: String
   ) {
     updateOrder(
       orderId: $orderId
       status: $status
       priceAdjustment: $priceAdjustment
       delayedBy: $delayedBy
+      cancelReason: $cancelReason
+      priceAdjustmentReason: $priceAdjustmentReason
     ) {
       id
       status
       priceAdjustment
       delayedBy
+      cancelReason
+      priceAdjustmentReason
     }
   }
 `;

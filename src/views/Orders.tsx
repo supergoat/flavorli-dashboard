@@ -145,6 +145,8 @@ const ORDERS_SUBSCRIPTION = gql`
       status
       priceAdjustment
       delayedBy
+      cancelReason
+      priceAdjustmentReason
       customer {
         name
       }
@@ -177,6 +179,8 @@ const GET_ORDERS = gql`
       status
       priceAdjustment
       delayedBy
+      cancelReason
+      priceAdjustmentReason
       customer {
         name
       }
