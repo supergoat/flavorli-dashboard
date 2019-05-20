@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import {RouteComponentProps, Router, navigate} from '@reach/router';
 import RestaurantDetails from './RestaurantDetails';
-import AdminDetails from './AdminDetails';
 
 import Navbar from '../containers/Navbar';
 import SideBar from '../components/SideBar';
@@ -25,12 +24,6 @@ const SettingsView = ({location}: Props) => {
             Restaurant Details
           </NavigationItem>
           <NavigationItem
-            selected={location.pathname === '/settings/admin-details'}
-            onClick={() => navigate('/settings/admin-details')}
-          >
-            Admin Details
-          </NavigationItem>
-          <NavigationItem
             selected={location.pathname === '/settings/payment-details'}
             onClick={() => navigate('/settings/payment-details')}
           >
@@ -41,7 +34,6 @@ const SettingsView = ({location}: Props) => {
 
       <Router>
         <RestaurantDetails path="/restaurant-details" />
-        <AdminDetails path="/admin-details" />
       </Router>
     </SettingsViewWrapper>
   );

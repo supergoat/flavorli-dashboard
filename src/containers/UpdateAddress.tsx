@@ -13,7 +13,7 @@ const UpdateAddress = ({
     city: '',
     postalCode: '',
   },
-  variables,
+  variables = {},
   mutation,
 }: {
   previousAddress?: {
@@ -22,7 +22,7 @@ const UpdateAddress = ({
     city: string;
     postalCode: string;
   };
-  variables: {[key: string]: any};
+  variables?: {[key: string]: any};
   mutation: MutationFn<any, any>;
 }) => {
   const [number, setNumber] = useState(previousAddress.number);

@@ -89,18 +89,8 @@ const upsertOpeningTime = ({openingTime, onSave, onCancel}: Props) => {
 export default upsertOpeningTime;
 
 const UPSERT_OPENING_TIME = gql`
-  mutation upsertOpeningTime(
-    $id: ID
-    $restaurantId: ID!
-    $hours: [String!]
-    $days: [String!]
-  ) {
-    upsertOpeningTime(
-      id: $id
-      restaurantId: $restaurantId
-      hours: $hours
-      days: $days
-    ) {
+  mutation upsertOpeningTime($id: ID, $hours: [String!], $days: [String!]) {
+    upsertOpeningTime(id: $id, hours: $hours, days: $days) {
       id
       hours
       days

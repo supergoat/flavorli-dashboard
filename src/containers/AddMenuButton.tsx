@@ -27,7 +27,6 @@ const AddMenuButton = ({
     addMenu({
       variables: {
         name: menuName,
-        restaurantId,
       },
     });
   };
@@ -90,8 +89,8 @@ const AddMenuButton = ({
 export default AddMenuButton;
 
 const ADD_MENU = gql`
-  mutation addMenu($name: String!, $restaurantId: ID!) {
-    addMenu(name: $name, restaurantId: $restaurantId) {
+  mutation addMenu($name: String!) {
+    addMenu(name: $name) {
       id
       name
       serviceTimes {

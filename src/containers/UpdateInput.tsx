@@ -7,7 +7,7 @@ import calculateTextAreaRows from '../_utils/calculateTextAreaRows';
 
 const UpdateInput = ({
   inputValue = '',
-  variables,
+  variables = {},
   mutation,
   name,
   required,
@@ -18,7 +18,7 @@ const UpdateInput = ({
   textareaLineHeight,
 }: {
   inputValue: string;
-  variables: {[key: string]: any};
+  variables?: {[key: string]: any};
   mutation: MutationFn<any, any>;
   name: string;
   required?: boolean;

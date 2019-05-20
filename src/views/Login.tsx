@@ -24,11 +24,11 @@ const Login = (_: Props) => {
   const handleSubmit = async (
     email: string,
     password: string,
-    loginAdmin: MutationFn<any, {email: string; password: string}>,
+    loginRestaurant: MutationFn<any, {email: string; password: string}>,
   ) => {
     if (!isFormValid(email, password)) return;
 
-    loginAdmin({
+    loginRestaurant({
       variables: {
         email,
         password,
@@ -53,19 +53,19 @@ const Login = (_: Props) => {
       {client => (
         <Mutation
           mutation={LOG_IN}
-          onCompleted={({loginAdmin}: any) =>
-            onLoginSuccess(loginAdmin, client)
+          onCompleted={({loginRestaurant}: any) =>
+            onLoginSuccess(loginRestaurant, client)
           }
           onError={handleError}
         >
-          {(loginAdmin: any, {loading, error}: any) => {
+          {(loginRestaurant: any, {loading, error}: any) => {
             return (
               <LoginForm
                 errors={errors}
                 clearErrors={clearErrors}
                 loading={loading}
                 onLogin={(email: string, password: string) =>
-                  handleSubmit(email, password, loginAdmin)
+                  handleSubmit(email, password, loginRestaurant)
                 }
               />
             );
@@ -79,8 +79,8 @@ const Login = (_: Props) => {
 export default Login;
 
 const LOG_IN = gql`
-  mutation loginAdmin($email: String!, $password: String!) {
-    loginAdmin(email: $email, password: $password) {
+  mutation loginRestaurant($email: String!, $password: String!) {
+    loginRestaurant(email: $email, password: $password) {
       token
     }
   }

@@ -44,7 +44,6 @@ const OrdersView = (_: Props) => {
         const subscribeToMoreOrders = () =>
           subscribeToMore({
             document: ORDERS_SUBSCRIPTION,
-            variables: {restaurantId: 'cjumsnzj9001d0707xfdi5lbe'},
             updateQuery: (prev: any, {subscriptionData}: any) => {
               if (!subscriptionData.data) return prev;
               const newOrder = subscriptionData.data.getRestaurantOrders;
@@ -136,8 +135,8 @@ const OrdersView = (_: Props) => {
 export default OrdersView;
 
 const ORDERS_SUBSCRIPTION = gql`
-  subscription getRestaurantOrders($restaurantId: ID!) {
-    getRestaurantOrders(restaurantId: $restaurantId) {
+  subscription getRestaurantOrders {
+    getRestaurantOrders {
       id
       orderNo
       dueAt

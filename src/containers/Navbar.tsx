@@ -5,6 +5,7 @@ import {navigate} from '@reach/router';
 import styled from 'styled-components/macro';
 import LogOutButton from './LogOutButton';
 import Colours from '../Colours';
+import UpdateRestaurantStatus from './UpdateRestaurantStatus';
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -23,13 +24,10 @@ const Navbar = () => {
         if (error) return <NavbarWrapper />;
         return (
           <NavbarWrapper hasShadow={hasShadow}>
-            <OpenTimes>
-              <Dot /> Open - Accepting Orders
-            </OpenTimes>
+            <UpdateRestaurantStatus status={getRestaurant.status} />
             <RestaurantInfo onClick={() => setShowDropdown(d => !d)}>
               <RestaurantName>
                 <p>{getRestaurant.name}</p>
-                <p>{getRestaurant.admin.name}</p>
               </RestaurantName>
               <Avatar />
             </RestaurantInfo>
@@ -94,19 +92,6 @@ const NavbarWrapper = styled.header`
     box-shadow: ${(props: NavbarWrapperProps) =>
       props.hasShadow ? '0 6px 4px -4px rgba(0, 0, 0, 0.2)' : 'none'};
   }
-`;
-
-const Dot = styled.div`
-  width: 15px;
-  height: 15px;
-  border-radius: 7.5px;
-  background: green;
-  margin-right: 5px;
-`;
-
-const OpenTimes = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const RestaurantInfo = styled.div`

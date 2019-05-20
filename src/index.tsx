@@ -34,7 +34,7 @@ const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
     connectionParams: {
-      Authorization: 'Bearer ' + localStorage.getItem('flavorli-admin-token'),
+      authorization: 'Bearer ' + localStorage.getItem('flavorli-admin-token'),
     },
   },
 });

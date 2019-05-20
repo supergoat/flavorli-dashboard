@@ -47,7 +47,6 @@ const RestaurantDetails = ({restaurant}: Props) => {
         name="name"
         placeholder="Name"
         inputValue={restaurant.name}
-        variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_NAME}
       />
       <Label>Restaurant cover image url</Label>
@@ -65,7 +64,6 @@ const RestaurantDetails = ({restaurant}: Props) => {
         textareaLineHeight={30}
         placeholder="Cover image url"
         inputValue={restaurant.image}
-        variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_IMAGE}
       />
       <Label>Restaurant logo url</Label>
@@ -83,7 +81,6 @@ const RestaurantDetails = ({restaurant}: Props) => {
         textareaLineHeight={30}
         placeholder="logo image url"
         inputValue={restaurant.logo}
-        variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_LOGO}
       />
       <Label>Restaurant description</Label>
@@ -101,13 +98,11 @@ const RestaurantDetails = ({restaurant}: Props) => {
         textareaLineHeight={30}
         placeholder="Description"
         inputValue={restaurant.description}
-        variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_DESCRIPTION}
       />
       <Label>Restaurant address</Label>
       <UpdateAddress
         previousAddress={restaurant.address}
-        variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_ADDRESS}
       />
       <Label>Restaurant tel</Label>
@@ -123,7 +118,6 @@ const RestaurantDetails = ({restaurant}: Props) => {
         name="tel"
         placeholder="Tel"
         inputValue={restaurant.tel}
-        variables={{restaurantId: restaurant.id}}
         mutation={UPDATE_RESTAURANT_TEL}
       />
       <Label>Average Food Preparation Time</Label>
@@ -141,7 +135,6 @@ const RestaurantDetails = ({restaurant}: Props) => {
           validator={(input: number) => input < 100}
           name="averagePreparationTime"
           inputValue={restaurant.averagePreparationTime}
-          variables={{restaurantId: restaurant.id}}
           mutation={UPDATE_RESTAURANT_AVERAGE_PREPARATION_TIME}
         />
         <p>minutes</p>
@@ -162,7 +155,6 @@ const RestaurantDetails = ({restaurant}: Props) => {
           validator={(input: number) => input < 100}
           name="averageBusyPreparationTime"
           inputValue={restaurant.averageBusyPreparationTime}
-          variables={{restaurantId: restaurant.id}}
           mutation={UPDATE_RESTAURANT_AVERAGE_BUSY_PREPARATION_TIME}
         />
         <p>minutes</p>
@@ -179,8 +171,8 @@ const RestaurantDetails = ({restaurant}: Props) => {
 export default RestaurantDetails;
 
 const UPDATE_RESTAURANT_NAME = gql`
-  mutation updateRestaurant($restaurantId: ID!, $name: String) {
-    updateRestaurant(restaurantId: $restaurantId, name: $name) {
+  mutation updateRestaurant($name: String) {
+    updateRestaurant(name: $name) {
       id
       name
     }
@@ -188,8 +180,8 @@ const UPDATE_RESTAURANT_NAME = gql`
 `;
 
 const UPDATE_RESTAURANT_IMAGE = gql`
-  mutation updateRestaurant($restaurantId: ID!, $image: String) {
-    updateRestaurant(restaurantId: $restaurantId, image: $image) {
+  mutation updateRestaurant($image: String) {
+    updateRestaurant(image: $image) {
       id
       image
     }
@@ -197,8 +189,8 @@ const UPDATE_RESTAURANT_IMAGE = gql`
 `;
 
 const UPDATE_RESTAURANT_LOGO = gql`
-  mutation updateRestaurant($restaurantId: ID!, $logo: String) {
-    updateRestaurant(restaurantId: $restaurantId, logo: $logo) {
+  mutation updateRestaurant($logo: String) {
+    updateRestaurant(logo: $logo) {
       id
       logo
     }
@@ -206,8 +198,8 @@ const UPDATE_RESTAURANT_LOGO = gql`
 `;
 
 const UPDATE_RESTAURANT_DESCRIPTION = gql`
-  mutation updateRestaurant($restaurantId: ID!, $description: String) {
-    updateRestaurant(restaurantId: $restaurantId, description: $description) {
+  mutation updateRestaurant($description: String) {
+    updateRestaurant(description: $description) {
       id
       description
     }
@@ -215,14 +207,8 @@ const UPDATE_RESTAURANT_DESCRIPTION = gql`
 `;
 
 const UPDATE_RESTAURANT_AVERAGE_PREPARATION_TIME = gql`
-  mutation updateRestaurant(
-    $restaurantId: ID!
-    $averagePreparationTime: String
-  ) {
-    updateRestaurant(
-      restaurantId: $restaurantId
-      averagePreparationTime: $averagePreparationTime
-    ) {
+  mutation updateRestaurant($averagePreparationTime: String) {
+    updateRestaurant(averagePreparationTime: $averagePreparationTime) {
       id
       averagePreparationTime
     }
@@ -230,22 +216,16 @@ const UPDATE_RESTAURANT_AVERAGE_PREPARATION_TIME = gql`
 `;
 
 const UPDATE_RESTAURANT_AVERAGE_BUSY_PREPARATION_TIME = gql`
-  mutation updateRestaurant(
-    $restaurantId: ID!
-    $averageBusyPreparationTime: String
-  ) {
-    updateRestaurant(
-      restaurantId: $restaurantId
-      averageBusyPreparationTime: $averageBusyPreparationTime
-    ) {
+  mutation updateRestaurant($averageBusyPreparationTime: String) {
+    updateRestaurant(averageBusyPreparationTime: $averageBusyPreparationTime) {
       id
       averageBusyPreparationTime
     }
   }
 `;
 const UPDATE_RESTAURANT_ADDRESS = gql`
-  mutation updateRestaurant($restaurantId: ID!, $address: AddressWhereInput) {
-    updateRestaurant(restaurantId: $restaurantId, address: $address) {
+  mutation updateRestaurant($address: AddressWhereInput) {
+    updateRestaurant(address: $address) {
       address {
         id
         number
@@ -258,8 +238,8 @@ const UPDATE_RESTAURANT_ADDRESS = gql`
 `;
 
 const UPDATE_RESTAURANT_TEL = gql`
-  mutation updateRestaurant($restaurantId: ID!, $tel: String) {
-    updateRestaurant(restaurantId: $restaurantId, tel: $tel) {
+  mutation updateRestaurant($tel: String) {
+    updateRestaurant(tel: $tel) {
       id
       tel
     }
