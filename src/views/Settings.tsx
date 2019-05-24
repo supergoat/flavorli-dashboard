@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import {RouteComponentProps, Router, navigate} from '@reach/router';
 import RestaurantDetails from './RestaurantDetails';
+import PaymentDetails from './PaymentDetails';
 
 import Navbar from '../containers/Navbar';
 import SideBar from '../components/SideBar';
@@ -34,6 +35,7 @@ const SettingsView = ({location}: Props) => {
 
       <Router>
         <RestaurantDetails path="/restaurant-details" />
+        <PaymentDetails path="/payment-details" />
       </Router>
     </SettingsViewWrapper>
   );

@@ -149,6 +149,7 @@ export const GET_RESTAURANT = gql`
       averagePreparationTime
       averageBusyPreparationTime
       status
+      isConnected
       address {
         id
         number
